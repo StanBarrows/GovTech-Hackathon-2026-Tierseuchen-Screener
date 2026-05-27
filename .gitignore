@@ -1,6 +1,23 @@
-# Temp files
+# Python / Jupyter temp files
 **/.ipynb_checkpoints/
 **/__pycache__/
 __pycache__/
 .ipynb_checkpoints/
 *.py[cod]
+
+# Envs excluded
+venv/
+.env/
+secrets/
+
+# Temp files
+*.out
+*.tmp
+*.temp
+*.bak
+*~
+
+# MacOS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
