@@ -43,6 +43,11 @@ Unter `data/structured` befinden sich anonymisierte Datenexporte aus drei Tierge
 
 Das Ziel für den Hackathon ist es, einen funktionierenden Prototypen für einen Tierseuchen-Screener zu entwickeln, der internationale Quellen automatisch analysiert, relevante Informationen extrahiert und übersichtlich für die Risikobeurteilung in der Schweiz aufbereitet.
 
+**Weitere Infos**: <br>
+- [Fachliche Anforderugen Prototypen](docs/Anforderungen.md)
+- [Glossar Tierseuchen für die Challenge](docs/Glossary.md)
+
+
 ## Einschränkungen
 
 Datenschutz und Urheberrecht bei der Nutzung externer Quellen beachten
