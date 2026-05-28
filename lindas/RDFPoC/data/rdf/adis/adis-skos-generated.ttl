@@ -2,20 +2,40 @@
 @prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
 @prefix tss: <https://data.tierseuchen-screener.example.org/skos/> .
 
-tss:a-s-f-in-domestic-pigs a skos:Concept,
+tss:a-s-f a skos:Concept,
         ts:Disease ;
     skos:inScheme tss:diseases ;
-    skos:prefLabel "A.S.F. in domestic pigs" .
-
-tss:a-s-f-in-wild-boar a skos:Concept,
-        ts:Disease ;
-    skos:inScheme tss:diseases ;
-    skos:prefLabel "A.S.F. in wild boar" .
+    skos:prefLabel "A.S.F." .
 
 tss:aethina-tumida-inf-with-small-hive-beetle-2006 a skos:Concept,
         ts:Disease ;
     skos:inScheme tss:diseases ;
     skos:prefLabel "Aethina tumida (Inf. with)(Small hive beetle)(2006-)" .
+
+tss:animal-context-captive-birds a skos:Concept,
+        ts:AnimalContext ;
+    skos:inScheme tss:animal-contexts ;
+    skos:prefLabel "Captive Birds" .
+
+tss:animal-context-domestic-pigs a skos:Concept,
+        ts:AnimalContext ;
+    skos:inScheme tss:animal-contexts ;
+    skos:prefLabel "domestic pigs" .
+
+tss:animal-context-non-poultry-for-ahl a skos:Concept,
+        ts:AnimalContext ;
+    skos:inScheme tss:animal-contexts ;
+    skos:prefLabel "non-poultry for AHL" .
+
+tss:animal-context-wild-birds a skos:Concept,
+        ts:AnimalContext ;
+    skos:inScheme tss:animal-contexts ;
+    skos:prefLabel "Wild Birds" .
+
+tss:animal-context-wild-boar a skos:Concept,
+        ts:AnimalContext ;
+    skos:inScheme tss:animal-contexts ;
+    skos:prefLabel "wild boar" .
 
 tss:anthrax a skos:Concept,
         ts:Disease ;
@@ -181,15 +201,10 @@ tss:high-pathogenicity-avian-influenza-viruses-inf-with-poultry a skos:Concept,
     skos:inScheme tss:diseases ;
     skos:prefLabel "High pathogenicity avian influenza viruses (Inf. with) (poultry)" .
 
-tss:hpai-non-p-in-captive-birds a skos:Concept,
+tss:hpai-non-p a skos:Concept,
         ts:Disease ;
     skos:inScheme tss:diseases ;
-    skos:prefLabel "HPAI(NON-P) in Captive Birds" .
-
-tss:hpai-non-p-in-wild-birds a skos:Concept,
-        ts:Disease ;
-    skos:inScheme tss:diseases ;
-    skos:prefLabel "HPAI(NON-P) in Wild Birds" .
+    skos:prefLabel "HPAI(NON-P)" .
 
 tss:lumpy-skin-disease-virus-inf-with a skos:Concept,
         ts:Disease ;
@@ -201,10 +216,10 @@ tss:mycobacterium-tuberculosis-complex-inf-with-2019 a skos:Concept,
     skos:inScheme tss:diseases ;
     skos:prefLabel "Mycobacterium tuberculosis complex (Inf. with)(2019-)" .
 
-tss:newcastle-disease-virus-in-non-poultry-for-ahl a skos:Concept,
+tss:newcastle-disease-virus a skos:Concept,
         ts:Disease ;
     skos:inScheme tss:diseases ;
-    skos:prefLabel "Newcastle disease virus in non-poultry for AHL" .
+    skos:prefLabel "Newcastle disease virus" .
 
 tss:newcastle-disease-virus-inf-with a skos:Concept,
         ts:Disease ;
@@ -218,6 +233,16 @@ tss:pertinence-eu a skos:Concept ;
 tss:pertinence-eu-and-woah a skos:Concept ;
     skos:inScheme tss:pertinence-values ;
     skos:prefLabel "EU and WOAH" .
+
+tss:production-non-poultry-birds a skos:Concept,
+        ts:ProductionType ;
+    skos:inScheme tss:production-types ;
+    skos:prefLabel "Non-poultry birds" .
+
+tss:production-poultry a skos:Concept,
+        ts:ProductionType ;
+    skos:inScheme tss:production-types ;
+    skos:prefLabel "Poultry" .
 
 tss:rabies-virus-inf-with a skos:Concept,
         ts:Disease ;
@@ -513,15 +538,31 @@ tss:west-nile-fever a skos:Concept,
     skos:inScheme tss:diseases ;
     skos:prefLabel "West Nile Fever" .
 
+tss:wildlife-captive a skos:Concept,
+        ts:WildlifeType ;
+    skos:inScheme tss:wildlife-types ;
+    skos:prefLabel "Captive" .
+
+tss:wildlife-wild a skos:Concept,
+        ts:WildlifeType ;
+    skos:inScheme tss:wildlife-types ;
+    skos:prefLabel "Wild" .
+
 tss:event-status a skos:ConceptScheme .
 
 tss:measuring-units a skos:ConceptScheme .
 
 tss:pertinence-values a skos:ConceptScheme .
 
+tss:production-types a skos:ConceptScheme .
+
 tss:result-status a skos:ConceptScheme .
 
+tss:wildlife-types a skos:ConceptScheme .
+
 tss:disease_subtypes a skos:ConceptScheme .
+
+tss:animal-contexts a skos:ConceptScheme .
 
 tss:diseases a skos:ConceptScheme .
 

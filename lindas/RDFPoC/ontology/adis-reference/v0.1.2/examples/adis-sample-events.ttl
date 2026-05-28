@@ -1,0 +1,94 @@
+@prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
+@prefix tss: <https://data.tierseuchen-screener.example.org/skos/> .
+@prefix tsd: <https://data.tierseuchen-screener.example.org/data/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Situation keys use confirmation month fallback logic (confirmation > suspicion > submitted > unknown)
+
+tsd:situation_hpai_non_p_wild_birds_de_2026_01 a ts:OutbreakSituation ;
+  ts:hasSituationKey "hpai-non-p-wild-birds|de|2026-01" ;
+  ts:situationDisease tss:hpai_non_p_wild_birds ;
+  ts:situationCountry tsd:country_de ;
+  ts:situationMonth "2026-01"^^xsd:gYearMonth .
+
+tsd:situation_hpai_non_p_wild_birds_de_2026_02 a ts:OutbreakSituation ;
+  ts:hasSituationKey "hpai-non-p-wild-birds|de|2026-02" ;
+  ts:situationDisease tss:hpai_non_p_wild_birds ;
+  ts:situationCountry tsd:country_de ;
+  ts:situationMonth "2026-02"^^xsd:gYearMonth .
+
+tsd:situation_mtbc_fr_2026_03 a ts:OutbreakSituation ;
+  ts:hasSituationKey "mtbc|fr|2026-03" ;
+  ts:situationDisease tss:mtbc ;
+  ts:situationCountry tsd:country_fr ;
+  ts:situationMonth "2026-03"^^xsd:gYearMonth .
+
+tsd:situation_asf_wild_boar_hu_2026_03 a ts:OutbreakSituation ;
+  ts:hasSituationKey "asf-wild-boar|hu|2026-03" ;
+  ts:situationDisease tss:asf_wild_boar ;
+  ts:situationCountry tsd:country_hu ;
+  ts:situationMonth "2026-03"^^xsd:gYearMonth .
+
+tsd:situation_hpai_p_poultry_pl_2026_04 a ts:OutbreakSituation ;
+  ts:hasSituationKey "hpai-p-poultry|pl|2026-04" ;
+  ts:situationDisease tss:hpai_non_p_wild_birds ;
+  ts:situationCountry tsd:country_pl ;
+  ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+# 5 representative ADIS rows
+
+tsd:event_de_hpai_non_p_2026_xsyaz a ts:OutbreakEvent ;
+  ts:referenceId "DE-HPAI(NON-P)-2026-xsyaz" ;
+  ts:nationalReferenceId "26-015-a0jke" ;
+  ts:hasDisease tss:hpai_non_p_wild_birds ;
+  ts:occursAt tsd:loc_witten ;
+  ts:confirmationDate "2026-01-30"^^xsd:date ;
+  ts:rawEventStatusLabel "Resolved" ;
+  ts:belongsToSituation tsd:situation_hpai_non_p_wild_birds_de_2026_01 .
+
+tsd:event_de_hpai_non_p_2026_yy25e a ts:OutbreakEvent ;
+  ts:referenceId "DE-HPAI(NON-P)-2026-yy25e" ;
+  ts:nationalReferenceId "26-015-mqw20" ;
+  ts:hasDisease tss:hpai_non_p_wild_birds ;
+  ts:occursAt tsd:loc_heringen ;
+  ts:confirmationDate "2026-02-02"^^xsd:date ;
+  ts:rawEventStatusLabel "Resolved" ;
+  ts:belongsToSituation tsd:situation_hpai_non_p_wild_birds_de_2026_02 .
+
+tsd:event_fr_mtbc_2026_1gtxn a ts:OutbreakEvent ;
+  ts:referenceId "FR-MTBC-2026-1gtxn" ;
+  ts:nationalReferenceId "2026-8op15" ;
+  ts:hasDisease tss:mtbc ;
+  ts:occursAt tsd:loc_corse_du_sud ;
+  ts:confirmationDate "2026-03-20"^^xsd:date ;
+  ts:rawEventStatusLabel "Continuing" ;
+  ts:belongsToSituation tsd:situation_mtbc_fr_2026_03 .
+
+tsd:event_hu_asf_2026_l0iz2 a ts:OutbreakEvent ;
+  ts:referenceId "HU-ASF-2026-l0iz2" ;
+  ts:hasDisease tss:asf_wild_boar ;
+  ts:occursAt tsd:loc_barabas ;
+  ts:confirmationDate "2026-03-31"^^xsd:date ;
+  ts:rawEventStatusLabel "Resolved" ;
+  ts:belongsToSituation tsd:situation_asf_wild_boar_hu_2026_03 .
+
+tsd:event_pl_hpai_p_2026_jqn1t a ts:OutbreakEvent ;
+  ts:referenceId "PL-HPAI(P)-2026-jqn1t" ;
+  ts:nationalReferenceId "2026/97-s3ch0" ;
+  ts:hasDisease tss:hpai_non_p_wild_birds ;
+  ts:occursAt tsd:loc_lugi ;
+  ts:confirmationDate "2026-04-14"^^xsd:date ;
+  ts:rawEventStatusLabel "Resolved" ;
+  ts:belongsToSituation tsd:situation_hpai_p_poultry_pl_2026_04 .
+
+# minimal locations with raw admin labels
+tsd:loc_witten a ts:Location ; ts:locationLabel "Witten" ; ts:adminLevel1Label "Nordrhein-Westfalen" ; ts:adminLevel2Label "Ennepe-Ruhr-Kreis" ; ts:adminLevel3Label "Witten" .
+tsd:loc_heringen a ts:Location ; ts:locationLabel "Heringen (Werra)" ; ts:adminLevel1Label "Hessen" ; ts:adminLevel2Label "Hersfeld-Rotenburg" ; ts:adminLevel3Label "Heringen (Werra)" .
+tsd:loc_corse_du_sud a ts:Location ; ts:locationLabel "Corse-du-Sud" ; ts:adminLevel1Label "Corse-du-Sud" .
+tsd:loc_barabas a ts:Location ; ts:locationLabel "Barabás" ; ts:adminLevel1Label "Szabolcs-Szatmár-Bereg" ; ts:adminLevel2Label "Vásárosnamény" .
+tsd:loc_lugi a ts:Location ; ts:locationLabel "Ługi" ; ts:adminLevel1Label "Mazowieckie" ; ts:adminLevel2Label "Mława" ; ts:adminLevel3Label "Szreńsk" .
+
+tsd:country_de a ts:Location ; ts:locationLabel "Germany" .
+tsd:country_fr a ts:Location ; ts:locationLabel "France" .
+tsd:country_hu a ts:Location ; ts:locationLabel "Hungary" .
+tsd:country_pl a ts:Location ; ts:locationLabel "Poland" .
