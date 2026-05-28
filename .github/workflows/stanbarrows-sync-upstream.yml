@@ -1,6 +1,12 @@
-# Merges upstream main into this fork every 5 minutes (GitHub schedule minimum).
+# Merges upstream main into this fork about hourly (UTC :17).
+#
+# GitHub schedule is best-effort: runs may be delayed tens of minutes under load.
+# Use workflow_dispatch for an immediate sync.
 #
 # Runs only on the StanBarrows fork (skipped on BLV-OSAV-USAV upstream).
+# On a new fork, enable this workflow under Actions if scheduled runs never appear.
+# After 60 days without repo commits, GitHub disables scheduled workflows until
+# re-enabled or a new commit is pushed.
 #
 # Uses GITHUB_TOKEN (contents: write) to push merged changes back to this repo.
 # If push is blocked by fork policy, set MY_GITHUB_TOKEN (StanBarrows PAT with
@@ -12,7 +18,8 @@ name: stanbarrows-sync-upstream
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    # ~hourly, UTC; offset avoids :00 load spike (GitHub schedule is best-effort)
+    - cron: '17 * * * *'
   workflow_dispatch:
 
 permissions:
