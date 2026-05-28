@@ -13,6 +13,7 @@ from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 from xml.etree import ElementTree
 
+from govtech_tierseuchen.config import load_config
 from govtech_tierseuchen.models import (
     DiscoveredArticle,
     FetchedArticle,
@@ -22,12 +23,14 @@ from govtech_tierseuchen.models import (
 
 SOURCE_ID = "gefluegelnews"
 SOURCE_NAME = "Gefluegelnews"
-BASE_URL = "https://www.gefluegelnews.de"
-SITEMAP_URL = f"{BASE_URL}/sitemap.xml"
+_SOURCE_CONFIG = load_config().sources[SOURCE_ID]
+BASE_URL = _SOURCE_CONFIG.base_url or "https://www.gefluegelnews.de"
+SITEMAP_URL = f"{BASE_URL}{_SOURCE_CONFIG.sitemap_path or '/sitemap.xml'}"
 NEWS_RSS_URL = f"{BASE_URL}/news/rss"
-DEFAULT_USER_AGENT = (
+DEFAULT_USER_AGENT = _SOURCE_CONFIG.user_agent or (
     "GovTech-Tierseuchen prototype scraper (+local research; respects robots.txt)"
 )
+RAW_SUBDIR = _SOURCE_CONFIG.raw_subdir or "raw_html"
 
 GERMAN_MONTHS = {
     "Januar": 1,
@@ -98,7 +101,7 @@ def cache_filename_for_url(source_link: str) -> str:
 
 
 def raw_html_path(base_dir: Path, source_link: str) -> Path:
-    return base_dir / SOURCE_ID / "raw_html" / cache_filename_for_url(source_link)
+    return base_dir / SOURCE_ID / RAW_SUBDIR / cache_filename_for_url(source_link)
 
 
 @dataclass

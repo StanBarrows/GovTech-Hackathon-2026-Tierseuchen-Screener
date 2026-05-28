@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 from urllib.parse import urlparse
 
+from govtech_tierseuchen.config import load_config
 from govtech_tierseuchen.models import (
     DiseaseRelevance,
     DiseaseReport,
@@ -10,60 +12,10 @@ from govtech_tierseuchen.models import (
     PreventionMeasure,
 )
 
-EXTRACTION_VERSION = "rules-v1"
-EUROPEAN_COUNTRIES = {
-    "Albanien",
-    "Andorra",
-    "Belgien",
-    "Bosnien",
-    "Bulgarien",
-    "Dänemark",
-    "Deutschland",
-    "Estland",
-    "Finnland",
-    "Frankreich",
-    "Griechenland",
-    "Irland",
-    "Island",
-    "Italien",
-    "Kroatien",
-    "Lettland",
-    "Liechtenstein",
-    "Litauen",
-    "Luxemburg",
-    "Malta",
-    "Moldau",
-    "Niederlande",
-    "Norwegen",
-    "Österreich",
-    "Polen",
-    "Portugal",
-    "Rumänien",
-    "Schweden",
-    "Schweiz",
-    "Serbien",
-    "Slowakei",
-    "Slowenien",
-    "Spanien",
-    "Tschechien",
-    "Ukraine",
-    "Ungarn",
-    "Vereinigtes Königreich",
-}
-
-CONSEQUENCE_TERMS = {
-    "Sperrzone": "Sperrzonen",
-    "Sperrzonen": "Sperrzonen",
-    "keulen": "Keulung",
-    "gekeult": "Keulung",
-    "Keulung": "Keulung",
-    "Stallpflicht": "Stallpflicht",
-    "Impfung": "Impfung",
-    "Monitoring": "Monitoring",
-    "Biosicherheit": "Biosicherheit",
-    "Handel": "Handel",
-    "Export": "Export",
-}
+_CONFIG = load_config().disease_reports
+EXTRACTION_VERSION = _CONFIG.extraction_version
+EUROPEAN_COUNTRIES = _CONFIG.european_countries
+CONSEQUENCE_TERMS = _CONFIG.consequence_terms
 
 
 def extract_report_rules(
@@ -213,6 +165,8 @@ def _situation_key(
 def _slug(value: str | None) -> str:
     if not value:
         return "unknown"
-    value = value.strip().lower()
-    value = re.sub(r"[^a-z0-9]+", "-", value)
-    return re.sub(r"-+", "-", value).strip("-") or "unknown"
+    normalized = unicodedata.normalize("NFKD", value)
+    ascii_value = normalized.encode("ascii", "ignore").decode("ascii")
+    ascii_value = ascii_value.strip().lower()
+    ascii_value = re.sub(r"[^a-z0-9]+", "-", ascii_value)
+    return re.sub(r"-+", "-", ascii_value).strip("-") or "unknown"

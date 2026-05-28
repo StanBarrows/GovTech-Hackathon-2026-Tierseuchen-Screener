@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import time
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
@@ -10,6 +11,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode, urlparse
 from urllib.request import Request, urlopen
 
+from govtech_tierseuchen.config import load_config
 from govtech_tierseuchen.models import (
     DiscoveredArticle,
     FetchedArticle,
@@ -19,13 +21,20 @@ from govtech_tierseuchen.models import (
 
 SOURCE_ID = "padi_web"
 SOURCE_NAME = "PADI-web"
-BASE_URL = "https://padi-web.cirad.fr"
-ARTICLES_API_URL = f"{BASE_URL}/en/articles/api/"
-DEFAULT_USER_AGENT = (
+_SOURCE_CONFIG = load_config().sources[SOURCE_ID]
+BASE_URL = _SOURCE_CONFIG.base_url or "https://padi-web.cirad.fr"
+ARTICLES_API_URL = (
+    f"{BASE_URL}{_SOURCE_CONFIG.articles_api_path or '/en/articles/api/'}"
+)
+DEFAULT_USER_AGENT = _SOURCE_CONFIG.user_agent or (
     "GovTech-Tierseuchen prototype scraper (+local research; PADI public API)"
 )
-DEFAULT_DISCOVERY_DAYS = 7
-DEFAULT_DISCOVERY_PER_PAGE = 25
+RAW_SUBDIR = _SOURCE_CONFIG.raw_subdir or "raw_json"
+ARTICLE_SERIALIZER = _SOURCE_CONFIG.article_serializer or "sentences"
+DISCOVERY = _SOURCE_CONFIG.discovery or {}
+DEFAULT_DISCOVERY_DAYS = int(DISCOVERY["published_after_days"])
+DEFAULT_DISCOVERY_PER_PAGE = int(DISCOVERY["per_page"])
+LOGGER = logging.getLogger(__name__)
 
 
 def build_articles_api_url(
@@ -42,11 +51,11 @@ def build_articles_api_url(
     params: dict[str, str | int] = {
         "page": page,
         "per_page": per_page,
-        "general_labels_per_task[Relevance]": 1,
-        "is_archived": 0,
-        "ordering": "-published_at",
-        "order_by[key]": "published_at",
-        "order_by[order]": "-",
+        "general_labels_per_task[Relevance]": DISCOVERY["relevance_label"],
+        "is_archived": DISCOVERY["is_archived"],
+        "ordering": DISCOVERY["ordering"],
+        "order_by[key]": DISCOVERY["order_by_key"],
+        "order_by[order]": DISCOVERY["order_by_order"],
     }
     params["published_after"] = published_after
     if source_category:
@@ -60,6 +69,14 @@ def parse_article_page(
 ) -> tuple[list[DiscoveredArticle], str | None]:
     articles = []
     for row in payload.get("results", []):
+        if not isinstance(row, dict) or not row.get("id"):
+            LOGGER.warning("Skipping malformed PADI article row without id")
+            continue
+        try:
+            last_modified = _parse_padi_datetime(row.get("published_at"))
+        except ValueError as exc:
+            LOGGER.warning("Skipping malformed PADI article row: %s", exc)
+            continue
         article_id = str(row["id"])
         articles.append(
             DiscoveredArticle(
@@ -67,7 +84,7 @@ def parse_article_page(
                 source_name=SOURCE_NAME,
                 source_link=f"{ARTICLES_API_URL}{article_id}/",
                 discovered_at=discovered_at,
-                last_modified=_parse_padi_datetime(row.get("published_at")),
+                last_modified=last_modified,
             )
         )
     return articles, _validated_page_url(payload.get("next"))
@@ -84,7 +101,7 @@ def raw_json_path(base_dir: Path, source_link: str) -> Path:
     return (
         base_dir
         / SOURCE_ID
-        / "raw_json"
+        / RAW_SUBDIR
         / f"{article_id_from_source_link(source_link)}.json"
     )
 
@@ -144,7 +161,7 @@ def fetch_and_cache_article(
         )
     try:
         status, payload = fetch_json(
-            f"{source_link}?serializer=sentences",
+            f"{source_link}?serializer={ARTICLE_SERIALIZER}",
             timeout_seconds=timeout_seconds,
         )
         fetched = cache_article_json(base_dir, source_link, payload, status, fetched_at)

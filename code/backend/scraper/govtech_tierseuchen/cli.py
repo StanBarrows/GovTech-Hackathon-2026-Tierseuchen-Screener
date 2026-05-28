@@ -18,6 +18,7 @@ from rich.progress import (
 )
 
 from govtech_tierseuchen.config import AppConfig, load_config, resolve_config_path
+from govtech_tierseuchen.models import ParseError
 
 LOGGER = logging.getLogger(__name__)
 
@@ -196,6 +197,8 @@ def _discover(
     else:
         raise ValueError(f"Unsupported source: {source}")
 
+    if limit is not None:
+        articles = articles[:limit]
     write_jsonl(config.output_path(data_dir, source, "manifest"), articles)
     console.print(f"[green]Discovered {len(articles)} {source} article URLs[/green]")
     return 0
@@ -285,9 +288,32 @@ def _parse(
     for row in rows:
         raw_path_value = row.get("raw_html_path")
         if not raw_path_value:
+            parse_errors.append(
+                _parse_error_for_row(
+                    row, "", "MissingRawPath", "Missing raw artifact path"
+                )
+            )
             continue
-        raw_html_path = Path(raw_path_value)
+        raw_html_path = _resolve_raw_artifact_path(Path(raw_path_value), data_dir)
+        if not _is_relative_to(raw_html_path, config.source_dir(data_dir, source)):
+            parse_errors.append(
+                _parse_error_for_row(
+                    row,
+                    str(raw_html_path),
+                    "UnsafeRawPath",
+                    "Raw artifact path is outside the source data directory",
+                )
+            )
+            continue
         if not raw_html_path.exists():
+            parse_errors.append(
+                _parse_error_for_row(
+                    row,
+                    str(raw_html_path),
+                    "MissingRawFile",
+                    "Raw artifact path does not exist",
+                )
+            )
             continue
         try:
             parsed.append(_parse_row_for_source(source, row, raw_html_path))
@@ -308,6 +334,32 @@ def _parse(
         f"[yellow]{len(parse_errors)} parse errors[/yellow]"
     )
     return 0
+
+
+def _parse_error_for_row(
+    row: dict[str, Any], raw_html_path: str, error_type: str, message: str
+) -> ParseError:
+    return ParseError(
+        source_link=row.get("source_link", ""),
+        raw_html_path=raw_html_path,
+        error_type=error_type,
+        message=message,
+        occurred_at=datetime.now(UTC),
+    )
+
+
+def _resolve_raw_artifact_path(path: Path, data_dir: Path) -> Path:
+    if path.is_absolute():
+        return path.resolve()
+    return (data_dir / path).resolve()
+
+
+def _is_relative_to(path: Path, parent: Path) -> bool:
+    try:
+        path.relative_to(parent.resolve())
+    except ValueError:
+        return False
+    return True
 
 
 def _filter_disease(

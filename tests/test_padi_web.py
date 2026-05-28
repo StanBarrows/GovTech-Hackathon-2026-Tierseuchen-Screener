@@ -80,6 +80,28 @@ def test_parse_article_page_returns_discovered_articles_and_next_page():
     )
 
 
+def test_parse_article_page_skips_rows_with_missing_id_or_bad_date(caplog):
+    payload = {
+        "next": None,
+        "results": [
+            {"published_at": "2026-05-28T08:42:19"},
+            {"id": "BADDATE", "published_at": "not-a-date"},
+            {"id": "OK123", "published_at": "2026-05-28T08:42:19"},
+        ],
+    }
+
+    articles, next_url = parse_article_page(
+        payload,
+        discovered_at=datetime(2026, 5, 28, 12, 0, tzinfo=timezone.utc),
+    )
+
+    assert next_url is None
+    assert [article.source_link for article in articles] == [
+        "https://padi-web.cirad.fr/en/articles/api/OK123/"
+    ]
+    assert "Skipping malformed PADI article row" in caplog.text
+
+
 def test_parse_article_page_rejects_external_next_url():
     payload = {
         "next": "https://example.invalid/en/articles/api/?page=2",

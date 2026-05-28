@@ -32,6 +32,29 @@ class SourceConfig:
     timeout_seconds: float
     delay_seconds: float
     limit: int | None
+    base_url: str | None = None
+    sitemap_path: str | None = None
+    articles_api_path: str | None = None
+    user_agent: str | None = None
+    raw_subdir: str | None = None
+    article_serializer: str | None = None
+    discovery: dict[str, Any] | None = None
+
+
+@dataclass(frozen=True)
+class DiseaseFilterConfig:
+    version: str
+    terms: list[str]
+    acronym_terms: set[str]
+    snippet_radius: int
+    max_snippets: int
+
+
+@dataclass(frozen=True)
+class DiseaseReportsConfig:
+    extraction_version: str
+    european_countries: set[str]
+    consequence_terms: dict[str, str]
 
 
 @dataclass(frozen=True)
@@ -39,6 +62,8 @@ class AppConfig:
     project_root: Path
     scraper: ScraperConfig
     sources: dict[str, SourceConfig]
+    disease_filter: DiseaseFilterConfig
+    disease_reports: DiseaseReportsConfig
 
     def source_dir(self, data_dir: Path, source: str) -> Path:
         return data_dir / self.sources[source].output_dir
@@ -96,7 +121,39 @@ def _parse_config(raw: dict[str, Any], project_root: Path) -> AppConfig:
                 timeout_seconds=float(source["timeout_seconds"]),
                 delay_seconds=float(source["delay_seconds"]),
                 limit=source["limit"],
+                base_url=_optional_str(source.get("base_url")),
+                sitemap_path=_optional_str(source.get("sitemap_path")),
+                articles_api_path=_optional_str(source.get("articles_api_path")),
+                user_agent=_optional_str(source.get("user_agent")),
+                raw_subdir=_optional_str(source.get("raw_subdir")),
+                article_serializer=_optional_str(source.get("article_serializer")),
+                discovery=dict(source.get("discovery") or {}),
             )
             for source_id, source in sources.items()
         },
+        disease_filter=DiseaseFilterConfig(
+            version=str(raw["disease_filter"]["version"]),
+            terms=[str(term) for term in raw["disease_filter"]["terms"]],
+            acronym_terms={
+                str(term) for term in raw["disease_filter"]["acronym_terms"]
+            },
+            snippet_radius=int(raw["disease_filter"]["snippet_radius"]),
+            max_snippets=int(raw["disease_filter"]["max_snippets"]),
+        ),
+        disease_reports=DiseaseReportsConfig(
+            extraction_version=str(raw["disease_reports"]["extraction_version"]),
+            european_countries={
+                str(country) for country in raw["disease_reports"]["european_countries"]
+            },
+            consequence_terms={
+                str(term): str(normalized)
+                for term, normalized in raw["disease_reports"][
+                    "consequence_terms"
+                ].items()
+            },
+        ),
     )
+
+
+def _optional_str(value: object | None) -> str | None:
+    return str(value) if value is not None else None
