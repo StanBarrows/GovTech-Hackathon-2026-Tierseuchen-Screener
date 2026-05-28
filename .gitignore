@@ -21,3 +21,5 @@ secrets/
 .DS_Store
 Thumbs.db
 ehthumbs.db
+AGENTS.md
+ _ gh.code-workspace
