@@ -1,0 +1,53 @@
+@prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
+@prefix tss: <https://data.tierseuchen-screener.example.org/skos/> .
+@prefix tsd: <https://data.tierseuchen-screener.example.org/data/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Candidate PAFF linkage sample (manual, no automated extraction)
+
+tsd:report_paff_2026_05_12 a ts:PaffReport ;
+  ts:referenceId "reg-com_ahw_20260512_pres-01.pdf" ;
+  ts:sourceDocumentTitle "PAFF Animal Health and Welfare presentation (candidate linkage sample)" ;
+  ts:sourceURL "file:///home/Dave/.openclaw/workspace-govtech/data/raw/PAFF/reg-com_ahw_20260512_pres-01.pdf"^^xsd:anyURI ;
+  ts:paffDate "2026-05-12"^^xsd:date .
+
+tsd:stmt_paff_hpai_de_2026_05 a ts:PaffSituationStatement ;
+  ts:extractedFromSource tsd:report_paff_2026_05_12 ;
+  ts:describesSituation tsd:situation_hpai-non-p-in-wild-birds-deutschland-2026-05 ;
+  ts:hasEvidenceSnippet tsd:snip_paff_1 ;
+  ts:hasExtractionStatus tss:status-candidate ;
+  ts:hasExtractionConfidence tss:confidence-medium ;
+  ts:hasRelevanceAssessment tsd:rel_paff_1 ;
+  ts:hasSeverityAssessment tsd:sev_paff_1 ;
+  ts:hasReachAssessment tsd:reach_paff_1 ;
+  ts:hasPreventionMeasure tsd:pm_paff_1 .
+
+tsd:snip_paff_1 a ts:EvidenceSnippet ;
+  ts:sourceSlideNumber 3 ;
+  ts:snippetText "Candidate note: Germany HPAI context with control/surveillance actions (manual dry-run evidence placeholder from PAFF report)." .
+
+tsd:rel_paff_1 a ts:RelevanceAssessment ;
+  ts:assessesSituation tsd:situation_hpai-non-p-in-wild-birds-deutschland-2026-05 ;
+  ts:hasRelevanceLevel tss:relevance-high ;
+  ts:rawRelevanceEvidence "Topic explicitly concerns monitored animal disease events in Germany." ;
+  ts:relevanceRationale "Directly relevant for radar-bulletin context." .
+
+tsd:sev_paff_1 a ts:SeverityAssessment ;
+  ts:assessesSituation tsd:situation_hpai-non-p-in-wild-birds-deutschland-2026-05 ;
+  ts:hasSeverityLevel tss:severity-medium ;
+  ts:rawSeverityEvidence "Narrative indicates continued control context." ;
+  ts:severityRationale "Candidate-level estimate pending expert review." .
+
+tsd:rule_reach_admin_spread a ts:DerivedAssessmentRule ;
+  ts:snippetText "same adminLevel3=>local; differing adminLevel3 same adminLevel2=>regional; differing adminLevel2=>national; insufficient=>unknown" .
+
+tsd:reach_paff_1 a ts:ReachAssessment ;
+  ts:assessesSituation tsd:situation_hpai-non-p-in-wild-birds-deutschland-2026-05 ;
+  ts:hasReachLevel tss:reach-regional ;
+  ts:derivedByRule tsd:rule_reach_admin_spread ;
+  ts:reachRationale "Candidate derived reach assessment for dry-run only." .
+
+tsd:pm_paff_1 a ts:PreventionMeasure ;
+  ts:relatesToSituation tsd:situation_hpai-non-p-in-wild-birds-deutschland-2026-05 ;
+  ts:preventionMeasureText "intensive surveillance and targeted field checks" ;
+  ts:rawPreventionEvidence "surveillance/control measures mentioned in PAFF context" .

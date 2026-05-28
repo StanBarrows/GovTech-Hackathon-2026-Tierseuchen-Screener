@@ -1,0 +1,159 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
+
+ts: a owl:Ontology ;
+  dct:title "Tierseuchen ADIS Reference Ontology MVP"@en ;
+  owl:versionInfo "0.1.1" ;
+  rdfs:comment "Hackathon-provisional ontology. Not official ADIS/BLV/WOAH semantics."@en .
+
+# Generic event model
+ts:Event a owl:Class .
+ts:OutbreakEvent a owl:Class ; rdfs:subClassOf ts:Event .
+ts:OutbreakSituation a owl:Class ; rdfs:subClassOf ts:Event .
+
+# Core support classes
+ts:Report a owl:Class .
+ts:Disease a owl:Class .
+ts:DiseaseSubtype a owl:Class .
+ts:Species a owl:Class .
+ts:AnimalGroup a owl:Class .
+ts:Location a owl:Class .
+ts:AdministrativeArea a owl:Class .
+ts:Laboratory a owl:Class .
+ts:Test a owl:Class .
+ts:Observation a owl:Class .
+ts:Measurement a owl:Class .
+ts:SourceDataset a owl:Class .
+ts:SourceRow a owl:Class .
+ts:ImportActivity a owl:Class .
+ts:ReviewDecision a owl:Class .
+ts:BulletinIssue a owl:Class .
+ts:BulletinStatement a owl:Class .
+
+# PAFF / unstructured support
+ts:SourceDocument a owl:Class .
+ts:PaffReport a owl:Class ; rdfs:subClassOf ts:SourceDocument .
+ts:PaffSituationStatement a owl:Class .
+ts:EvidenceSnippet a owl:Class .
+ts:ExtractionCandidate a owl:Class .
+ts:RelevanceAssessment a owl:Class .
+ts:SeverityAssessment a owl:Class .
+ts:ReachAssessment a owl:Class .
+ts:PreventionMeasure a owl:Class .
+ts:ResearchReference a owl:Class .
+ts:DerivedAssessmentRule a owl:Class .
+
+# Event/situation bridge
+ts:belongsToSituation a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:OutbreakSituation .
+ts:describesSituation a owl:ObjectProperty ; rdfs:domain ts:PaffSituationStatement ; rdfs:range ts:OutbreakSituation .
+ts:assessesSituation a owl:ObjectProperty ; rdfs:range ts:OutbreakSituation .
+ts:relatesToSituation a owl:ObjectProperty ; rdfs:range ts:OutbreakSituation .
+ts:hasSituationKey a owl:DatatypeProperty ; rdfs:domain ts:OutbreakSituation ; rdfs:range xsd:string .
+ts:situationDisease a owl:ObjectProperty ; rdfs:domain ts:OutbreakSituation ; rdfs:range ts:Disease .
+ts:situationCountry a owl:ObjectProperty ; rdfs:domain ts:OutbreakSituation ; rdfs:range ts:Location .
+ts:situationMonth a owl:DatatypeProperty ; rdfs:domain ts:OutbreakSituation ; rdfs:range xsd:gYearMonth .
+
+# Core links
+ts:hasReport a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:Report .
+ts:hasDisease a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:Disease .
+ts:hasDiseaseSubtype a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:DiseaseSubtype .
+ts:hasSpecies a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:Species .
+ts:hasAnimalGroup a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:AnimalGroup .
+ts:occursAt a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:Location .
+ts:locatedIn a owl:ObjectProperty ; rdfs:domain ts:Location ; rdfs:range ts:AdministrativeArea .
+ts:hasTest a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:Test .
+ts:performedByLaboratory a owl:ObjectProperty ; rdfs:domain ts:Test ; rdfs:range ts:Laboratory .
+ts:hasObservation a owl:ObjectProperty ; rdfs:domain ts:Test ; rdfs:range ts:Observation .
+ts:hasMeasurement a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:Measurement .
+ts:hasSourceRow a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:SourceRow .
+ts:hasSourceDataset a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:SourceDataset .
+ts:wasImportedBy a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range ts:ImportActivity .
+
+# Normalized concept links
+ts:hasEventStatus a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range skos:Concept .
+ts:hasDiagnosisStatus a owl:ObjectProperty ; rdfs:domain ts:Observation ; rdfs:range skos:Concept .
+ts:hasResultStatus a owl:ObjectProperty ; rdfs:domain ts:Observation ; rdfs:range skos:Concept .
+ts:hasPertinence a owl:ObjectProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range skos:Concept .
+ts:hasMeasuringUnit a owl:ObjectProperty ; rdfs:domain ts:Measurement ; rdfs:range skos:Concept .
+
+# Raw literals
+ts:rawEventStatusLabel a owl:DatatypeProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range xsd:string .
+ts:rawDiagnosisStatusLabel a owl:DatatypeProperty ; rdfs:range xsd:string .
+ts:rawResultStatusLabel a owl:DatatypeProperty ; rdfs:range xsd:string .
+ts:rawPertinenceLabel a owl:DatatypeProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range xsd:string .
+ts:rawMeasuringUnitLabel a owl:DatatypeProperty ; rdfs:domain ts:Measurement ; rdfs:range xsd:string .
+
+# Core datatypes
+ts:referenceId a owl:DatatypeProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range xsd:string .
+ts:nationalReferenceId a owl:DatatypeProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range xsd:string .
+ts:countryLabel a owl:DatatypeProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range xsd:string .
+ts:submissionDate a owl:DatatypeProperty ; rdfs:domain ts:Report ; rdfs:range xsd:date .
+ts:modifiedDate a owl:DatatypeProperty ; rdfs:domain ts:Report ; rdfs:range xsd:date .
+ts:adminLevel1Label a owl:DatatypeProperty ; rdfs:range xsd:string .
+ts:adminLevel2Label a owl:DatatypeProperty ; rdfs:range xsd:string .
+ts:adminLevel3Label a owl:DatatypeProperty ; rdfs:range xsd:string .
+ts:latitude a owl:DatatypeProperty ; rdfs:domain ts:Location ; rdfs:range xsd:decimal .
+ts:longitude a owl:DatatypeProperty ; rdfs:domain ts:Location ; rdfs:range xsd:decimal .
+ts:locationLabel a owl:DatatypeProperty ; rdfs:domain ts:Location ; rdfs:range xsd:string .
+ts:susceptibleCount a owl:DatatypeProperty ; rdfs:domain ts:Measurement ; rdfs:range xsd:integer .
+ts:casesCount a owl:DatatypeProperty ; rdfs:domain ts:Measurement ; rdfs:range xsd:integer .
+ts:deadCount a owl:DatatypeProperty ; rdfs:domain ts:Measurement ; rdfs:range xsd:integer .
+ts:killedCount a owl:DatatypeProperty ; rdfs:domain ts:Measurement ; rdfs:range xsd:integer .
+ts:slaughteredCount a owl:DatatypeProperty ; rdfs:domain ts:Measurement ; rdfs:range xsd:integer .
+ts:vaccinatedCount a owl:DatatypeProperty ; rdfs:domain ts:Measurement ; rdfs:range xsd:integer .
+ts:outbreakYear a owl:DatatypeProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range xsd:gYear .
+ts:suspicionStartDate a owl:DatatypeProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range xsd:date .
+ts:confirmationDate a owl:DatatypeProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range xsd:date .
+ts:endDate a owl:DatatypeProperty ; rdfs:domain ts:OutbreakEvent ; rdfs:range xsd:date .
+
+# PAFF/report properties
+ts:paffDate a owl:DatatypeProperty ; rdfs:domain ts:PaffReport ; rdfs:range xsd:date .
+ts:sourceDocumentTitle a owl:DatatypeProperty ; rdfs:domain ts:SourceDocument ; rdfs:range xsd:string .
+ts:sourceURL a owl:DatatypeProperty ; rdfs:domain ts:SourceDocument ; rdfs:range xsd:anyURI .
+ts:hasEvidenceSnippet a owl:ObjectProperty ; rdfs:range ts:EvidenceSnippet .
+ts:extractedFromSource a owl:ObjectProperty ; rdfs:domain ts:PaffSituationStatement ; rdfs:range ts:PaffReport .
+ts:sourceSlideNumber a owl:DatatypeProperty ; rdfs:domain ts:EvidenceSnippet ; rdfs:range xsd:integer .
+ts:snippetText a owl:DatatypeProperty ; rdfs:domain ts:EvidenceSnippet ; rdfs:range xsd:string .
+
+# Extraction confidence/status
+ts:hasExtractionConfidence a owl:ObjectProperty ; rdfs:domain ts:PaffSituationStatement ; rdfs:range skos:Concept .
+ts:hasExtractionStatus a owl:ObjectProperty ; rdfs:domain ts:PaffSituationStatement ; rdfs:range skos:Concept .
+
+# Relevance
+ts:hasRelevanceAssessment a owl:ObjectProperty ; rdfs:domain ts:PaffSituationStatement ; rdfs:range ts:RelevanceAssessment .
+ts:hasRelevanceLevel a owl:ObjectProperty ; rdfs:domain ts:RelevanceAssessment ; rdfs:range skos:Concept .
+ts:rawRelevanceEvidence a owl:DatatypeProperty ; rdfs:domain ts:RelevanceAssessment ; rdfs:range xsd:string .
+ts:relevanceRationale a owl:DatatypeProperty ; rdfs:domain ts:RelevanceAssessment ; rdfs:range xsd:string .
+
+# Severity
+ts:hasSeverityAssessment a owl:ObjectProperty ; rdfs:domain ts:PaffSituationStatement ; rdfs:range ts:SeverityAssessment .
+ts:hasSeverityLevel a owl:ObjectProperty ; rdfs:domain ts:SeverityAssessment ; rdfs:range skos:Concept .
+ts:rawSeverityEvidence a owl:DatatypeProperty ; rdfs:domain ts:SeverityAssessment ; rdfs:range xsd:string .
+ts:severityRationale a owl:DatatypeProperty ; rdfs:domain ts:SeverityAssessment ; rdfs:range xsd:string .
+
+# Reach
+ts:hasReachAssessment a owl:ObjectProperty ; rdfs:domain ts:PaffSituationStatement ; rdfs:range ts:ReachAssessment .
+ts:hasReachLevel a owl:ObjectProperty ; rdfs:domain ts:ReachAssessment ; rdfs:range skos:Concept .
+ts:reachRationale a owl:DatatypeProperty ; rdfs:domain ts:ReachAssessment ; rdfs:range xsd:string .
+ts:derivedByRule a owl:ObjectProperty ; rdfs:domain ts:ReachAssessment ; rdfs:range ts:DerivedAssessmentRule .
+
+# Prevention
+ts:hasPreventionMeasure a owl:ObjectProperty ; rdfs:domain ts:PaffSituationStatement ; rdfs:range ts:PreventionMeasure .
+ts:preventionMeasureText a owl:DatatypeProperty ; rdfs:domain ts:PreventionMeasure ; rdfs:range xsd:string .
+ts:hasPreventionType a owl:ObjectProperty ; rdfs:domain ts:PreventionMeasure ; rdfs:range skos:Concept .
+ts:rawPreventionEvidence a owl:DatatypeProperty ; rdfs:domain ts:PreventionMeasure ; rdfs:range xsd:string .
+
+# Research
+ts:hasResearchReference a owl:ObjectProperty ; rdfs:domain ts:PaffSituationStatement ; rdfs:range ts:ResearchReference .
+ts:hasResearchLinkType a owl:ObjectProperty ; rdfs:domain ts:ResearchReference ; rdfs:range skos:Concept .
+ts:researchTitle a owl:DatatypeProperty ; rdfs:domain ts:ResearchReference ; rdfs:range xsd:string .
+ts:researchURL a owl:DatatypeProperty ; rdfs:domain ts:ResearchReference ; rdfs:range xsd:anyURI .
+ts:researchCitationText a owl:DatatypeProperty ; rdfs:domain ts:ResearchReference ; rdfs:range xsd:string .
+ts:rawResearchEvidence a owl:DatatypeProperty ; rdfs:domain ts:ResearchReference ; rdfs:range xsd:string .

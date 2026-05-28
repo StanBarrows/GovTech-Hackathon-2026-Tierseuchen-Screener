@@ -1,0 +1,50 @@
+{
+  "counts": {
+    "events": 1423,
+    "situations": 131,
+    "source_rows": 1423,
+    "skos_by_scheme": {
+      "https://data.tierseuchen-screener.example.org/skos/diseases": 19,
+      "https://data.tierseuchen-screener.example.org/skos/countries": 31,
+      "https://data.tierseuchen-screener.example.org/skos/disease_subtypes": 4,
+      "https://data.tierseuchen-screener.example.org/skos/pertinence-values": 2,
+      "https://data.tierseuchen-screener.example.org/skos/result-status": 2,
+      "https://data.tierseuchen-screener.example.org/skos/species": 48,
+      "https://data.tierseuchen-screener.example.org/skos/event-status": 2,
+      "https://data.tierseuchen-screener.example.org/skos/measuring-units": 2
+    }
+  },
+  "situation_links": {
+    "orphan_events": 0,
+    "multi_link_events": 0,
+    "orphan_situations": 0
+  },
+  "situation_key_issues": [],
+  "date_rule": {
+    "violations": 0,
+    "fallback_counts": {
+      "confirmation": 1423
+    }
+  },
+  "coordinates": {
+    "with_coords": 1319,
+    "missing_coords": 104,
+    "invalid_coords": 0
+  },
+  "raw_normalized": {
+    "raw_presence": {
+      "raw_country": 1423,
+      "raw_status": 1423
+    },
+    "normalized_presence": {
+      "disease": 1423,
+      "event_status": 1423,
+      "situation_link": 1423,
+      "species": 1358
+    }
+  },
+  "frontend_readiness": {
+    "marker_capable_events": 1319,
+    "marker_capable_events_resolvable_to_situation": 1319
+  }
+}

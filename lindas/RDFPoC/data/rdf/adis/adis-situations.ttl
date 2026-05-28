@@ -1,0 +1,790 @@
+@prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
+@prefix tsd: <https://data.tierseuchen-screener.example.org/data/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+tsd:situation_a-s-f-in-domestic-pigs-moldau-republik-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-domestic-pigs|moldau-republik|2026-05" ;
+    ts:situationCountry tsd:country_moldau-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-domestic-pigs> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-domestic-pigs-polen-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-domestic-pigs|polen|2026-05" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-domestic-pigs> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-domestic-pigs-rum-nien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-domestic-pigs|rum-nien|2026-04" ;
+    ts:situationCountry tsd:country_rum-nien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-domestic-pigs> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-domestic-pigs-rum-nien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-domestic-pigs|rum-nien|2026-05" ;
+    ts:situationCountry tsd:country_rum-nien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-domestic-pigs> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-domestic-pigs-serbien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-domestic-pigs|serbien|2026-04" ;
+    ts:situationCountry tsd:country_serbien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-domestic-pigs> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-domestic-pigs-serbien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-domestic-pigs|serbien|2026-05" ;
+    ts:situationCountry tsd:country_serbien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-domestic-pigs> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-domestic-pigs-slowakei-slowakische-republik-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-domestic-pigs|slowakei-slowakische-republik|2026-05" ;
+    ts:situationCountry tsd:country_slowakei-slowakische-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-domestic-pigs> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-bosnien-und-herzegowina-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|bosnien-und-herzegowina|2026-04" ;
+    ts:situationCountry tsd:country_bosnien-und-herzegowina ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-bosnien-und-herzegowina-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|bosnien-und-herzegowina|2026-05" ;
+    ts:situationCountry tsd:country_bosnien-und-herzegowina ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-deutschland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|deutschland|2026-04" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-deutschland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|deutschland|2026-05" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-estland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|estland|2026-04" ;
+    ts:situationCountry tsd:country_estland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-estland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|estland|2026-05" ;
+    ts:situationCountry tsd:country_estland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-italien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|italien|2026-04" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-italien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|italien|2026-05" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-kroatien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|kroatien|2026-04" ;
+    ts:situationCountry tsd:country_kroatien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-kroatien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|kroatien|2026-05" ;
+    ts:situationCountry tsd:country_kroatien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-lettland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|lettland|2026-04" ;
+    ts:situationCountry tsd:country_lettland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-lettland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|lettland|2026-05" ;
+    ts:situationCountry tsd:country_lettland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-litauen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|litauen|2026-04" ;
+    ts:situationCountry tsd:country_litauen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-litauen-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|litauen|2026-05" ;
+    ts:situationCountry tsd:country_litauen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-moldau-republik-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|moldau-republik|2026-04" ;
+    ts:situationCountry tsd:country_moldau-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-moldau-republik-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|moldau-republik|2026-05" ;
+    ts:situationCountry tsd:country_moldau-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-polen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|polen|2026-04" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-polen-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|polen|2026-05" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-rum-nien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|rum-nien|2026-04" ;
+    ts:situationCountry tsd:country_rum-nien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-rum-nien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|rum-nien|2026-05" ;
+    ts:situationCountry tsd:country_rum-nien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-serbien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|serbien|2026-04" ;
+    ts:situationCountry tsd:country_serbien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-slowakei-slowakische-republik-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|slowakei-slowakische-republik|2026-04" ;
+    ts:situationCountry tsd:country_slowakei-slowakische-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-slowakei-slowakische-republik-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|slowakei-slowakische-republik|2026-05" ;
+    ts:situationCountry tsd:country_slowakei-slowakische-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-spanien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|spanien|2026-04" ;
+    ts:situationCountry tsd:country_spanien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-spanien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|spanien|2026-05" ;
+    ts:situationCountry tsd:country_spanien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-ukraine-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|ukraine|2026-04" ;
+    ts:situationCountry tsd:country_ukraine ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-ungarn-2026-03 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|ungarn|2026-03" ;
+    ts:situationCountry tsd:country_ungarn ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-03"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-ungarn-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|ungarn|2026-04" ;
+    ts:situationCountry tsd:country_ungarn ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_a-s-f-in-wild-boar-ungarn-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "a-s-f-in-wild-boar|ungarn|2026-05" ;
+    ts:situationCountry tsd:country_ungarn ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/a-s-f-in-wild-boar> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_aethina-tumida-inf-with-small-hive-beetle-2006-italien-2025-12 a ts:OutbreakSituation ;
+    ts:hasSituationKey "aethina-tumida-inf-with-small-hive-beetle-2006|italien|2025-12" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/aethina-tumida-inf-with-small-hive-beetle-2006> ;
+    ts:situationMonth "2025-12"^^xsd:gYearMonth .
+
+tsd:situation_aethina-tumida-inf-with-small-hive-beetle-2006-italien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "aethina-tumida-inf-with-small-hive-beetle-2006|italien|2026-04" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/aethina-tumida-inf-with-small-hive-beetle-2006> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_anthrax-bulgarien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "anthrax|bulgarien|2026-04" ;
+    ts:situationCountry tsd:country_bulgarien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/anthrax> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_anthrax-t-rkei-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "anthrax|t-rkei|2026-04" ;
+    ts:situationCountry tsd:country_t-rkei ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/anthrax> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_bovine-spongiform-encephalopathy-atypical-for-ahl-irland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "bovine-spongiform-encephalopathy-atypical-for-ahl|irland|2026-04" ;
+    ts:situationCountry tsd:country_irland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/bovine-spongiform-encephalopathy-atypical-for-ahl> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_enzootic-bovine-leukosis-italien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "enzootic-bovine-leukosis|italien|2026-04" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/enzootic-bovine-leukosis> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_enzootic-bovine-leukosis-lettland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "enzootic-bovine-leukosis|lettland|2026-05" ;
+    ts:situationCountry tsd:country_lettland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/enzootic-bovine-leukosis> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_enzootic-bovine-leukosis-polen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "enzootic-bovine-leukosis|polen|2026-04" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/enzootic-bovine-leukosis> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_enzootic-bovine-leukosis-polen-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "enzootic-bovine-leukosis|polen|2026-05" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/enzootic-bovine-leukosis> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_equine-infectious-anaemia-rum-nien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "equine-infectious-anaemia|rum-nien|2026-04" ;
+    ts:situationCountry tsd:country_rum-nien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/equine-infectious-anaemia> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_equine-infectious-anaemia-ungarn-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "equine-infectious-anaemia|ungarn|2026-05" ;
+    ts:situationCountry tsd:country_ungarn ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/equine-infectious-anaemia> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_foot-and-mouth-disease-virus-inf-with-griechenland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "foot-and-mouth-disease-virus-inf-with|griechenland|2026-04" ;
+    ts:situationCountry tsd:country_griechenland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/foot-and-mouth-disease-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_foot-and-mouth-disease-virus-inf-with-griechenland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "foot-and-mouth-disease-virus-inf-with|griechenland|2026-05" ;
+    ts:situationCountry tsd:country_griechenland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/foot-and-mouth-disease-virus-inf-with> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_foot-and-mouth-disease-virus-inf-with-zypern-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "foot-and-mouth-disease-virus-inf-with|zypern|2026-04" ;
+    ts:situationCountry tsd:country_zypern ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/foot-and-mouth-disease-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_foot-and-mouth-disease-virus-inf-with-zypern-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "foot-and-mouth-disease-virus-inf-with|zypern|2026-05" ;
+    ts:situationCountry tsd:country_zypern ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/foot-and-mouth-disease-virus-inf-with> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_high-pathogenicity-avian-influenza-viruses-inf-with-poultry-deutschland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "high-pathogenicity-avian-influenza-viruses-inf-with-poultry|deutschland|2026-04" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/high-pathogenicity-avian-influenza-viruses-inf-with-poultry> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_high-pathogenicity-avian-influenza-viruses-inf-with-poultry-frankreich-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "high-pathogenicity-avian-influenza-viruses-inf-with-poultry|frankreich|2026-04" ;
+    ts:situationCountry tsd:country_frankreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/high-pathogenicity-avian-influenza-viruses-inf-with-poultry> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_high-pathogenicity-avian-influenza-viruses-inf-with-poultry-frankreich-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "high-pathogenicity-avian-influenza-viruses-inf-with-poultry|frankreich|2026-05" ;
+    ts:situationCountry tsd:country_frankreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/high-pathogenicity-avian-influenza-viruses-inf-with-poultry> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_high-pathogenicity-avian-influenza-viruses-inf-with-poultry-niederlande-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "high-pathogenicity-avian-influenza-viruses-inf-with-poultry|niederlande|2026-05" ;
+    ts:situationCountry tsd:country_niederlande ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/high-pathogenicity-avian-influenza-viruses-inf-with-poultry> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_high-pathogenicity-avian-influenza-viruses-inf-with-poultry-polen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "high-pathogenicity-avian-influenza-viruses-inf-with-poultry|polen|2026-04" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/high-pathogenicity-avian-influenza-viruses-inf-with-poultry> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_high-pathogenicity-avian-influenza-viruses-inf-with-poultry-polen-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "high-pathogenicity-avian-influenza-viruses-inf-with-poultry|polen|2026-05" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/high-pathogenicity-avian-influenza-viruses-inf-with-poultry> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-captive-birds-deutschland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-captive-birds|deutschland|2026-05" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-captive-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-captive-birds-estland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-captive-birds|estland|2026-04" ;
+    ts:situationCountry tsd:country_estland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-captive-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-captive-birds-polen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-captive-birds|polen|2026-04" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-captive-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-captive-birds-polen-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-captive-birds|polen|2026-05" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-captive-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-captive-birds-tschechische-republik-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-captive-birds|tschechische-republik|2026-05" ;
+    ts:situationCountry tsd:country_tschechische-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-captive-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-captive-birds-ukraine-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-captive-birds|ukraine|2026-04" ;
+    ts:situationCountry tsd:country_ukraine ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-captive-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-belgien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|belgien|2026-04" ;
+    ts:situationCountry tsd:country_belgien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-belgien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|belgien|2026-05" ;
+    ts:situationCountry tsd:country_belgien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-d-nemark-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|d-nemark|2026-04" ;
+    ts:situationCountry tsd:country_d-nemark ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-d-nemark-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|d-nemark|2026-05" ;
+    ts:situationCountry tsd:country_d-nemark ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-deutschland-2026-01 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|deutschland|2026-01" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-01"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-deutschland-2026-02 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|deutschland|2026-02" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-02"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-deutschland-2026-03 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|deutschland|2026-03" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-03"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-deutschland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|deutschland|2026-04" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-deutschland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|deutschland|2026-05" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-estland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|estland|2026-05" ;
+    ts:situationCountry tsd:country_estland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-finnland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|finnland|2026-04" ;
+    ts:situationCountry tsd:country_finnland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-finnland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|finnland|2026-05" ;
+    ts:situationCountry tsd:country_finnland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-frankreich-2026-03 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|frankreich|2026-03" ;
+    ts:situationCountry tsd:country_frankreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-03"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-frankreich-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|frankreich|2026-04" ;
+    ts:situationCountry tsd:country_frankreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-griechenland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|griechenland|2026-04" ;
+    ts:situationCountry tsd:country_griechenland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-island-2026-02 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|island|2026-02" ;
+    ts:situationCountry tsd:country_island ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-02"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-island-2026-03 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|island|2026-03" ;
+    ts:situationCountry tsd:country_island ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-03"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-italien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|italien|2026-04" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-niederlande-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|niederlande|2026-04" ;
+    ts:situationCountry tsd:country_niederlande ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-niederlande-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|niederlande|2026-05" ;
+    ts:situationCountry tsd:country_niederlande ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-norwegen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|norwegen|2026-04" ;
+    ts:situationCountry tsd:country_norwegen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-norwegen-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|norwegen|2026-05" ;
+    ts:situationCountry tsd:country_norwegen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-polen-2026-03 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|polen|2026-03" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-03"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-polen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|polen|2026-04" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-polen-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|polen|2026-05" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-schweden-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|schweden|2026-04" ;
+    ts:situationCountry tsd:country_schweden ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-sterreich-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|sterreich|2026-04" ;
+    ts:situationCountry tsd:country_sterreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_hpai-non-p-in-wild-birds-sterreich-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai-non-p-in-wild-birds|sterreich|2026-05" ;
+    ts:situationCountry tsd:country_sterreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/hpai-non-p-in-wild-birds> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_lumpy-skin-disease-virus-inf-with-italien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "lumpy-skin-disease-virus-inf-with|italien|2026-04" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/lumpy-skin-disease-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_lumpy-skin-disease-virus-inf-with-italien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "lumpy-skin-disease-virus-inf-with|italien|2026-05" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/lumpy-skin-disease-virus-inf-with> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_mycobacterium-tuberculosis-complex-inf-with-2019-frankreich-2026-03 a ts:OutbreakSituation ;
+    ts:hasSituationKey "mycobacterium-tuberculosis-complex-inf-with-2019|frankreich|2026-03" ;
+    ts:situationCountry tsd:country_frankreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/mycobacterium-tuberculosis-complex-inf-with-2019> ;
+    ts:situationMonth "2026-03"^^xsd:gYearMonth .
+
+tsd:situation_mycobacterium-tuberculosis-complex-inf-with-2019-frankreich-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "mycobacterium-tuberculosis-complex-inf-with-2019|frankreich|2026-04" ;
+    ts:situationCountry tsd:country_frankreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/mycobacterium-tuberculosis-complex-inf-with-2019> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_mycobacterium-tuberculosis-complex-inf-with-2019-frankreich-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "mycobacterium-tuberculosis-complex-inf-with-2019|frankreich|2026-05" ;
+    ts:situationCountry tsd:country_frankreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/mycobacterium-tuberculosis-complex-inf-with-2019> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_mycobacterium-tuberculosis-complex-inf-with-2019-italien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "mycobacterium-tuberculosis-complex-inf-with-2019|italien|2026-04" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/mycobacterium-tuberculosis-complex-inf-with-2019> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_mycobacterium-tuberculosis-complex-inf-with-2019-italien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "mycobacterium-tuberculosis-complex-inf-with-2019|italien|2026-05" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/mycobacterium-tuberculosis-complex-inf-with-2019> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_mycobacterium-tuberculosis-complex-inf-with-2019-polen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "mycobacterium-tuberculosis-complex-inf-with-2019|polen|2026-04" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/mycobacterium-tuberculosis-complex-inf-with-2019> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_mycobacterium-tuberculosis-complex-inf-with-2019-sterreich-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "mycobacterium-tuberculosis-complex-inf-with-2019|sterreich|2026-04" ;
+    ts:situationCountry tsd:country_sterreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/mycobacterium-tuberculosis-complex-inf-with-2019> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_mycobacterium-tuberculosis-complex-inf-with-2019-ungarn-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "mycobacterium-tuberculosis-complex-inf-with-2019|ungarn|2026-05" ;
+    ts:situationCountry tsd:country_ungarn ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/mycobacterium-tuberculosis-complex-inf-with-2019> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-in-non-poultry-for-ahl-deutschland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-in-non-poultry-for-ahl|deutschland|2026-04" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-in-non-poultry-for-ahl> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-in-non-poultry-for-ahl-lettland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-in-non-poultry-for-ahl|lettland|2026-04" ;
+    ts:situationCountry tsd:country_lettland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-in-non-poultry-for-ahl> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-in-non-poultry-for-ahl-polen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-in-non-poultry-for-ahl|polen|2026-04" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-in-non-poultry-for-ahl> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-in-non-poultry-for-ahl-polen-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-in-non-poultry-for-ahl|polen|2026-05" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-in-non-poultry-for-ahl> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-in-non-poultry-for-ahl-tschechische-republik-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-in-non-poultry-for-ahl|tschechische-republik|2026-04" ;
+    ts:situationCountry tsd:country_tschechische-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-in-non-poultry-for-ahl> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-in-non-poultry-for-ahl-tschechische-republik-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-in-non-poultry-for-ahl|tschechische-republik|2026-05" ;
+    ts:situationCountry tsd:country_tschechische-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-in-non-poultry-for-ahl> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-inf-with-deutschland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-inf-with|deutschland|2026-04" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-inf-with-deutschland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-inf-with|deutschland|2026-05" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-inf-with> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-inf-with-polen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-inf-with|polen|2026-04" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-inf-with-polen-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-inf-with|polen|2026-05" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-inf-with> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-inf-with-spanien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-inf-with|spanien|2026-04" ;
+    ts:situationCountry tsd:country_spanien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_newcastle-disease-virus-inf-with-spanien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "newcastle-disease-virus-inf-with|spanien|2026-05" ;
+    ts:situationCountry tsd:country_spanien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/newcastle-disease-virus-inf-with> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_rabies-virus-inf-with-moldau-republik-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "rabies-virus-inf-with|moldau-republik|2026-04" ;
+    ts:situationCountry tsd:country_moldau-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/rabies-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_rabies-virus-inf-with-moldau-republik-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "rabies-virus-inf-with|moldau-republik|2026-05" ;
+    ts:situationCountry tsd:country_moldau-republik ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/rabies-virus-inf-with> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_rabies-virus-inf-with-polen-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "rabies-virus-inf-with|polen|2026-04" ;
+    ts:situationCountry tsd:country_polen ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/rabies-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_rabies-virus-inf-with-rum-nien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "rabies-virus-inf-with|rum-nien|2026-04" ;
+    ts:situationCountry tsd:country_rum-nien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/rabies-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_rabies-virus-inf-with-rum-nien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "rabies-virus-inf-with|rum-nien|2026-05" ;
+    ts:situationCountry tsd:country_rum-nien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/rabies-virus-inf-with> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_rabies-virus-inf-with-t-rkei-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "rabies-virus-inf-with|t-rkei|2026-04" ;
+    ts:situationCountry tsd:country_t-rkei ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/rabies-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_rabies-virus-inf-with-t-rkei-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "rabies-virus-inf-with|t-rkei|2026-05" ;
+    ts:situationCountry tsd:country_t-rkei ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/rabies-virus-inf-with> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_sheep-pox-and-goat-pox-griechenland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "sheep-pox-and-goat-pox|griechenland|2026-04" ;
+    ts:situationCountry tsd:country_griechenland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/sheep-pox-and-goat-pox> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_sheep-pox-and-goat-pox-griechenland-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "sheep-pox-and-goat-pox|griechenland|2026-05" ;
+    ts:situationCountry tsd:country_griechenland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/sheep-pox-and-goat-pox> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_sheep-pox-and-goat-pox-republik-nordmazedonien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "sheep-pox-and-goat-pox|republik-nordmazedonien|2026-04" ;
+    ts:situationCountry tsd:country_republik-nordmazedonien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/sheep-pox-and-goat-pox> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_sheep-pox-and-goat-pox-rum-nien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "sheep-pox-and-goat-pox|rum-nien|2026-04" ;
+    ts:situationCountry tsd:country_rum-nien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/sheep-pox-and-goat-pox> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_sheep-pox-and-goat-pox-rum-nien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "sheep-pox-and-goat-pox|rum-nien|2026-05" ;
+    ts:situationCountry tsd:country_rum-nien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/sheep-pox-and-goat-pox> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_sheep-pox-and-goat-pox-t-rkei-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "sheep-pox-and-goat-pox|t-rkei|2026-04" ;
+    ts:situationCountry tsd:country_t-rkei ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/sheep-pox-and-goat-pox> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_sheep-pox-and-goat-pox-t-rkei-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "sheep-pox-and-goat-pox|t-rkei|2026-05" ;
+    ts:situationCountry tsd:country_t-rkei ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/sheep-pox-and-goat-pox> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:situation_viral-haemorrhagic-septicaemia-virus-inf-with-deutschland-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "viral-haemorrhagic-septicaemia-virus-inf-with|deutschland|2026-04" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/viral-haemorrhagic-septicaemia-virus-inf-with> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_west-nile-fever-frankreich-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "west-nile-fever|frankreich|2026-04" ;
+    ts:situationCountry tsd:country_frankreich ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/west-nile-fever> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_west-nile-fever-italien-2026-04 a ts:OutbreakSituation ;
+    ts:hasSituationKey "west-nile-fever|italien|2026-04" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/west-nile-fever> ;
+    ts:situationMonth "2026-04"^^xsd:gYearMonth .
+
+tsd:situation_west-nile-fever-italien-2026-05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "west-nile-fever|italien|2026-05" ;
+    ts:situationCountry tsd:country_italien ;
+    ts:situationDisease <https://data.tierseuchen-screener.example.org/skos/west-nile-fever> ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+

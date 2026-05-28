@@ -1,0 +1,16 @@
+PREFIX ts: <https://data.tierseuchen-screener.example.org/ontology/adis#>
+SELECT ?event ?lat ?lon ?disease ?countryLabel ?confirmationDate ?situation (IF(BOUND(?stmt), true, false) AS ?hasPaffCandidate)
+WHERE {
+  ?event a ts:OutbreakEvent ;
+         ts:hasDisease ?disease ;
+         ts:confirmationDate ?confirmationDate ;
+         ts:occursAt ?loc ;
+         ts:belongsToSituation ?situation .
+  ?loc ts:latitude ?lat ; ts:longitude ?lon .
+  OPTIONAL { ?event ts:countryLabel ?countryLabel . }
+  OPTIONAL {
+    ?stmt a ts:PaffSituationStatement ;
+          ts:describesSituation ?situation .
+  }
+}
+ORDER BY ?event

@@ -1,0 +1,62 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
+@prefix tss: <https://data.tierseuchen-screener.example.org/skos/> .
+
+# Core schemes
+
+tss:diseases a skos:ConceptScheme .
+tss:hpai_non_p_wild_birds a skos:Concept, ts:Disease ; skos:prefLabel "HPAI(NON-P) in Wild Birds"@en ; skos:inScheme tss:diseases .
+tss:asf_wild_boar a skos:Concept, ts:Disease ; skos:prefLabel "A.S.F. in wild boar"@en ; skos:inScheme tss:diseases .
+tss:mtbc a skos:Concept, ts:Disease ; skos:prefLabel "Mycobacterium tuberculosis complex (Inf. with)(2019-)"@en ; skos:inScheme tss:diseases .
+
+tss:disease_subtypes a skos:ConceptScheme .
+tss:h5n1 a skos:Concept, ts:DiseaseSubtype ; skos:prefLabel "H5N1"@en ; skos:inScheme tss:disease_subtypes .
+
+tss:species a skos:ConceptScheme .
+tss:anser_anser a skos:Concept, ts:Species ; skos:prefLabel "Anser anser"@en ; skos:inScheme tss:species .
+tss:sus_scrofa a skos:Concept, ts:Species ; skos:prefLabel "Sus scrofa"@en ; skos:inScheme tss:species .
+tss:cattle a skos:Concept, ts:Species ; skos:prefLabel "Cattle"@en ; skos:inScheme tss:species .
+
+tss:animal_groups a skos:ConceptScheme .
+tss:wild a skos:Concept, ts:AnimalGroup ; skos:prefLabel "Wild"@en ; skos:inScheme tss:animal_groups .
+tss:poultry a skos:Concept, ts:AnimalGroup ; skos:prefLabel "Poultry"@en ; skos:inScheme tss:animal_groups .
+
+# required PAFF schemes
+tss:relevance-levels a skos:ConceptScheme .
+tss:relevance-low a skos:Concept ; skos:prefLabel "low"@en ; skos:inScheme tss:relevance-levels .
+tss:relevance-medium a skos:Concept ; skos:prefLabel "medium"@en ; skos:inScheme tss:relevance-levels .
+tss:relevance-high a skos:Concept ; skos:prefLabel "high"@en ; skos:inScheme tss:relevance-levels .
+tss:relevance-unknown a skos:Concept ; skos:prefLabel "unknown"@en ; skos:inScheme tss:relevance-levels .
+
+tss:severity-levels a skos:ConceptScheme .
+tss:severity-low a skos:Concept ; skos:prefLabel "low"@en ; skos:inScheme tss:severity-levels .
+tss:severity-medium a skos:Concept ; skos:prefLabel "medium"@en ; skos:inScheme tss:severity-levels .
+tss:severity-high a skos:Concept ; skos:prefLabel "high"@en ; skos:inScheme tss:severity-levels .
+tss:severity-unknown a skos:Concept ; skos:prefLabel "unknown"@en ; skos:inScheme tss:severity-levels .
+
+tss:reach-levels a skos:ConceptScheme .
+tss:reach-local a skos:Concept ; skos:prefLabel "local"@en ; skos:inScheme tss:reach-levels .
+tss:reach-regional a skos:Concept ; skos:prefLabel "regional"@en ; skos:inScheme tss:reach-levels .
+tss:reach-national a skos:Concept ; skos:prefLabel "national"@en ; skos:inScheme tss:reach-levels .
+tss:reach-unknown a skos:Concept ; skos:prefLabel "unknown"@en ; skos:inScheme tss:reach-levels .
+
+tss:extraction-confidence-levels a skos:ConceptScheme .
+tss:confidence-low a skos:Concept ; skos:prefLabel "low"@en ; skos:inScheme tss:extraction-confidence-levels .
+tss:confidence-medium a skos:Concept ; skos:prefLabel "medium"@en ; skos:inScheme tss:extraction-confidence-levels .
+tss:confidence-high a skos:Concept ; skos:prefLabel "high"@en ; skos:inScheme tss:extraction-confidence-levels .
+tss:confidence-unknown a skos:Concept ; skos:prefLabel "unknown"@en ; skos:inScheme tss:extraction-confidence-levels .
+
+tss:extraction-status-values a skos:ConceptScheme .
+tss:status-candidate a skos:Concept ; skos:prefLabel "candidate"@en ; skos:inScheme tss:extraction-status-values .
+tss:status-needs-review a skos:Concept ; skos:prefLabel "needs-review"@en ; skos:inScheme tss:extraction-status-values .
+tss:status-reviewed a skos:Concept ; skos:prefLabel "reviewed"@en ; skos:inScheme tss:extraction-status-values .
+tss:status-rejected a skos:Concept ; skos:prefLabel "rejected"@en ; skos:inScheme tss:extraction-status-values .
+tss:status-published a skos:Concept ; skos:prefLabel "published"@en ; skos:inScheme tss:extraction-status-values .
+
+tss:research-link-types a skos:ConceptScheme .
+tss:research-scientific-publication a skos:Concept ; skos:prefLabel "scientific-publication"@en ; skos:inScheme tss:research-link-types .
+tss:research-surveillance-report a skos:Concept ; skos:prefLabel "surveillance-report"@en ; skos:inScheme tss:research-link-types .
+tss:research-technical-report a skos:Concept ; skos:prefLabel "technical-report"@en ; skos:inScheme tss:research-link-types .
+tss:research-dataset a skos:Concept ; skos:prefLabel "dataset"@en ; skos:inScheme tss:research-link-types .
+tss:research-legal-reference a skos:Concept ; skos:prefLabel "legal-reference"@en ; skos:inScheme tss:research-link-types .
+tss:research-other a skos:Concept ; skos:prefLabel "other"@en ; skos:inScheme tss:research-link-types .

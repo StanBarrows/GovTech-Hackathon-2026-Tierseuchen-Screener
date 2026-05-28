@@ -1,0 +1,14 @@
+PREFIX ts: <https://data.tierseuchen-screener.example.org/ontology/adis#>
+SELECT ?type (COUNT(?s) AS ?count)
+WHERE {
+  VALUES (?type ?cls) {
+    ("OutbreakEvent" ts:OutbreakEvent)
+    ("OutbreakSituation" ts:OutbreakSituation)
+    ("PaffReport" ts:PaffReport)
+    ("PaffSituationStatement" ts:PaffSituationStatement)
+    ("EvidenceSnippet" ts:EvidenceSnippet)
+  }
+  ?s a ?cls .
+}
+GROUP BY ?type
+ORDER BY ?type

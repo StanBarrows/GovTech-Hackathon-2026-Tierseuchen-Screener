@@ -1,0 +1,4272 @@
+@prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
+@prefix tsd: <https://data.tierseuchen-screener.example.org/data/> .
+
+tsd:source_row_0019354dbfe1 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-2hffa" .
+
+tsd:source_row_006b43ddecb2 a ts:SourceRow ;
+    ts:referenceId "RO-CAPRIPOX-2026-umntg" .
+
+tsd:source_row_0076f0e42d9b a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-0edny" .
+
+tsd:source_row_007a4c2b457a a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-ka286" .
+
+tsd:source_row_00886700394e a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-7tgls" .
+
+tsd:source_row_00d213144668 a ts:SourceRow ;
+    ts:referenceId "ES-ASF-2026-irqph" .
+
+tsd:source_row_014ec9889829 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-7bm1z" .
+
+tsd:source_row_01bd5f6c1208 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-pmik5" .
+
+tsd:source_row_01c18ee31a68 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-2115n" .
+
+tsd:source_row_01efbb4caffe a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-karb8" .
+
+tsd:source_row_02364e1cd52c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-obe3b" .
+
+tsd:source_row_0261eae18e54 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-44kr6" .
+
+tsd:source_row_0283aaa83f23 a ts:SourceRow ;
+    ts:referenceId "GR-HPAI(NON-P)-2026-rzgsq" .
+
+tsd:source_row_029bcbcbf801 a ts:SourceRow ;
+    ts:referenceId "RS-ASF-2026-wu5im" .
+
+tsd:source_row_030e5c6322a9 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-a1hkp" .
+
+tsd:source_row_0342455e1e2b a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-sug94" .
+
+tsd:source_row_03888006f962 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-hoeh6" .
+
+tsd:source_row_0392e1f9bc58 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-kc6u5" .
+
+tsd:source_row_03a124f378af a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-or3q1" .
+
+tsd:source_row_03af75779140 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-0fftl" .
+
+tsd:source_row_040573fb0f4f a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-29vtx" .
+
+tsd:source_row_04429333259a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-z4w5l" .
+
+tsd:source_row_0483a167d723 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-h84tg" .
+
+tsd:source_row_04d9a8f1ec2c a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-98c6e" .
+
+tsd:source_row_050144619efe a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-zo5pb" .
+
+tsd:source_row_052ad7fb68ab a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-rgqzm" .
+
+tsd:source_row_054cfe7a3814 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-sshf1" .
+
+tsd:source_row_0562af67772e a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-pml1v" .
+
+tsd:source_row_058af062e0fa a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-rvfn1" .
+
+tsd:source_row_05ac2f8cffee a ts:SourceRow ;
+    ts:referenceId "HR-ASF-2026-vf671" .
+
+tsd:source_row_05b7135f5f1e a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-9bq7m" .
+
+tsd:source_row_05e9d5a71094 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-6hlm2" .
+
+tsd:source_row_063f62d340f5 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-cdmp9" .
+
+tsd:source_row_069a26b5fad9 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-p4soo" .
+
+tsd:source_row_06e54f15695a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-viyxg" .
+
+tsd:source_row_06e80a3defb0 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-3lacp" .
+
+tsd:source_row_072c399a6d3d a ts:SourceRow ;
+    ts:referenceId "ES-ASF-2026-2uqi4" .
+
+tsd:source_row_075943188e62 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-4vgb5" .
+
+tsd:source_row_07a4aacf48b0 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ei97x" .
+
+tsd:source_row_07ad4887bf43 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-eo66d" .
+
+tsd:source_row_07ae96e7dc6c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-qfo7k" .
+
+tsd:source_row_08324bb9b32b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-xe891" .
+
+tsd:source_row_086825115be3 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-yygio" .
+
+tsd:source_row_087011693754 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-75arc" .
+
+tsd:source_row_0873df4908a6 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-af2js" .
+
+tsd:source_row_08c809048005 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-z082o" .
+
+tsd:source_row_08dffb0c5d7b a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-ml157" .
+
+tsd:source_row_08fb97d01cdf a ts:SourceRow ;
+    ts:referenceId "RS-ASF-2026-lol1y" .
+
+tsd:source_row_092b23f80ded a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-y0ahg" .
+
+tsd:source_row_0989e7141812 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-gfzwi" .
+
+tsd:source_row_09c8862d8611 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-2eacd" .
+
+tsd:source_row_09c90020bd4a a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-znvnz" .
+
+tsd:source_row_0a664b55b805 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-xdq82" .
+
+tsd:source_row_0a96f7b34b0a a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-hzmon" .
+
+tsd:source_row_0adc32e4332f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-v85f8" .
+
+tsd:source_row_0af285987c5c a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-3sx4o" .
+
+tsd:source_row_0afce48cf36b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-o5q7f" .
+
+tsd:source_row_0b22fbfdaa77 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-ho1q1" .
+
+tsd:source_row_0b2775552ea6 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-6c3tb" .
+
+tsd:source_row_0b4968f0e2fe a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-iwlmq" .
+
+tsd:source_row_0b5b9ed54281 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-bvr8y" .
+
+tsd:source_row_0b9e9f44cd63 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-p10q9" .
+
+tsd:source_row_0bc9c9af4556 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-3py7i" .
+
+tsd:source_row_0bcb4a556ec8 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-0cxvz" .
+
+tsd:source_row_0c573c62d5e2 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-kv3cj" .
+
+tsd:source_row_0c6613966140 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-eu042" .
+
+tsd:source_row_0c7b9a8f4078 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-d3l80" .
+
+tsd:source_row_0c8f0a868096 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-lthz7" .
+
+tsd:source_row_0caab519033a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-iism1" .
+
+tsd:source_row_0cc9a3f9e59f a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-pes90" .
+
+tsd:source_row_0d4bea59fe19 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-d6j7i" .
+
+tsd:source_row_0d97667288dc a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-76vzg" .
+
+tsd:source_row_0da9b7774cbc a ts:SourceRow ;
+    ts:referenceId "NO-HPAI(NON-P)-2026-dzvg9" .
+
+tsd:source_row_0dcae4823093 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-yeqh0" .
+
+tsd:source_row_0de500c1f25f a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-8moug" .
+
+tsd:source_row_0e006dd0b63e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-h8o7b" .
+
+tsd:source_row_0e1eeb056f9f a ts:SourceRow ;
+    ts:referenceId "DK-HPAI(NON-P)-2026-3wzmb" .
+
+tsd:source_row_0e31ca482767 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-k57pz" .
+
+tsd:source_row_0e4421ca991a a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-39arb" .
+
+tsd:source_row_0e9b169a5ac5 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-29m8m" .
+
+tsd:source_row_0ec077078d22 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-zjs27" .
+
+tsd:source_row_0ec4679de052 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-4jnn5" .
+
+tsd:source_row_0eddf8cbca9a a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mz0zf" .
+
+tsd:source_row_0ef18e8c4ea3 a ts:SourceRow ;
+    ts:referenceId "DE-ND-2026-7564h" .
+
+tsd:source_row_0efd825170c9 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ua3zu" .
+
+tsd:source_row_0f10024f6590 a ts:SourceRow ;
+    ts:referenceId "RO-RABIES-2026-vc1vi" .
+
+tsd:source_row_0f585f77e0c7 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xfa3n" .
+
+tsd:source_row_0f605bbc2a72 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-p3qej" .
+
+tsd:source_row_0f6f60f6b28a a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-ctx6b" .
+
+tsd:source_row_0fb14cd732fc a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-4lpy1" .
+
+tsd:source_row_101a1e80e002 a ts:SourceRow ;
+    ts:referenceId "IT-WNF-2026-fryh7" .
+
+tsd:source_row_10344f2ae7c5 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-td06o" .
+
+tsd:source_row_104b0dd2007f a ts:SourceRow ;
+    ts:referenceId "RO-CAPRIPOX-2026-tdvwn" .
+
+tsd:source_row_107eb95c4ef9 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-qlo4i" .
+
+tsd:source_row_10b5c05163cf a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-zx6z3" .
+
+tsd:source_row_10df8c47b146 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-sivsp" .
+
+tsd:source_row_114245dec22d a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-p0jx6" .
+
+tsd:source_row_117ec08f4fbc a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-ncivz" .
+
+tsd:source_row_123e84539df4 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-c7xix" .
+
+tsd:source_row_124a5f9c685d a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-nupfa" .
+
+tsd:source_row_126632645ebc a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-phfw3" .
+
+tsd:source_row_126687bb0d47 a ts:SourceRow ;
+    ts:referenceId "PL-EBL-2026-nq4sn" .
+
+tsd:source_row_126ae0a8a3aa a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-eu5kj" .
+
+tsd:source_row_127be27dbf1c a ts:SourceRow ;
+    ts:referenceId "DK-HPAI(NON-P)-2026-gvgxk" .
+
+tsd:source_row_1285e43a92a3 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-4n37x" .
+
+tsd:source_row_12d363972350 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-5fjbv" .
+
+tsd:source_row_12f4e609e088 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-79s0h" .
+
+tsd:source_row_134ee27dc917 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-dm62d" .
+
+tsd:source_row_13662e5b87b0 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ntart" .
+
+tsd:source_row_137f64e16e80 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-z18lg" .
+
+tsd:source_row_13b1950dda2e a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-iqkce" .
+
+tsd:source_row_13cf25876a64 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-jii7r" .
+
+tsd:source_row_13d9fda6b8d9 a ts:SourceRow ;
+    ts:referenceId "FR-HPAI(P)-2026-slr97" .
+
+tsd:source_row_142a11ad32aa a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-nv3r7" .
+
+tsd:source_row_1467ddcc6fb2 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-fp6fk" .
+
+tsd:source_row_146f7b1ee0b5 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-rkl4o" .
+
+tsd:source_row_14ae08170895 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-yszqo" .
+
+tsd:source_row_1504f8a5555c a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-m9i01" .
+
+tsd:source_row_1507e4c0fbef a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-kotvc" .
+
+tsd:source_row_151d04d1f421 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-1gtxn" .
+
+tsd:source_row_152367f7390c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-a2k52" .
+
+tsd:source_row_15ec5347668b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-lof6u" .
+
+tsd:source_row_15f58ab6cbdc a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-2eu9y" .
+
+tsd:source_row_160b776950d3 a ts:SourceRow ;
+    ts:referenceId "RO-RABIES-2026-nd3mx" .
+
+tsd:source_row_160c902c912f a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-k0wn1" .
+
+tsd:source_row_16e6f24a311e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-mp59y" .
+
+tsd:source_row_1701240c3f52 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-56qsi" .
+
+tsd:source_row_170a46f5d280 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-py8m7" .
+
+tsd:source_row_172644a9598d a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-qpchz" .
+
+tsd:source_row_17613ec0a161 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-5kn97" .
+
+tsd:source_row_180369e209fa a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-6iyz5" .
+
+tsd:source_row_182e50b931b5 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-2heoi" .
+
+tsd:source_row_183ec2b4e933 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-wyvoi" .
+
+tsd:source_row_18831598944f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-v8nt8" .
+
+tsd:source_row_18bb1741567d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-icarr" .
+
+tsd:source_row_18bcee6a3f95 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-eygvv" .
+
+tsd:source_row_18d30e8e1ada a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-6dezv" .
+
+tsd:source_row_1911968f10aa a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-a3352" .
+
+tsd:source_row_193ead772b6d a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-7vhke" .
+
+tsd:source_row_195f775e186d a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-4k8ng" .
+
+tsd:source_row_19a64bda09c8 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-84ft4" .
+
+tsd:source_row_19a976d9355d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-1a16w" .
+
+tsd:source_row_19b5cc632efd a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-wkojn" .
+
+tsd:source_row_19db39e7c831 a ts:SourceRow ;
+    ts:referenceId "CZ-ND.NON-P-2026-2j2tm" .
+
+tsd:source_row_1a1782adf096 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-7mma0" .
+
+tsd:source_row_1a46785b51dc a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-3lpfx" .
+
+tsd:source_row_1a51868ec009 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-xmkg2" .
+
+tsd:source_row_1a69125d669b a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-156m5" .
+
+tsd:source_row_1a8e699d6539 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-xt8vk" .
+
+tsd:source_row_1a968dd9c64c a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-tiup4" .
+
+tsd:source_row_1aad4d58f7ef a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-xk7r1" .
+
+tsd:source_row_1b452465758f a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-1d72c" .
+
+tsd:source_row_1b823d8e5ad9 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-fx9sc" .
+
+tsd:source_row_1b8ac9062ed6 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-vhkk9" .
+
+tsd:source_row_1bb94dcb69c6 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-6l51c" .
+
+tsd:source_row_1bda41879236 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-nociy" .
+
+tsd:source_row_1c0dac5a0dc4 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-r2v03" .
+
+tsd:source_row_1c4f1827a124 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-2p1m6" .
+
+tsd:source_row_1ca47e1d4f70 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-sgn61" .
+
+tsd:source_row_1cdd85c07731 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-t4iuf" .
+
+tsd:source_row_1cf21bd434d3 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-v91ns" .
+
+tsd:source_row_1cfa8570af5c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-s315z" .
+
+tsd:source_row_1d13838316ab a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-6zqvh" .
+
+tsd:source_row_1d7d72a00578 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-zwq1b" .
+
+tsd:source_row_1ddb3afb83a1 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-1a5y1" .
+
+tsd:source_row_1deae21e5fed a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-uptm3" .
+
+tsd:source_row_1e0cd716e6f1 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-jkd84" .
+
+tsd:source_row_1e1a98cfabff a ts:SourceRow ;
+    ts:referenceId "MD-RABIES-2026-6d5wt" .
+
+tsd:source_row_1e1e0b023838 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-3sf9p" .
+
+tsd:source_row_1e2d6508ac8b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-rei4w" .
+
+tsd:source_row_1e35e3adbe5a a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-7d09q" .
+
+tsd:source_row_1e7d01e4e8d2 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-sqh7c" .
+
+tsd:source_row_1e9c8bc4990b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-x1fk2" .
+
+tsd:source_row_1ea306e3c4fb a ts:SourceRow ;
+    ts:referenceId "HU-EIA-2026-2ejnu" .
+
+tsd:source_row_1f1da23f9148 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-khvts" .
+
+tsd:source_row_1f9bcd7b1c08 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-5zdjz" .
+
+tsd:source_row_1facc15217ae a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-6kwna" .
+
+tsd:source_row_1fcd44261581 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-w7cml" .
+
+tsd:source_row_2014c9428cec a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-gb3fw" .
+
+tsd:source_row_206199c43045 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-3omrf" .
+
+tsd:source_row_20b59e0b4cb9 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-tbf7m" .
+
+tsd:source_row_20b7bb2e9c05 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-78kal" .
+
+tsd:source_row_20d94822484c a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-fls2t" .
+
+tsd:source_row_20df995c69c1 a ts:SourceRow ;
+    ts:referenceId "RS-ASF-2026-38mj9" .
+
+tsd:source_row_2121b7f239bf a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ot2bp" .
+
+tsd:source_row_2134e41decc8 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ebzwe" .
+
+tsd:source_row_214b325247ab a ts:SourceRow ;
+    ts:referenceId "RO-RABIES-2026-j85ym" .
+
+tsd:source_row_215c0bcb892a a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-3enwi" .
+
+tsd:source_row_217faf432a23 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-d5tbt" .
+
+tsd:source_row_21b803af223a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-rklzz" .
+
+tsd:source_row_21d135933e8e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-bgkpt" .
+
+tsd:source_row_21df25d399f3 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-8ul66" .
+
+tsd:source_row_220530c5a9df a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-85zvj" .
+
+tsd:source_row_220c049b9a9c a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-tgqoz" .
+
+tsd:source_row_2213c2f6f684 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-pey31" .
+
+tsd:source_row_224e14bc0896 a ts:SourceRow ;
+    ts:referenceId "IT-MTBC-2026-4gyb2" .
+
+tsd:source_row_226aef0a4cdf a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-2qwd7" .
+
+tsd:source_row_22751932bf2f a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-dkic5" .
+
+tsd:source_row_22b31e779057 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-grk9i" .
+
+tsd:source_row_22c40c6e5332 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-2vlyg" .
+
+tsd:source_row_22ca4aa9ad53 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-hn4uh" .
+
+tsd:source_row_22f2527a962a a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-p3bqj" .
+
+tsd:source_row_22ff0fa69347 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-759w7" .
+
+tsd:source_row_233f77cb41f7 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-7ltoy" .
+
+tsd:source_row_2362d0ca6f18 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-iemop" .
+
+tsd:source_row_23df8e3c1606 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-zu5bl" .
+
+tsd:source_row_23f9ec574a54 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ivbko" .
+
+tsd:source_row_24017c13e9c1 a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-xl407" .
+
+tsd:source_row_240e077e729e a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-yy25e" .
+
+tsd:source_row_24591e0b4c9f a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-b3o4q" .
+
+tsd:source_row_24677c378aed a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-eaiwo" .
+
+tsd:source_row_247db31ed6d0 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-bpioj" .
+
+tsd:source_row_24e94ceaf31a a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-rwahs" .
+
+tsd:source_row_2570e1985562 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-xxlmc" .
+
+tsd:source_row_25787a44e819 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-xe0nh" .
+
+tsd:source_row_2597530717cb a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-kd93z" .
+
+tsd:source_row_25980b63e152 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-kitts" .
+
+tsd:source_row_25a4bbb29495 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-yupu1" .
+
+tsd:source_row_25c6be81858d a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-m95m1" .
+
+tsd:source_row_2642a4a0143d a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-emx0i" .
+
+tsd:source_row_26455be50fe5 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-2os1m" .
+
+tsd:source_row_264847618859 a ts:SourceRow ;
+    ts:referenceId "MD-ASF-2026-ittp7" .
+
+tsd:source_row_26616e54eccc a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-f71mr" .
+
+tsd:source_row_266f886efb0b a ts:SourceRow ;
+    ts:referenceId "DK-HPAI(NON-P)-2026-htwzi" .
+
+tsd:source_row_268b92149d26 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-il7a7" .
+
+tsd:source_row_26f8c2574aaf a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-c1na1" .
+
+tsd:source_row_2704eb58ff65 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-wlqth" .
+
+tsd:source_row_273b0043f68b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-2sv56" .
+
+tsd:source_row_278e0592a826 a ts:SourceRow ;
+    ts:referenceId "RO-RABIES-2026-p09xj" .
+
+tsd:source_row_279c8de26ae7 a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-tsm0k" .
+
+tsd:source_row_27a129fb62a9 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-jugv6" .
+
+tsd:source_row_27cd090f28dc a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-uq2vn" .
+
+tsd:source_row_27dc7cf1f970 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-9a73x" .
+
+tsd:source_row_27f15f7f0cea a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-kaxkf" .
+
+tsd:source_row_281565a49f85 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-0vwrf" .
+
+tsd:source_row_28675fdded01 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-qzbka" .
+
+tsd:source_row_28bd41b92859 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-wp86x" .
+
+tsd:source_row_28d0862a82b5 a ts:SourceRow ;
+    ts:referenceId "IT-EBL-2026-l3yas" .
+
+tsd:source_row_29417692ebb3 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-awfbs" .
+
+tsd:source_row_295505052deb a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-n2gqh" .
+
+tsd:source_row_296025703dea a ts:SourceRow ;
+    ts:referenceId "CZ-ND.NON-P-2026-au089" .
+
+tsd:source_row_29a41a9223e1 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mx77h" .
+
+tsd:source_row_2a507b0f02dc a ts:SourceRow ;
+    ts:referenceId "TR-ANTHRAX-2026-5g03j" .
+
+tsd:source_row_2ab0a444cfbe a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-dwhd5" .
+
+tsd:source_row_2ac0f7a2159b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-rwo5i" .
+
+tsd:source_row_2aea0529b4cb a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-4qxcn" .
+
+tsd:source_row_2af8fe5e705c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-4qcc0" .
+
+tsd:source_row_2b0810ca2a44 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-d422r" .
+
+tsd:source_row_2b6bc186913a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ddyf9" .
+
+tsd:source_row_2b76ad488780 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-skqe5" .
+
+tsd:source_row_2b7c55fca836 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-oljd4" .
+
+tsd:source_row_2bba13cce43b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-58qn8" .
+
+tsd:source_row_2befd5ebb289 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-8nibk" .
+
+tsd:source_row_2c5ff9e68e8b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-jbvbi" .
+
+tsd:source_row_2c60e80eb95d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xe8d0" .
+
+tsd:source_row_2ca62c84db91 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-fj27m" .
+
+tsd:source_row_2d14425e2440 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-b17kw" .
+
+tsd:source_row_2d3cd28cacb4 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-eiyps" .
+
+tsd:source_row_2d4406851b00 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-i5z8a" .
+
+tsd:source_row_2d6e5ae9d801 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-jol0s" .
+
+tsd:source_row_2db7ff48b851 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-d7oyf" .
+
+tsd:source_row_2dbb2ca74145 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-5ngfc" .
+
+tsd:source_row_2dd77769707f a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-uqq4b" .
+
+tsd:source_row_2e0f49d95904 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-sygkc" .
+
+tsd:source_row_2e666cee83a4 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-qe05r" .
+
+tsd:source_row_2e867e940f73 a ts:SourceRow ;
+    ts:referenceId "IT-MTBC-2026-b80gy" .
+
+tsd:source_row_2e8ccf9adc71 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-5kkiy" .
+
+tsd:source_row_2ea2439bbd1f a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-nk3cn" .
+
+tsd:source_row_2eab4855148e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-kqx2o" .
+
+tsd:source_row_2eca0f0718c2 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-9uz5z" .
+
+tsd:source_row_2effde408e66 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mm2nb" .
+
+tsd:source_row_2f223d879468 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-xrlpk" .
+
+tsd:source_row_2f3cce838042 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-194hw" .
+
+tsd:source_row_2f973446664a a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-jqn1t" .
+
+tsd:source_row_2fc279cad808 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-066i8" .
+
+tsd:source_row_2fcb635f7657 a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-wwhio" .
+
+tsd:source_row_2fefc2b01996 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-ty9jq" .
+
+tsd:source_row_2ffbde467358 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-parwo" .
+
+tsd:source_row_300434687543 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-33w7l" .
+
+tsd:source_row_30542a6b33a7 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-fz9a2" .
+
+tsd:source_row_307b6aaa1294 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-kcmjf" .
+
+tsd:source_row_30ab122bfae3 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-33032" .
+
+tsd:source_row_30d8a6808c99 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-zy2r5" .
+
+tsd:source_row_30e1e45a2ee5 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-6vxkr" .
+
+tsd:source_row_30fbf11c66ca a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-igubu" .
+
+tsd:source_row_31147447de23 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-24qfv" .
+
+tsd:source_row_31432a38b0e2 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-45w6d" .
+
+tsd:source_row_315d450f27e5 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-j9z1d" .
+
+tsd:source_row_31d3d1d2c714 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-73fw8" .
+
+tsd:source_row_31f7818178f8 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-jv1qt" .
+
+tsd:source_row_3202164c1a60 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-yf5o6" .
+
+tsd:source_row_3268f160629a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-zbfd4" .
+
+tsd:source_row_327e8cc299c5 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-lqqnb" .
+
+tsd:source_row_32dec261da64 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-5n757" .
+
+tsd:source_row_3334faf171e9 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-98o4r" .
+
+tsd:source_row_33673b956ff4 a ts:SourceRow ;
+    ts:referenceId "PL-ND-2026-b2q58" .
+
+tsd:source_row_3382ed4a5906 a ts:SourceRow ;
+    ts:referenceId "NO-HPAI(NON-P)-2026-v9jar" .
+
+tsd:source_row_33a5c95c6b4a a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-0w0kr" .
+
+tsd:source_row_33aa260274bb a ts:SourceRow ;
+    ts:referenceId "FR-HPAI(NON-P)-2026-srifh" .
+
+tsd:source_row_3433c18addf1 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-ucxzt" .
+
+tsd:source_row_349fb730caae a ts:SourceRow ;
+    ts:referenceId "RO-RABIES-2026-bhnbl" .
+
+tsd:source_row_34a65684c93d a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-k4q1k" .
+
+tsd:source_row_352cbea7462a a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-axaqy" .
+
+tsd:source_row_3563399472a6 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-q1fwb" .
+
+tsd:source_row_35a504f84d32 a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-nv1pe" .
+
+tsd:source_row_35d85b0bfd49 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-rszgd" .
+
+tsd:source_row_36014011cbbb a ts:SourceRow ;
+    ts:referenceId "RO-RABIES-2026-413au" .
+
+tsd:source_row_36677fa8d428 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-r3hqv" .
+
+tsd:source_row_36699256b716 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-54lou" .
+
+tsd:source_row_367b48eaa9d5 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-azmx1" .
+
+tsd:source_row_368647e532c8 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-15zhr" .
+
+tsd:source_row_36b8d13baea0 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-dqmkt" .
+
+tsd:source_row_36f6a54f08ae a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-l0avr" .
+
+tsd:source_row_37293747739a a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-u27ik" .
+
+tsd:source_row_373bd039cb54 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-hlihq" .
+
+tsd:source_row_37a3b191b4fd a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-bsgmv" .
+
+tsd:source_row_38074abd64a9 a ts:SourceRow ;
+    ts:referenceId "EE-ASF-2026-j8ncq" .
+
+tsd:source_row_386a2158d372 a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-bo66j" .
+
+tsd:source_row_38913d7df3a5 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-b7net" .
+
+tsd:source_row_38f373194342 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-m2ara" .
+
+tsd:source_row_39060a6dadef a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-drh3h" .
+
+tsd:source_row_39204521dcea a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-s010h" .
+
+tsd:source_row_3935ca59e015 a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-wpwnd" .
+
+tsd:source_row_394a0e4c8ba7 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-phzkv" .
+
+tsd:source_row_39af3c23c28d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-bree0" .
+
+tsd:source_row_39bda928dd84 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-126ot" .
+
+tsd:source_row_39c10cec2429 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-9eths" .
+
+tsd:source_row_3a0aba223e20 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-3g9hi" .
+
+tsd:source_row_3a0bbef37192 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-kqr1m" .
+
+tsd:source_row_3a2613e08625 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-x0bz5" .
+
+tsd:source_row_3a4dfedecff6 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-efbqh" .
+
+tsd:source_row_3a6a0d9905e6 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-azyw5" .
+
+tsd:source_row_3a7476cea179 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-n2zjs" .
+
+tsd:source_row_3a93e9ae6f76 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-wkmrc" .
+
+tsd:source_row_3ac9f08631e9 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-jw39y" .
+
+tsd:source_row_3add58df56d1 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-tu0ei" .
+
+tsd:source_row_3aff130d7c8f a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-i1dv1" .
+
+tsd:source_row_3b3f0ca07c21 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-s0m43" .
+
+tsd:source_row_3b74d1ad8ad7 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-pbxe3" .
+
+tsd:source_row_3b7c21a6e811 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-oup34" .
+
+tsd:source_row_3b85356ef09a a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-vrf0c" .
+
+tsd:source_row_3ba0af8ee219 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ag80h" .
+
+tsd:source_row_3ba82957a72f a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-s07d9" .
+
+tsd:source_row_3c64f8dee1e1 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-y2iz2" .
+
+tsd:source_row_3c6afdbe6855 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-2plyy" .
+
+tsd:source_row_3caf0815f50c a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-vp5yy" .
+
+tsd:source_row_3cd9fcf32d87 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-fp0ml" .
+
+tsd:source_row_3cfb4d1775e5 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-wsh14" .
+
+tsd:source_row_3d0cee8b923b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-69dfp" .
+
+tsd:source_row_3d31c3e44a25 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-7uub5" .
+
+tsd:source_row_3d972dccfdfb a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-10cz2" .
+
+tsd:source_row_3e0a21e641a0 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-v5ybm" .
+
+tsd:source_row_3e1ff27ca0bc a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-vsa70" .
+
+tsd:source_row_3eb94f1e8d9c a ts:SourceRow ;
+    ts:referenceId "NL-HPAI(P)-2026-aopg3" .
+
+tsd:source_row_3eccb8cc7a36 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-ix0ri" .
+
+tsd:source_row_3f065fd62b66 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mqi1i" .
+
+tsd:source_row_3f41e7fd808f a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-r3l0q" .
+
+tsd:source_row_3f807a27ef84 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-5ypk9" .
+
+tsd:source_row_3f80edb015e5 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-iv5pc" .
+
+tsd:source_row_3fae46696a72 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-0klxn" .
+
+tsd:source_row_3fd9daab323e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-y1ico" .
+
+tsd:source_row_3fee6d1f29e1 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-wj5vi" .
+
+tsd:source_row_40001ffe23d6 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-8zaf8" .
+
+tsd:source_row_4019d7248c09 a ts:SourceRow ;
+    ts:referenceId "RO-CAPRIPOX-2026-d4zkk" .
+
+tsd:source_row_405f9edbab83 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-h88ce" .
+
+tsd:source_row_40c2cf7c8158 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-rkklq" .
+
+tsd:source_row_40ff9834cbdf a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-2fm7z" .
+
+tsd:source_row_4103d3d8f624 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-zd5x7" .
+
+tsd:source_row_410e479fb1bf a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-e2zea" .
+
+tsd:source_row_4139a91acd84 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-01ees" .
+
+tsd:source_row_414837069a51 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-je34y" .
+
+tsd:source_row_4171ad803fda a ts:SourceRow ;
+    ts:referenceId "DE-ND.NON-P-2026-2hct9" .
+
+tsd:source_row_4173f8c35cbd a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-mowaf" .
+
+tsd:source_row_417ad6e67f73 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-hmgdm" .
+
+tsd:source_row_417d7a09ac43 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-q3yzc" .
+
+tsd:source_row_419995847d2e a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-f2svu" .
+
+tsd:source_row_420fe43b8540 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-zai0v" .
+
+tsd:source_row_42113a876ba6 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-09hus" .
+
+tsd:source_row_424df1ff48c6 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-0yx5x" .
+
+tsd:source_row_426242447103 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-tbxln" .
+
+tsd:source_row_428206833a6c a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-2sa78" .
+
+tsd:source_row_428ab70e12f9 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-5ysma" .
+
+tsd:source_row_4315821d59a5 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-bh8kg" .
+
+tsd:source_row_432dc630326e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-lufk6" .
+
+tsd:source_row_433e5e69bd44 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-n9i5y" .
+
+tsd:source_row_4346decfb795 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-pgh2q" .
+
+tsd:source_row_438198a2069f a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-r237b" .
+
+tsd:source_row_43b3587d89c4 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-kg3qi" .
+
+tsd:source_row_43b4075e4f28 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-obcbo" .
+
+tsd:source_row_43b609ae2d44 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-m2imj" .
+
+tsd:source_row_43ce6f9cece7 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-trjxw" .
+
+tsd:source_row_444532ece4ad a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ucrj1" .
+
+tsd:source_row_446ffde80725 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-t6gm6" .
+
+tsd:source_row_4484b469bbf4 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-wfy6o" .
+
+tsd:source_row_450bf27b5176 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-8asfl" .
+
+tsd:source_row_454a54f86ef9 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-l5ntm" .
+
+tsd:source_row_455ab4d82594 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-fgmjy" .
+
+tsd:source_row_455dde304faa a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-o2l9l" .
+
+tsd:source_row_4578a78f82fb a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-d672j" .
+
+tsd:source_row_4579f3388263 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-jtuyz" .
+
+tsd:source_row_457ea7b46bca a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-r2d2q" .
+
+tsd:source_row_458d5fbd1bc0 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-vd0s9" .
+
+tsd:source_row_45af67d4d78e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ceul3" .
+
+tsd:source_row_45f81ad8d65f a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-d1sjk" .
+
+tsd:source_row_465747a6a66b a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-crosx" .
+
+tsd:source_row_46593b869c0a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-c74d9" .
+
+tsd:source_row_466d6435e7ff a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-uf4fy" .
+
+tsd:source_row_469ebc78bdfd a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-32hrb" .
+
+tsd:source_row_46b1eebb1b6e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-yvcph" .
+
+tsd:source_row_46f014a521c6 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-0ifl0" .
+
+tsd:source_row_4763a3b8330e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-5bk3d" .
+
+tsd:source_row_47cebb69599f a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-g41ub" .
+
+tsd:source_row_4808eede6253 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-m2u1r" .
+
+tsd:source_row_480ec69309ef a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-6j0eg" .
+
+tsd:source_row_484160dd7636 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-nuj6t" .
+
+tsd:source_row_48a98ed12069 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-nvhg2" .
+
+tsd:source_row_48be3c8aff26 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-u0wd1" .
+
+tsd:source_row_48f6c4586fb9 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-uezsu" .
+
+tsd:source_row_48f72bc52b30 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-z0br9" .
+
+tsd:source_row_4905a29eb83f a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-xykei" .
+
+tsd:source_row_4940d5e2f087 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-vh6hj" .
+
+tsd:source_row_49915e020813 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-oandm" .
+
+tsd:source_row_49b2a4694574 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-d3mb9" .
+
+tsd:source_row_49b752177b6f a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-2ae8t" .
+
+tsd:source_row_49c235634dd5 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-wydjn" .
+
+tsd:source_row_4aaf54da0f37 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-12042" .
+
+tsd:source_row_4ab72826570d a ts:SourceRow ;
+    ts:referenceId "CZ-ND.NON-P-2026-qzjj8" .
+
+tsd:source_row_4adcd5a5a8b3 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-gvl5e" .
+
+tsd:source_row_4b2dac477205 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-jylnj" .
+
+tsd:source_row_4b6a9fa26642 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-qgmfo" .
+
+tsd:source_row_4b8c1a51480c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-p4kjv" .
+
+tsd:source_row_4bb3c95d1e0c a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-hkgk8" .
+
+tsd:source_row_4bc8f1e1d64e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-fuvwm" .
+
+tsd:source_row_4c0b20783522 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-wtnl0" .
+
+tsd:source_row_4c3d9cdf6c7d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-7dysp" .
+
+tsd:source_row_4c45858b48ea a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-h3zfg" .
+
+tsd:source_row_4cd076329af1 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-1irh5" .
+
+tsd:source_row_4d22574ce269 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-9vykn" .
+
+tsd:source_row_4d7ce21483ee a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-3m5sl" .
+
+tsd:source_row_4d8f89e1a954 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-kkqn2" .
+
+tsd:source_row_4da605bf34b6 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-uo2lu" .
+
+tsd:source_row_4df3139ebbf1 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-3k6b8" .
+
+tsd:source_row_4e191f78f279 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-nesth" .
+
+tsd:source_row_4e25cdffdb3a a ts:SourceRow ;
+    ts:referenceId "DE-ND-2026-4xah0" .
+
+tsd:source_row_4e71c4aeb74e a ts:SourceRow ;
+    ts:referenceId "IT-MTBC-2026-x4r3q" .
+
+tsd:source_row_4ea4694e7f8e a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-q2bt6" .
+
+tsd:source_row_4ed02528a164 a ts:SourceRow ;
+    ts:referenceId "PL-EBL-2026-pf00g" .
+
+tsd:source_row_4f1774d99729 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-60fq0" .
+
+tsd:source_row_4f64172e9d50 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-20e77" .
+
+tsd:source_row_4f68b02548ae a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-xr7s5" .
+
+tsd:source_row_4fc5201400e2 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-reo39" .
+
+tsd:source_row_4fd5e3f80bd5 a ts:SourceRow ;
+    ts:referenceId "EE-HPAI(NON-P)-2026-y922z" .
+
+tsd:source_row_50097be733f9 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-ke877" .
+
+tsd:source_row_50406c2583e1 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-xv78e" .
+
+tsd:source_row_50461613a58c a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-lwp82" .
+
+tsd:source_row_504cd2a871fd a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-y4dza" .
+
+tsd:source_row_509e521e368c a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-6f1b5" .
+
+tsd:source_row_50c2059109a1 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-hp8w4" .
+
+tsd:source_row_516fc2c157bc a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-vhcod" .
+
+tsd:source_row_5182e7c13475 a ts:SourceRow ;
+    ts:referenceId "DE-ND-2026-6m3vl" .
+
+tsd:source_row_518ddca4d0bf a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-fezc5" .
+
+tsd:source_row_519926ea5086 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-terix" .
+
+tsd:source_row_51a090e4bd31 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-dj8h0" .
+
+tsd:source_row_51ceda9fae36 a ts:SourceRow ;
+    ts:referenceId "IT-LSD-2026-w66my" .
+
+tsd:source_row_51fe365cbc68 a ts:SourceRow ;
+    ts:referenceId "PL-MTBC-2026-07gi4" .
+
+tsd:source_row_521e694c4bec a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-mizxj" .
+
+tsd:source_row_527951727d11 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ylnvn" .
+
+tsd:source_row_529086bb2cf6 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-h79td" .
+
+tsd:source_row_529c21cc6716 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-4y07g" .
+
+tsd:source_row_52a840e364a0 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-0cbmi" .
+
+tsd:source_row_52aa2fc00dda a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-hleas" .
+
+tsd:source_row_533d2a7d70da a ts:SourceRow ;
+    ts:referenceId "PL-MTBC-2026-ch6r6" .
+
+tsd:source_row_53c8bdd0cbf9 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-ljxlh" .
+
+tsd:source_row_53cacfa971a4 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-r9fw4" .
+
+tsd:source_row_53d5b6696c16 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-08ftm" .
+
+tsd:source_row_53fd3524fe0b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-o568j" .
+
+tsd:source_row_54166d557683 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-yo0ww" .
+
+tsd:source_row_547dddc174ce a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-1q97c" .
+
+tsd:source_row_54a685b3c2c7 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-titb4" .
+
+tsd:source_row_5525e9db4959 a ts:SourceRow ;
+    ts:referenceId "IT-WNF-2026-1dxdy" .
+
+tsd:source_row_5539aa09a298 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-u0uhm" .
+
+tsd:source_row_556ae7733061 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-1wff1" .
+
+tsd:source_row_55b11857a828 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-364i1" .
+
+tsd:source_row_55c569f14cc8 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-3yhcb" .
+
+tsd:source_row_55e6ccea6644 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-e7kmx" .
+
+tsd:source_row_561f6c8cb9e4 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-2deoq" .
+
+tsd:source_row_569dbb354d5b a ts:SourceRow ;
+    ts:referenceId "BE-HPAI(NON-P)-2026-nea9n" .
+
+tsd:source_row_56b1e0658c80 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-w04sj" .
+
+tsd:source_row_570136eebe52 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-jfz2q" .
+
+tsd:source_row_5751eb1029f2 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-b224l" .
+
+tsd:source_row_578bb901c440 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-hl73r" .
+
+tsd:source_row_57e8be9cc215 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-icxy9" .
+
+tsd:source_row_582ae79e6753 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-hwoed" .
+
+tsd:source_row_58fc5f5d7a62 a ts:SourceRow ;
+    ts:referenceId "EE-HPAI(NON-P)-2026-uru26" .
+
+tsd:source_row_590433dbcb9c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ftv4t" .
+
+tsd:source_row_59193b6cdef5 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-uicsu" .
+
+tsd:source_row_591eeb6f83df a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-fytrh" .
+
+tsd:source_row_593e93ebfdee a ts:SourceRow ;
+    ts:referenceId "MK-CAPRIPOX-2026-t61oy" .
+
+tsd:source_row_5959825f1d7d a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-8q77q" .
+
+tsd:source_row_5961556f584d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-31t4n" .
+
+tsd:source_row_59b03578ffd2 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-x6arb" .
+
+tsd:source_row_59bcc8487627 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-1fm44" .
+
+tsd:source_row_5a1ada431dcd a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-vt9bx" .
+
+tsd:source_row_5a2f056531a4 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-s5ree" .
+
+tsd:source_row_5a5d60606b44 a ts:SourceRow ;
+    ts:referenceId "DE-ND-2026-v9cc8" .
+
+tsd:source_row_5a6c303d28cd a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-n8cih" .
+
+tsd:source_row_5a8078d51214 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-vffop" .
+
+tsd:source_row_5aec9d73275a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-90ze8" .
+
+tsd:source_row_5b1c30f9d02b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-qrskn" .
+
+tsd:source_row_5b4dde7bf30d a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-zhn3v" .
+
+tsd:source_row_5b55ba4b27ee a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-90vu7" .
+
+tsd:source_row_5b5649750871 a ts:SourceRow ;
+    ts:referenceId "BG-ANTHRAX-2026-cmrcm" .
+
+tsd:source_row_5b89914c0c7f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-2z7dj" .
+
+tsd:source_row_5b91bfdd4bf2 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-65o4z" .
+
+tsd:source_row_5ba4d632e7c0 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-5kpwd" .
+
+tsd:source_row_5bd01a08546b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mxa11" .
+
+tsd:source_row_5bd4724a588e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-lz31r" .
+
+tsd:source_row_5bf8cac35001 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-myf27" .
+
+tsd:source_row_5c4a32c58840 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-zpnoz" .
+
+tsd:source_row_5c6f128084a6 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-wuvfc" .
+
+tsd:source_row_5c8cc8aaa633 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-3unbd" .
+
+tsd:source_row_5cd767ef1cf5 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-x8n4n" .
+
+tsd:source_row_5dc010746ef0 a ts:SourceRow ;
+    ts:referenceId "PL-ND-2026-hn8q3" .
+
+tsd:source_row_5dc96fd395aa a ts:SourceRow ;
+    ts:referenceId "ES-ND-2026-munzl" .
+
+tsd:source_row_5dd78e8cbac2 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-m7nlv" .
+
+tsd:source_row_5e5d9de5fd0f a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-sf7e4" .
+
+tsd:source_row_5eb4b23c8ae1 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-y3agi" .
+
+tsd:source_row_5eda7081d630 a ts:SourceRow ;
+    ts:referenceId "HR-ASF-2026-67uch" .
+
+tsd:source_row_5f3592ac0a6a a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-3y5pd" .
+
+tsd:source_row_5f4da2ba6921 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-tsyjm" .
+
+tsd:source_row_5f61faf4b46f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ve5ta" .
+
+tsd:source_row_5f8e41d9de53 a ts:SourceRow ;
+    ts:referenceId "RS-ASF-2026-t50c1" .
+
+tsd:source_row_5fab0cc3b9cf a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-bwyjt" .
+
+tsd:source_row_60988845ea3d a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-wiusc" .
+
+tsd:source_row_60a3129ae064 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-zct7p" .
+
+tsd:source_row_60a7b5def421 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-d22ev" .
+
+tsd:source_row_613486fbbaae a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-sxgp6" .
+
+tsd:source_row_61fe216e232c a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-bsjco" .
+
+tsd:source_row_6210ef9a941f a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-7wa1w" .
+
+tsd:source_row_621875d24afc a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-nxw1d" .
+
+tsd:source_row_62381b54e71d a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-nqg4e" .
+
+tsd:source_row_62a0a4bd62b3 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-8t2z6" .
+
+tsd:source_row_6321f7b073c4 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-jfgnv" .
+
+tsd:source_row_63595b635dcb a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-0ozv3" .
+
+tsd:source_row_63e639a4b126 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-m75qu" .
+
+tsd:source_row_63f130cdfee4 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-c1u72" .
+
+tsd:source_row_63f7188cb653 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-9wfs6" .
+
+tsd:source_row_64506f774618 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-g0yxg" .
+
+tsd:source_row_64d02891a383 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-tfpsz" .
+
+tsd:source_row_64d1a8b41c9a a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-bf2vk" .
+
+tsd:source_row_64d31ec89019 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-h5o2k" .
+
+tsd:source_row_64fcaffc18a7 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-3ma6c" .
+
+tsd:source_row_655f066da162 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-8fv4x" .
+
+tsd:source_row_657159aa03cf a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-bphoz" .
+
+tsd:source_row_65896dd6fbf4 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-c518f" .
+
+tsd:source_row_65a37b850b15 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-txcsi" .
+
+tsd:source_row_663154f8e538 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-vzsnq" .
+
+tsd:source_row_6676378f17ae a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-kruyu" .
+
+tsd:source_row_6683523f2409 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-6yp0r" .
+
+tsd:source_row_669df97880c8 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-9rl7d" .
+
+tsd:source_row_66b046a6c308 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-etbra" .
+
+tsd:source_row_66fd3762c65a a ts:SourceRow ;
+    ts:referenceId "DK-HPAI(NON-P)-2026-cvaly" .
+
+tsd:source_row_6703035a6b3a a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-j6iiz" .
+
+tsd:source_row_67271755dd48 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-5gl6o" .
+
+tsd:source_row_672f54207e22 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-l97uw" .
+
+tsd:source_row_673f79f44b8e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-o9v2r" .
+
+tsd:source_row_6771a45e7b02 a ts:SourceRow ;
+    ts:referenceId "CZ-HPAI(NON-P)-2026-u0dux" .
+
+tsd:source_row_67a158a2051c a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ox2zv" .
+
+tsd:source_row_67a577f36c78 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-uinvx" .
+
+tsd:source_row_680862f715ba a ts:SourceRow ;
+    ts:referenceId "NO-HPAI(NON-P)-2026-gkzi5" .
+
+tsd:source_row_68559cec11aa a ts:SourceRow ;
+    ts:referenceId "ES-ASF-2026-gxl27" .
+
+tsd:source_row_687d5f726ba8 a ts:SourceRow ;
+    ts:referenceId "DK-HPAI(NON-P)-2026-bo6c6" .
+
+tsd:source_row_68aece477948 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-mrn82" .
+
+tsd:source_row_692c9e0c6003 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-4m4ir" .
+
+tsd:source_row_6930ef64acda a ts:SourceRow ;
+    ts:referenceId "DE-ND.NON-P-2026-lmuzs" .
+
+tsd:source_row_6946a26c2930 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-d72g9" .
+
+tsd:source_row_695a277cc2e5 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ryqr0" .
+
+tsd:source_row_697a5312b135 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-yieju" .
+
+tsd:source_row_6a25427f17ef a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-ns8tj" .
+
+tsd:source_row_6a4899f0200a a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-h0ijo" .
+
+tsd:source_row_6ab9fa5930df a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-ukvqd" .
+
+tsd:source_row_6b12397bfb46 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-62bvl" .
+
+tsd:source_row_6b4ff42122be a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-kc7oj" .
+
+tsd:source_row_6b7a05b73c86 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-610vg" .
+
+tsd:source_row_6b862e76e679 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-h606x" .
+
+tsd:source_row_6bcac21b9c2c a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-7q62c" .
+
+tsd:source_row_6bd2fbe7b10e a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-53adf" .
+
+tsd:source_row_6c04d3364592 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-6u0eu" .
+
+tsd:source_row_6c092fdd16d5 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-r1ahi" .
+
+tsd:source_row_6c63973ca94c a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-06u4a" .
+
+tsd:source_row_6c7a5a29a6d8 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-5rxtc" .
+
+tsd:source_row_6cb54201d5b1 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-9wvn4" .
+
+tsd:source_row_6cf805462e28 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-pcpe7" .
+
+tsd:source_row_6d13a43efb0b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-3rj1y" .
+
+tsd:source_row_6d62357a25b2 a ts:SourceRow ;
+    ts:referenceId "DE-ND-2026-x2cur" .
+
+tsd:source_row_6d6be12419ab a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-bs5fs" .
+
+tsd:source_row_6dbf9ffd4744 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-jbmif" .
+
+tsd:source_row_6dc0cedd635b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-47gj6" .
+
+tsd:source_row_6de66d859a63 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xici0" .
+
+tsd:source_row_6e0c3c7b7e61 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ikxht" .
+
+tsd:source_row_6e23dce4ffe6 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-7e0xa" .
+
+tsd:source_row_6eded74c7b12 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-azbmw" .
+
+tsd:source_row_6ee83d9de28e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-mqm86" .
+
+tsd:source_row_6ef58344d79a a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-agmag" .
+
+tsd:source_row_6ef7ec05edf1 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-nca01" .
+
+tsd:source_row_6f7d160a7edb a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ive8m" .
+
+tsd:source_row_6f8e4cfa69a1 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-s0hej" .
+
+tsd:source_row_6fb1c3020f52 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-4wve7" .
+
+tsd:source_row_6ff6e79c920e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-hm9n4" .
+
+tsd:source_row_701bc648b430 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-tp5aj" .
+
+tsd:source_row_70681aacf42e a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-eyx9x" .
+
+tsd:source_row_70984c4bf4d6 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-ylgfq" .
+
+tsd:source_row_70a6ff4e31cc a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-dpmys" .
+
+tsd:source_row_70f9236a2fe7 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-dytdl" .
+
+tsd:source_row_7185f96074ca a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mzya5" .
+
+tsd:source_row_718bdc52651a a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-4c412" .
+
+tsd:source_row_7206d553dee7 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-w54j6" .
+
+tsd:source_row_725ee212d9f8 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-dkv74" .
+
+tsd:source_row_72a38976b9b8 a ts:SourceRow ;
+    ts:referenceId "MD-RABIES-2026-j5a88" .
+
+tsd:source_row_72de41d0edcb a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-4izvw" .
+
+tsd:source_row_72fe80a488d0 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-64y7v" .
+
+tsd:source_row_732637b15329 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-5za3r" .
+
+tsd:source_row_733388633551 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-t0jnz" .
+
+tsd:source_row_7341560d5b53 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-29f9x" .
+
+tsd:source_row_7356ec8a76c1 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-50v5u" .
+
+tsd:source_row_73889139400f a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-1uqki" .
+
+tsd:source_row_738a075a8a4e a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-audos" .
+
+tsd:source_row_7394f10c2634 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-icq1u" .
+
+tsd:source_row_73b19840d042 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-p5fzs" .
+
+tsd:source_row_73b42414514b a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-lv8xz" .
+
+tsd:source_row_73c61e310c21 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-ria76" .
+
+tsd:source_row_73ff14b60096 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-icd9v" .
+
+tsd:source_row_745a776fb3fb a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-1pzyb" .
+
+tsd:source_row_74becb107b5f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-cxp4a" .
+
+tsd:source_row_74bfce88a5cb a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-71a6x" .
+
+tsd:source_row_74c5552c5506 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-mr4jg" .
+
+tsd:source_row_74ddc73c2eb0 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-gt2b5" .
+
+tsd:source_row_74e8a88360c5 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ms3w8" .
+
+tsd:source_row_74fd31f1094f a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-hewz0" .
+
+tsd:source_row_75023966e75b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-d1mlh" .
+
+tsd:source_row_7510a48da365 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-bx7ng" .
+
+tsd:source_row_7539f1522e19 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-q56ot" .
+
+tsd:source_row_754501946e37 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-wpa1j" .
+
+tsd:source_row_754a6f2bc1be a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-0u8fw" .
+
+tsd:source_row_757fe2ea4f39 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-gn38t" .
+
+tsd:source_row_758aa72a5e55 a ts:SourceRow ;
+    ts:referenceId "IT-LSD-2026-ju4hy" .
+
+tsd:source_row_762529b88816 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ywzmi" .
+
+tsd:source_row_76375a095be9 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-0uq72" .
+
+tsd:source_row_7694c76d9f6b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-lhrlf" .
+
+tsd:source_row_76c5311c5f58 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-6auih" .
+
+tsd:source_row_773fed8eed25 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-3jcxn" .
+
+tsd:source_row_777b6336969a a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-tsbsh" .
+
+tsd:source_row_781831e0200f a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-3m3wg" .
+
+tsd:source_row_788bb07d57bb a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-1vn90" .
+
+tsd:source_row_78ea1e7db1cd a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-xut9e" .
+
+tsd:source_row_79195b7586b7 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-1k9y6" .
+
+tsd:source_row_793f64e872db a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ckbfj" .
+
+tsd:source_row_79b3173aab4b a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-cdndg" .
+
+tsd:source_row_79cd5af59614 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-9w820" .
+
+tsd:source_row_79e9ccc9981c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-qe4bc" .
+
+tsd:source_row_79ea6d8e2005 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-tytf0" .
+
+tsd:source_row_7a00661e3337 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-n4hch" .
+
+tsd:source_row_7a09b8ed03df a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-etd0z" .
+
+tsd:source_row_7a252efa63d4 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ss4zu" .
+
+tsd:source_row_7a570be14ca2 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-0xjvs" .
+
+tsd:source_row_7a7e58f2eb53 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-h86qh" .
+
+tsd:source_row_7a9454089e59 a ts:SourceRow ;
+    ts:referenceId "IT-HPAI(NON-P)-2026-9wicu" .
+
+tsd:source_row_7b1eb09ffc87 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-gy6of" .
+
+tsd:source_row_7b3b1b6cff3e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-f85t0" .
+
+tsd:source_row_7b643244a73a a ts:SourceRow ;
+    ts:referenceId "PL-EBL-2026-ofs62" .
+
+tsd:source_row_7b7aa1af1858 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-380d4" .
+
+tsd:source_row_7b9e4b11ae6b a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-6arv6" .
+
+tsd:source_row_7ba50a844b83 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-3dgtv" .
+
+tsd:source_row_7bb37f27a98e a ts:SourceRow ;
+    ts:referenceId "CZ-ND.NON-P-2026-6lli8" .
+
+tsd:source_row_7bc993da166d a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-i0jyc" .
+
+tsd:source_row_7c0247ba4021 a ts:SourceRow ;
+    ts:referenceId "NL-HPAI(NON-P)-2026-f6io1" .
+
+tsd:source_row_7cc976509910 a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-tjob4" .
+
+tsd:source_row_7d3478518d1b a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-zr8c6" .
+
+tsd:source_row_7d640902aacd a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-hz5v4" .
+
+tsd:source_row_7d663c76edab a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-07odu" .
+
+tsd:source_row_7dc34f038161 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-y6je7" .
+
+tsd:source_row_7dd2a9288562 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-f4lek" .
+
+tsd:source_row_7df7e6e5a0ab a ts:SourceRow ;
+    ts:referenceId "AT-MTBC-2026-r4xkv" .
+
+tsd:source_row_7e18043900fd a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-oo95l" .
+
+tsd:source_row_7eb4731d3390 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-h5l47" .
+
+tsd:source_row_7ec27e1446b6 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-i0ts1" .
+
+tsd:source_row_7f821900b88e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mvar4" .
+
+tsd:source_row_7f848c439852 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xlk6k" .
+
+tsd:source_row_7f91f8c47d4d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-sskux" .
+
+tsd:source_row_7faec8278c4d a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-c2yg0" .
+
+tsd:source_row_800473567220 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-nbc5q" .
+
+tsd:source_row_802095d7536d a ts:SourceRow ;
+    ts:referenceId "MD-ASF-2026-27vys" .
+
+tsd:source_row_8025ec4c6eda a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-1y50q" .
+
+tsd:source_row_808e49b5bedc a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-ji09i" .
+
+tsd:source_row_809adf325128 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-fv9mt" .
+
+tsd:source_row_80c79d2c0567 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-ax5eg" .
+
+tsd:source_row_80d1828843ef a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-cdppz" .
+
+tsd:source_row_80de307ef042 a ts:SourceRow ;
+    ts:referenceId "HU-MTBC-2026-6wf6f" .
+
+tsd:source_row_812096aefbcd a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-f8gbi" .
+
+tsd:source_row_814fce08a54c a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-sxa6w" .
+
+tsd:source_row_815e51b282b7 a ts:SourceRow ;
+    ts:referenceId "RO-CAPRIPOX-2026-vvdv5" .
+
+tsd:source_row_816a41c9f140 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-xffnr" .
+
+tsd:source_row_8177238ab1df a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-phdld" .
+
+tsd:source_row_817a8cdf35bb a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-pufqf" .
+
+tsd:source_row_8188017eaf45 a ts:SourceRow ;
+    ts:referenceId "DE-ND-2026-al7ps" .
+
+tsd:source_row_824762e49856 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-bmbdb" .
+
+tsd:source_row_82674dc4ecf2 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-n7vxx" .
+
+tsd:source_row_82e65f805761 a ts:SourceRow ;
+    ts:referenceId "DE-ND.NON-P-2026-lh5vs" .
+
+tsd:source_row_830a6fde9e8f a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-mg9d3" .
+
+tsd:source_row_834d4b4393f0 a ts:SourceRow ;
+    ts:referenceId "MD-RABIES-2026-lslha" .
+
+tsd:source_row_838cdc7679a5 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-gu27a" .
+
+tsd:source_row_83b26f2b7847 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-23nyd" .
+
+tsd:source_row_83bfe6418907 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-urib6" .
+
+tsd:source_row_8492bc131ab8 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-90i4g" .
+
+tsd:source_row_84ce72cf25bb a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-g9m9e" .
+
+tsd:source_row_8510def7ed04 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-qv9z5" .
+
+tsd:source_row_85a686fe1b4a a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-qdx8k" .
+
+tsd:source_row_8656ac3ca708 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-pj01g" .
+
+tsd:source_row_865e59b7086f a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-tegdk" .
+
+tsd:source_row_86a20ef2e4ac a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-wacu7" .
+
+tsd:source_row_86b687c5fd52 a ts:SourceRow ;
+    ts:referenceId "RO-EIA-2026-li5ob" .
+
+tsd:source_row_86f02114f936 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-kggzm" .
+
+tsd:source_row_86fc04c90417 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-4is5e" .
+
+tsd:source_row_872e35cce24a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-75gus" .
+
+tsd:source_row_8780f8307b5b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-y0rrr" .
+
+tsd:source_row_879c8c3b7b23 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-w1u9n" .
+
+tsd:source_row_87c05ec4aaae a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-wkocz" .
+
+tsd:source_row_88278160d170 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-52l1z" .
+
+tsd:source_row_88439045768c a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-m77db" .
+
+tsd:source_row_88a398c700ab a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-buks5" .
+
+tsd:source_row_88b2986f967e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-daeq4" .
+
+tsd:source_row_88c0cad65776 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-7jkhz" .
+
+tsd:source_row_88c46398dad9 a ts:SourceRow ;
+    ts:referenceId "IT-WNF-2026-7gaxj" .
+
+tsd:source_row_8914064cbf2c a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-0ryu7" .
+
+tsd:source_row_8922ba984088 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-li3xp" .
+
+tsd:source_row_894a4203b08d a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-z99o0" .
+
+tsd:source_row_89577d493fba a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-kl58r" .
+
+tsd:source_row_898f53ac914d a ts:SourceRow ;
+    ts:referenceId "UA-ASF-2026-mnrkz" .
+
+tsd:source_row_8a353a2e35a5 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-4ynjg" .
+
+tsd:source_row_8a468cbc3597 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-xnryn" .
+
+tsd:source_row_8a6ee6e99e79 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-9mhtr" .
+
+tsd:source_row_8aab147fc7e3 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-aj4y1" .
+
+tsd:source_row_8b395a608d06 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-tjkrp" .
+
+tsd:source_row_8b535547c27a a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-ska9t" .
+
+tsd:source_row_8b6aa717b7d3 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-m03ym" .
+
+tsd:source_row_8be100527143 a ts:SourceRow ;
+    ts:referenceId "MD-ASF-2026-68v1c" .
+
+tsd:source_row_8c7d8e3f477a a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-3zaks" .
+
+tsd:source_row_8d4dc8d5c0f6 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-fqxn2" .
+
+tsd:source_row_8d53a8ba27fa a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(P)-2026-qryad" .
+
+tsd:source_row_8d5d6c4cbd1f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-5smoy" .
+
+tsd:source_row_8d6b6b2184ab a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-xsyaz" .
+
+tsd:source_row_8da7ec2132e3 a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-floiu" .
+
+tsd:source_row_8db0f62e01ff a ts:SourceRow ;
+    ts:referenceId "DE-ND.NON-P-2026-0cj99" .
+
+tsd:source_row_8df305d516da a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-180bl" .
+
+tsd:source_row_8dfbf5eec03b a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-u8gbs" .
+
+tsd:source_row_8e6e68563f5c a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-2zqj1" .
+
+tsd:source_row_8e82dd7e73b5 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-imtjs" .
+
+tsd:source_row_8ea0655261aa a ts:SourceRow ;
+    ts:referenceId "IE-BSE.ATYP-2026-49lxq" .
+
+tsd:source_row_8f2892430e72 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-63mpi" .
+
+tsd:source_row_8f43f926cd90 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-y62ay" .
+
+tsd:source_row_8f527389b0cd a ts:SourceRow ;
+    ts:referenceId "BA-ASF-2026-t9h5b" .
+
+tsd:source_row_8f92f14590b2 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-uuccx" .
+
+tsd:source_row_8ffebb76e771 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-k3vb0" .
+
+tsd:source_row_901e7767d38f a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-eukmv" .
+
+tsd:source_row_908a67986b4b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xi9c9" .
+
+tsd:source_row_9099535c1694 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-2jq2i" .
+
+tsd:source_row_909e9a7d9d6d a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-i6lmw" .
+
+tsd:source_row_90d243eebcea a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-zc8ff" .
+
+tsd:source_row_90df6aa4c10a a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-q6dfs" .
+
+tsd:source_row_90fc0bd0b797 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-rwifi" .
+
+tsd:source_row_911cb58e01a9 a ts:SourceRow ;
+    ts:referenceId "CZ-ND.NON-P-2026-dqgfq" .
+
+tsd:source_row_91297b9a5d76 a ts:SourceRow ;
+    ts:referenceId "FI-HPAI(NON-P)-2026-fdndo" .
+
+tsd:source_row_912f752f0508 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-9ykg7" .
+
+tsd:source_row_913ac3c5aa0f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-vt5ay" .
+
+tsd:source_row_914e98f9ef90 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-gdwks" .
+
+tsd:source_row_91649b2f6303 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-wbhh8" .
+
+tsd:source_row_91a3c5cbca14 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-2thzz" .
+
+tsd:source_row_91a74d36838e a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-kjcpj" .
+
+tsd:source_row_91c55f5d3fbb a ts:SourceRow ;
+    ts:referenceId "RO-RABIES-2026-mji6v" .
+
+tsd:source_row_91dcb41f23ea a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-wd2xu" .
+
+tsd:source_row_91deaa6e517e a ts:SourceRow ;
+    ts:referenceId "ES-ASF-2026-2wjtm" .
+
+tsd:source_row_91f514cfea51 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-f6jlq" .
+
+tsd:source_row_91fb562b409c a ts:SourceRow ;
+    ts:referenceId "IS-HPAI(NON-P)-2026-ywsx0" .
+
+tsd:source_row_921023ce0b4e a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-2k0al" .
+
+tsd:source_row_92126f442bc9 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-xyby9" .
+
+tsd:source_row_923c6794a066 a ts:SourceRow ;
+    ts:referenceId "NL-HPAI(NON-P)-2026-7f92b" .
+
+tsd:source_row_9250d3c94b5a a ts:SourceRow ;
+    ts:referenceId "NO-HPAI(NON-P)-2026-pl886" .
+
+tsd:source_row_92b65d27857e a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-yl90j" .
+
+tsd:source_row_92b6601ec660 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-848gc" .
+
+tsd:source_row_934ccd12f748 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-z34jq" .
+
+tsd:source_row_93a834e1cba7 a ts:SourceRow ;
+    ts:referenceId "IT-LSD-2026-olib4" .
+
+tsd:source_row_93d51058651a a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-yh3t5" .
+
+tsd:source_row_948f8be6c182 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-rz8e0" .
+
+tsd:source_row_94b133e087b8 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-mpvwr" .
+
+tsd:source_row_951dddf8f010 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-s6nxf" .
+
+tsd:source_row_954bc4cdf77f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-shs4i" .
+
+tsd:source_row_956c85bda58a a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-yo8r5" .
+
+tsd:source_row_95912aea9519 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-2y9sf" .
+
+tsd:source_row_95fee5c34297 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-pjdjm" .
+
+tsd:source_row_96117e5b7498 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-kpakf" .
+
+tsd:source_row_9646314c8f5e a ts:SourceRow ;
+    ts:referenceId "RS-ASF-2026-jy0vk" .
+
+tsd:source_row_9691bf03ed66 a ts:SourceRow ;
+    ts:referenceId "HR-ASF-2026-osrjw" .
+
+tsd:source_row_969dec828108 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-pjr0s" .
+
+tsd:source_row_96c68b63f037 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-4qnos" .
+
+tsd:source_row_96cdfb130b2d a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-r3fho" .
+
+tsd:source_row_96ce1cf19cda a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-r1h9b" .
+
+tsd:source_row_97103f6a3cb9 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-l7gko" .
+
+tsd:source_row_973203ab797c a ts:SourceRow ;
+    ts:referenceId "HR-ASF-2026-fw4wz" .
+
+tsd:source_row_973e7e9b1b78 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-3cfp5" .
+
+tsd:source_row_9755ebebbf5c a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-90jer" .
+
+tsd:source_row_97580804b969 a ts:SourceRow ;
+    ts:referenceId "CZ-ND.NON-P-2026-58e4g" .
+
+tsd:source_row_97b6fb95cd97 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-xjwlr" .
+
+tsd:source_row_97d37af7fbc7 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-uyi5z" .
+
+tsd:source_row_9804d3d8699c a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-hwria" .
+
+tsd:source_row_98d7b73f6825 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-e8sfc" .
+
+tsd:source_row_98d841d2070e a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-kwagb" .
+
+tsd:source_row_98e0d4b902e3 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-e4ywv" .
+
+tsd:source_row_9920fb69eb12 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-m1mn4" .
+
+tsd:source_row_992d148c246b a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-kjyjy" .
+
+tsd:source_row_995bc735e5dc a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-c1vfz" .
+
+tsd:source_row_996eb42d675f a ts:SourceRow ;
+    ts:referenceId "NO-HPAI(NON-P)-2026-zpxa4" .
+
+tsd:source_row_996f8ccb9a48 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-5avqz" .
+
+tsd:source_row_9995e14d6d51 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-42bo6" .
+
+tsd:source_row_999682b9f881 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-6pwez" .
+
+tsd:source_row_99d074f6f902 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-fugau" .
+
+tsd:source_row_99dcbd862464 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-k2jun" .
+
+tsd:source_row_99eea63b9488 a ts:SourceRow ;
+    ts:referenceId "EE-ASF-2026-bhnio" .
+
+tsd:source_row_9a0f9ec18b58 a ts:SourceRow ;
+    ts:referenceId "CZ-ND.NON-P-2026-egug6" .
+
+tsd:source_row_9a56f653cbe1 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-yzlxi" .
+
+tsd:source_row_9a62c5d5f07a a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-7snx0" .
+
+tsd:source_row_9a804afac4b5 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-qjl44" .
+
+tsd:source_row_9a90b684ca1c a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-m5hpz" .
+
+tsd:source_row_9a960ac2d5df a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ijro8" .
+
+tsd:source_row_9ad154396afa a ts:SourceRow ;
+    ts:referenceId "FR-HPAI(P)-2026-6q2dh" .
+
+tsd:source_row_9b0aa294570b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-iahbp" .
+
+tsd:source_row_9b2d6739a394 a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-z8uce" .
+
+tsd:source_row_9b524fa1d8e2 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-8n4o2" .
+
+tsd:source_row_9b673ffd1bbb a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-hv5pq" .
+
+tsd:source_row_9b8d57e5511a a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-fpear" .
+
+tsd:source_row_9bdd1225bde1 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-xtpw7" .
+
+tsd:source_row_9bfb8f483ede a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-bjsp4" .
+
+tsd:source_row_9bfdf9e9278d a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-ucpub" .
+
+tsd:source_row_9c13a3922eed a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-vx8uj" .
+
+tsd:source_row_9c16c517de9f a ts:SourceRow ;
+    ts:referenceId "DE-ND-2026-uj3on" .
+
+tsd:source_row_9ccc2ba681a9 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-kwsvm" .
+
+tsd:source_row_9ccdddec03e3 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-wgsij" .
+
+tsd:source_row_9cd4b38aa6bb a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-k26pt" .
+
+tsd:source_row_9cf6f4d58ae1 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-q2pqm" .
+
+tsd:source_row_9cfb3a4b9bf9 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-pkzzh" .
+
+tsd:source_row_9d01c2c0e72c a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-rwhc2" .
+
+tsd:source_row_9d36cac6a2aa a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-extc1" .
+
+tsd:source_row_9d661772049a a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-dr8i0" .
+
+tsd:source_row_9d8eb3564d95 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-il89m" .
+
+tsd:source_row_9ddcfc727047 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-dt3o4" .
+
+tsd:source_row_9df7d84ff2c9 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-2hy6o" .
+
+tsd:source_row_9e04405400ad a ts:SourceRow ;
+    ts:referenceId "TR-CAPRIPOX-2026-4y71a" .
+
+tsd:source_row_9e1393dc5246 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-dgma9" .
+
+tsd:source_row_9e29bb96286e a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-497qv" .
+
+tsd:source_row_9e45ea0e9e27 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-gyy38" .
+
+tsd:source_row_9e4c8cebeae7 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-p47fq" .
+
+tsd:source_row_9e5aea6367ca a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-zybzv" .
+
+tsd:source_row_9ed061147ed1 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-jjf5k" .
+
+tsd:source_row_9edc57d777ab a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-li5lx" .
+
+tsd:source_row_9f0082317de1 a ts:SourceRow ;
+    ts:referenceId "CZ-ND.NON-P-2026-qkdk3" .
+
+tsd:source_row_9f04b48a0abb a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-8avu2" .
+
+tsd:source_row_9f5397ffc66d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-qtmgp" .
+
+tsd:source_row_9f6d91e4656d a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-ltt2o" .
+
+tsd:source_row_9febfeb2062c a ts:SourceRow ;
+    ts:referenceId "PL-ND-2026-3kzxm" .
+
+tsd:source_row_a00cdfb94a67 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-re983" .
+
+tsd:source_row_a040a0ca5585 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-sjpmp" .
+
+tsd:source_row_a08f2b6c7b30 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-g36nj" .
+
+tsd:source_row_a0b6481df1f5 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-6s0oj" .
+
+tsd:source_row_a0d6603aaf11 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-4j4qe" .
+
+tsd:source_row_a0ebf9ef4602 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-60xm3" .
+
+tsd:source_row_a10c368922fa a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-g7t13" .
+
+tsd:source_row_a12e9b3b4392 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-7wee9" .
+
+tsd:source_row_a146f9f65173 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-s28id" .
+
+tsd:source_row_a14b5ef3be3a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-yzf43" .
+
+tsd:source_row_a1b007953c1f a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-1cd0k" .
+
+tsd:source_row_a1bd23437bd8 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-lxsjy" .
+
+tsd:source_row_a1ddcee1012f a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ikwpq" .
+
+tsd:source_row_a235d3ef078c a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-h9nmd" .
+
+tsd:source_row_a25c6ec67381 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-5ny0n" .
+
+tsd:source_row_a25e605e91e3 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-zlugw" .
+
+tsd:source_row_a292f82036c4 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-5p0tr" .
+
+tsd:source_row_a2b6ed04cc1c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mqyf8" .
+
+tsd:source_row_a2f8d5d8f9fb a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-shvom" .
+
+tsd:source_row_a316df6a2ecd a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-y0hr3" .
+
+tsd:source_row_a31c6c8fbb1a a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-ydgjw" .
+
+tsd:source_row_a37f903adb08 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-dvf69" .
+
+tsd:source_row_a3a2e69d2e28 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-l3vc7" .
+
+tsd:source_row_a3ad0889223d a ts:SourceRow ;
+    ts:referenceId "FI-HPAI(NON-P)-2026-yyhsn" .
+
+tsd:source_row_a41588247ca8 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-zblar" .
+
+tsd:source_row_a43d9bd19e3f a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-w1lja" .
+
+tsd:source_row_a47f4a6877b5 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-30fmz" .
+
+tsd:source_row_a486291bfc34 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-wuf2t" .
+
+tsd:source_row_a4873e7b39a6 a ts:SourceRow ;
+    ts:referenceId "RS-ASF-2026-qazaz" .
+
+tsd:source_row_a4880f866d46 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-3wfbk" .
+
+tsd:source_row_a4a7408213c9 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-br9kk" .
+
+tsd:source_row_a4b89a7a689b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-4scdc" .
+
+tsd:source_row_a4ed01316ff4 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-fpanp" .
+
+tsd:source_row_a509369ee1a4 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-snk52" .
+
+tsd:source_row_a52ec1efb989 a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-ba491" .
+
+tsd:source_row_a558c42b7cad a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-cjvqo" .
+
+tsd:source_row_a558e180bdd2 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-vgqvb" .
+
+tsd:source_row_a57bee44ad54 a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-tvac6" .
+
+tsd:source_row_a58bf2a35c9c a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-pjfwb" .
+
+tsd:source_row_a59af9167761 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xmdpt" .
+
+tsd:source_row_a5bb37e96b65 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-zrgps" .
+
+tsd:source_row_a5fd6171fb63 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-fp7g9" .
+
+tsd:source_row_a617ed711521 a ts:SourceRow ;
+    ts:referenceId "RO-RABIES-2026-jzrgu" .
+
+tsd:source_row_a6bbd95bf016 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-5q3k0" .
+
+tsd:source_row_a6d28f2438da a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-0ly92" .
+
+tsd:source_row_a6dcd4e4a468 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-eihev" .
+
+tsd:source_row_a70b6af75f00 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-0zlyf" .
+
+tsd:source_row_a72d0a49d59b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-bdgvk" .
+
+tsd:source_row_a74ebf1a3515 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-sx1o4" .
+
+tsd:source_row_a77a9962868a a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ej756" .
+
+tsd:source_row_a77e30faeabe a ts:SourceRow ;
+    ts:referenceId "HR-ASF-2026-oc7ca" .
+
+tsd:source_row_a7a6f591c07c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-6807u" .
+
+tsd:source_row_a7df7c774d94 a ts:SourceRow ;
+    ts:referenceId "MD-RABIES-2026-sjqtw" .
+
+tsd:source_row_a7eb1c0f5aeb a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-mbxzc" .
+
+tsd:source_row_a7ece4444afd a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mkh17" .
+
+tsd:source_row_a8630669c69d a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-pc9vl" .
+
+tsd:source_row_a87d4f81d1ad a ts:SourceRow ;
+    ts:referenceId "EE-ASF-2026-uw8bn" .
+
+tsd:source_row_a88a2cb467bf a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-crw14" .
+
+tsd:source_row_a8aef9a16709 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-e2nmo" .
+
+tsd:source_row_a8c22ff0e87e a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-54d9w" .
+
+tsd:source_row_a8d68e4bb3e3 a ts:SourceRow ;
+    ts:referenceId "CZ-ND.NON-P-2026-itkq4" .
+
+tsd:source_row_a8fea909e6c1 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-gp45w" .
+
+tsd:source_row_a962fc9701b9 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-s5ioz" .
+
+tsd:source_row_a99a759080d6 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-3f8zu" .
+
+tsd:source_row_a9d825a39f0b a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-tjlp4" .
+
+tsd:source_row_aa24859105b4 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-yfxrf" .
+
+tsd:source_row_aa6ecd3fe652 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-cjq09" .
+
+tsd:source_row_aa7026798a1b a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-ehbja" .
+
+tsd:source_row_aa739016d86f a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-5baad" .
+
+tsd:source_row_aa77e13c66cf a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-hia8z" .
+
+tsd:source_row_aa7ca14f6181 a ts:SourceRow ;
+    ts:referenceId "NO-HPAI(NON-P)-2026-edh3y" .
+
+tsd:source_row_aaa167939bed a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-jrmpb" .
+
+tsd:source_row_aacf10547491 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-f91yk" .
+
+tsd:source_row_aae57a88dda7 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-f4sx9" .
+
+tsd:source_row_ab2541d51030 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-41nu3" .
+
+tsd:source_row_abb7f1093319 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-fau9h" .
+
+tsd:source_row_abc4f5390506 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-35lb4" .
+
+tsd:source_row_ac05cc7223cd a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-bik6n" .
+
+tsd:source_row_ac090ac91869 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-rmiha" .
+
+tsd:source_row_ac65175da5c5 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-x1a6a" .
+
+tsd:source_row_ace35da3f22b a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-9el72" .
+
+tsd:source_row_ace5ca59a278 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-yb8vu" .
+
+tsd:source_row_ad02fddf8f82 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-s5te4" .
+
+tsd:source_row_ad433d0db71f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-cpx8a" .
+
+tsd:source_row_ad6d73fb081a a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-1xyqo" .
+
+tsd:source_row_ad76db453c4f a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-0n15u" .
+
+tsd:source_row_adad409d8884 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-1xcsp" .
+
+tsd:source_row_ade674f89b39 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-f74a1" .
+
+tsd:source_row_adebbdb36b91 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-31n57" .
+
+tsd:source_row_ae1dad22a671 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-fgnjp" .
+
+tsd:source_row_af1a90ddb040 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-udmiy" .
+
+tsd:source_row_af4307af1441 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-aca7z" .
+
+tsd:source_row_af52ce882cc5 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-7b8dz" .
+
+tsd:source_row_af5579ef249e a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-05jvk" .
+
+tsd:source_row_af835391d411 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-vlot1" .
+
+tsd:source_row_af8e8f06a456 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ug712" .
+
+tsd:source_row_af91fc9bef23 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-og3y5" .
+
+tsd:source_row_afd45f74beff a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-pntkm" .
+
+tsd:source_row_afe41851802c a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-wzwvy" .
+
+tsd:source_row_afeae02c865e a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-2a51f" .
+
+tsd:source_row_b0187e9bffb5 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-ihsvp" .
+
+tsd:source_row_b078243e01e1 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-6xtve" .
+
+tsd:source_row_b0abfccb1d0e a ts:SourceRow ;
+    ts:referenceId "SE-HPAI(NON-P)-2026-sdm8v" .
+
+tsd:source_row_b0e57caf6501 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-5n2tx" .
+
+tsd:source_row_b0f7dc661e44 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ijw88" .
+
+tsd:source_row_b102c2b1964d a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-d7woz" .
+
+tsd:source_row_b131e65d7c36 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ogru0" .
+
+tsd:source_row_b1b25748531b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-h47eh" .
+
+tsd:source_row_b1b9a4a92aad a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-3fpzl" .
+
+tsd:source_row_b1c28ac9cdc9 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ktbia" .
+
+tsd:source_row_b1f5483f0794 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-lpjr2" .
+
+tsd:source_row_b20e841f0e1b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-l0g0f" .
+
+tsd:source_row_b2120042d293 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-qxtec" .
+
+tsd:source_row_b212cb62fb36 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-x1tus" .
+
+tsd:source_row_b22dbb301164 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-38z7r" .
+
+tsd:source_row_b23a910e7e04 a ts:SourceRow ;
+    ts:referenceId "BE-HPAI(NON-P)-2026-ld1g7" .
+
+tsd:source_row_b2463dcbc50e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-h9v32" .
+
+tsd:source_row_b27276e737c0 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-8jo3a" .
+
+tsd:source_row_b276d11e3c10 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-nqnai" .
+
+tsd:source_row_b2791d0f56af a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-e7556" .
+
+tsd:source_row_b2b0d6f3cfd2 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-khb5q" .
+
+tsd:source_row_b2c38d13b8cc a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-j0vqp" .
+
+tsd:source_row_b2c7bfcafcb0 a ts:SourceRow ;
+    ts:referenceId "LV-ND.NON-P-2026-egnnq" .
+
+tsd:source_row_b2db460ffe95 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-rj3f8" .
+
+tsd:source_row_b30178967204 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-t9nah" .
+
+tsd:source_row_b30ee1dc4556 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-okery" .
+
+tsd:source_row_b3109520175e a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-rwbh7" .
+
+tsd:source_row_b38f5f8783e9 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-0n4dm" .
+
+tsd:source_row_b3c1fb947996 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-4gp7p" .
+
+tsd:source_row_b40e8088fcc5 a ts:SourceRow ;
+    ts:referenceId "RS-ASF-2026-26q2w" .
+
+tsd:source_row_b41cb5588e64 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-2v5kq" .
+
+tsd:source_row_b487f85a6136 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-7ywpp" .
+
+tsd:source_row_b4b78e5dcc68 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-gaeej" .
+
+tsd:source_row_b4f45f465720 a ts:SourceRow ;
+    ts:referenceId "BA-ASF-2026-1g9k1" .
+
+tsd:source_row_b516ddc818d7 a ts:SourceRow ;
+    ts:referenceId "ES-ASF-2026-8je4p" .
+
+tsd:source_row_b521a549476a a ts:SourceRow ;
+    ts:referenceId "HR-ASF-2026-cg5sf" .
+
+tsd:source_row_b5b89993f19b a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-6b9ew" .
+
+tsd:source_row_b5c3bb586fb6 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ojrlq" .
+
+tsd:source_row_b5dfe2cf42d4 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-35j17" .
+
+tsd:source_row_b60bb1a2c6eb a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-nwpa9" .
+
+tsd:source_row_b6549f1ae75f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-k6ccd" .
+
+tsd:source_row_b675206865af a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-s4n9y" .
+
+tsd:source_row_b67c0546b5e6 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-q311c" .
+
+tsd:source_row_b67ef1926c81 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-9s0vk" .
+
+tsd:source_row_b6d8e63d8350 a ts:SourceRow ;
+    ts:referenceId "NO-HPAI(NON-P)-2026-yjaic" .
+
+tsd:source_row_b72db7989e7a a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-ij6xe" .
+
+tsd:source_row_b73392988648 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-s4bch" .
+
+tsd:source_row_b7356b23aa73 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-z3q5j" .
+
+tsd:source_row_b73f0bfb9c19 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-dafi4" .
+
+tsd:source_row_b761ad2cd6b3 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-vu12a" .
+
+tsd:source_row_b788d69c5c49 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-nc22u" .
+
+tsd:source_row_b7ac11abf6be a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-0b0ni" .
+
+tsd:source_row_b7b7469a4557 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-04f6t" .
+
+tsd:source_row_b7bcf8e191e6 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-7hhay" .
+
+tsd:source_row_b7ce9c0d17ab a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-fmaod" .
+
+tsd:source_row_b7d9f32f4f5f a ts:SourceRow ;
+    ts:referenceId "DE-ND-2026-twee7" .
+
+tsd:source_row_b80946a2d041 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ogrih" .
+
+tsd:source_row_b86b7d7cbbc7 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-co09b" .
+
+tsd:source_row_b8c7093c5ac8 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-at6io" .
+
+tsd:source_row_b90cc30704f9 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-6xxf1" .
+
+tsd:source_row_b90f48e820a9 a ts:SourceRow ;
+    ts:referenceId "MD-RABIES-2026-mgqzv" .
+
+tsd:source_row_b922783422e9 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-7rqap" .
+
+tsd:source_row_b9291a59204f a ts:SourceRow ;
+    ts:referenceId "RO-RABIES-2026-ccpsk" .
+
+tsd:source_row_b9533be43113 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-3qkng" .
+
+tsd:source_row_ba0b6dc1d754 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-gbmj2" .
+
+tsd:source_row_ba3463a90996 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-9v7gx" .
+
+tsd:source_row_ba6a2f77e620 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-sw4xy" .
+
+tsd:source_row_ba7fbdc14fec a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-q63a4" .
+
+tsd:source_row_badef5f80318 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-282e4" .
+
+tsd:source_row_bb2b4994c42b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-z8z6z" .
+
+tsd:source_row_bb35938d566b a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-wfvmg" .
+
+tsd:source_row_bbbbeca78bae a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-lfze8" .
+
+tsd:source_row_bbcd359e112b a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-rpcsg" .
+
+tsd:source_row_bc0397932ad4 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-q0sju" .
+
+tsd:source_row_bc1e28160e0c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-r52o6" .
+
+tsd:source_row_bc63e09eb9cc a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-1dt5n" .
+
+tsd:source_row_bc66bcc7e848 a ts:SourceRow ;
+    ts:referenceId "IT-MTBC-2026-tp3z5" .
+
+tsd:source_row_bc704bcbad5f a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-p4pyz" .
+
+tsd:source_row_bccb52a8387f a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-z63ra" .
+
+tsd:source_row_bcfc95e04da3 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-vhmk8" .
+
+tsd:source_row_bd0c05c07bd2 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-4sxao" .
+
+tsd:source_row_bd3239a4227f a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-xmk8f" .
+
+tsd:source_row_bd4b09389066 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-v2xmp" .
+
+tsd:source_row_bd4c9e46f4dc a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-37vht" .
+
+tsd:source_row_bd60bbac2f3d a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-ru1x3" .
+
+tsd:source_row_bdeb2edac1ee a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-i7nsb" .
+
+tsd:source_row_be155c93e3e6 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-qj3k1" .
+
+tsd:source_row_be43ab39b3cf a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-04uej" .
+
+tsd:source_row_be4a09ee4642 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-99781" .
+
+tsd:source_row_be5557dd0dd4 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-4ofqw" .
+
+tsd:source_row_bed72a7b9419 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-16hrr" .
+
+tsd:source_row_bf012f857b52 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-woctk" .
+
+tsd:source_row_bf769cc5f0e7 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-u54de" .
+
+tsd:source_row_bfe79bdc14ab a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-8o4m2" .
+
+tsd:source_row_bffed21281ff a ts:SourceRow ;
+    ts:referenceId "NL-HPAI(NON-P)-2026-6ltfh" .
+
+tsd:source_row_c0409b5745ee a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-4fck4" .
+
+tsd:source_row_c06325b60c4b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-al9px" .
+
+tsd:source_row_c063d1089c9d a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-hq0hk" .
+
+tsd:source_row_c102440d1e1d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-dc8yr" .
+
+tsd:source_row_c1401a0ede1d a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-vtkj5" .
+
+tsd:source_row_c155109f5150 a ts:SourceRow ;
+    ts:referenceId "MD-RABIES-2026-tfgz4" .
+
+tsd:source_row_c17fcaebc7b9 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-55q3e" .
+
+tsd:source_row_c19dff82c646 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ypx9w" .
+
+tsd:source_row_c1ee3cad757c a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-0ctr3" .
+
+tsd:source_row_c1f95b369e85 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-l26d3" .
+
+tsd:source_row_c2003cc02385 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ne0yi" .
+
+tsd:source_row_c2235063d76e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-y74tu" .
+
+tsd:source_row_c2362dfba31d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-e58va" .
+
+tsd:source_row_c32c6c5b71d8 a ts:SourceRow ;
+    ts:referenceId "RS-ASF-2026-mtc0l" .
+
+tsd:source_row_c3447e8f7020 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-09p22" .
+
+tsd:source_row_c36d974e603b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mso9p" .
+
+tsd:source_row_c387bdc2e757 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-65vpt" .
+
+tsd:source_row_c393f3b42231 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-akz4h" .
+
+tsd:source_row_c39a0ebeb673 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-jlbcc" .
+
+tsd:source_row_c3d783349fcb a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-oxcfi" .
+
+tsd:source_row_c3dc7ca38789 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-i6311" .
+
+tsd:source_row_c425cf8d3ba4 a ts:SourceRow ;
+    ts:referenceId "FR-HPAI(NON-P)-2026-j09ee" .
+
+tsd:source_row_c43e7bacd1da a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-ngs1v" .
+
+tsd:source_row_c48f755f088e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ahqxf" .
+
+tsd:source_row_c4ad44c430a2 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-1iciw" .
+
+tsd:source_row_c4e74ded117e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-q4sgk" .
+
+tsd:source_row_c527a0197142 a ts:SourceRow ;
+    ts:referenceId "LV-EBL-2026-jtar4" .
+
+tsd:source_row_c5360d34d857 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-nlieo" .
+
+tsd:source_row_c5383d37740c a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-7u247" .
+
+tsd:source_row_c566ab48c77b a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-2ny2v" .
+
+tsd:source_row_c590b819f198 a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-a8e1y" .
+
+tsd:source_row_c5aa33896740 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-6bjph" .
+
+tsd:source_row_c5d8c608bf94 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-v59ys" .
+
+tsd:source_row_c5eed3103997 a ts:SourceRow ;
+    ts:referenceId "NO-HPAI(NON-P)-2026-01m1x" .
+
+tsd:source_row_c5fac1386a85 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-dvzee" .
+
+tsd:source_row_c60ee53ddb95 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-k194n" .
+
+tsd:source_row_c64cdbcad1bf a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-l0iz2" .
+
+tsd:source_row_c65a73fec787 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-aukbe" .
+
+tsd:source_row_c67b4fdd1470 a ts:SourceRow ;
+    ts:referenceId "IS-HPAI(NON-P)-2026-xvb7r" .
+
+tsd:source_row_c6c5bbda9bbd a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-0cvft" .
+
+tsd:source_row_c70f07f25377 a ts:SourceRow ;
+    ts:referenceId "IT-MTBC-2026-yvjzt" .
+
+tsd:source_row_c72a21945015 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-uavg5" .
+
+tsd:source_row_c74b1caa84e6 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-qtunk" .
+
+tsd:source_row_c7a34c02004c a ts:SourceRow ;
+    ts:referenceId "MD-RABIES-2026-2hcf3" .
+
+tsd:source_row_c7d84151e0e2 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-pxm2c" .
+
+tsd:source_row_c840758474c7 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-dfrnk" .
+
+tsd:source_row_c8495418b904 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-6l6lt" .
+
+tsd:source_row_c8d87f62ea2b a ts:SourceRow ;
+    ts:referenceId "RS-ASF-2026-a9zat" .
+
+tsd:source_row_c8e85601c373 a ts:SourceRow ;
+    ts:referenceId "DE-VHS-2026-dk2ti" .
+
+tsd:source_row_c906089aeb1a a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-54n9n" .
+
+tsd:source_row_c910f1b2cd46 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xac41" .
+
+tsd:source_row_c97488de9bf8 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-pd929" .
+
+tsd:source_row_c9768e412205 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-5t2x1" .
+
+tsd:source_row_c97c6734d15d a ts:SourceRow ;
+    ts:referenceId "TR-CAPRIPOX-2026-8v3ei" .
+
+tsd:source_row_c9e64c585b45 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-5rdju" .
+
+tsd:source_row_c9f54054884c a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-wxpvg" .
+
+tsd:source_row_ca0dbccfb7e0 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-6hp33" .
+
+tsd:source_row_ca1d9367a0fb a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-z4jwk" .
+
+tsd:source_row_ca455ea74822 a ts:SourceRow ;
+    ts:referenceId "FI-HPAI(NON-P)-2026-gihtd" .
+
+tsd:source_row_ca8b63de1a08 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-ehmq2" .
+
+tsd:source_row_cab1b4db01f6 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-p16o5" .
+
+tsd:source_row_cac0a507bc0c a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-6tk6g" .
+
+tsd:source_row_cadc45b80136 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-zznrb" .
+
+tsd:source_row_cb4509b7bbcd a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mtubl" .
+
+tsd:source_row_cb4716f8c2ae a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-slpdi" .
+
+tsd:source_row_cb51ac8c681c a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-icoec" .
+
+tsd:source_row_cb6c390f26a9 a ts:SourceRow ;
+    ts:referenceId "RO-RABIES-2026-5vktb" .
+
+tsd:source_row_cb97bbb762b4 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-h4eeb" .
+
+tsd:source_row_cbe2aa83623b a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-y9a8l" .
+
+tsd:source_row_cbf6b54f795e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-b7x5x" .
+
+tsd:source_row_cc2697017f8c a ts:SourceRow ;
+    ts:referenceId "IS-HPAI(NON-P)-2026-65set" .
+
+tsd:source_row_cc7d19c82efc a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-nmntg" .
+
+tsd:source_row_cd05e4921b68 a ts:SourceRow ;
+    ts:referenceId "EE-ASF-2026-k2fw0" .
+
+tsd:source_row_cd880bd35956 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-v6tvb" .
+
+tsd:source_row_cda6a684cfcc a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-gdb8f" .
+
+tsd:source_row_cde4aabe4d99 a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-bjm72" .
+
+tsd:source_row_cde5c579cc40 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-1jbgu" .
+
+tsd:source_row_cded8e525acf a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-1hjo2" .
+
+tsd:source_row_cdee7532cad4 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-zg3va" .
+
+tsd:source_row_cdff6c2939bd a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-nbpd2" .
+
+tsd:source_row_ce534d5e790e a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-dty48" .
+
+tsd:source_row_ce59bec89218 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-813sx" .
+
+tsd:source_row_ceb2203b12f4 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-k4b5w" .
+
+tsd:source_row_cee96f287be1 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-1ypii" .
+
+tsd:source_row_cf5d8d1a7318 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-pkrzz" .
+
+tsd:source_row_cf61444fae43 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-qtcse" .
+
+tsd:source_row_cfb3f27201c1 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-11w9z" .
+
+tsd:source_row_cfc16fb01600 a ts:SourceRow ;
+    ts:referenceId "MD-ASF-2026-ygsoq" .
+
+tsd:source_row_cfccf5a9df92 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-iwoqh" .
+
+tsd:source_row_d05a534b9e5d a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-x5t6e" .
+
+tsd:source_row_d06d3e93061d a ts:SourceRow ;
+    ts:referenceId "FR-HPAI(P)-2026-8ut1q" .
+
+tsd:source_row_d0a162c82f19 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-6yq9m" .
+
+tsd:source_row_d0c7e54f427f a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-0sc7d" .
+
+tsd:source_row_d17b228ad3d3 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-rkvdh" .
+
+tsd:source_row_d17b5dd670c8 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-57xlp" .
+
+tsd:source_row_d191c533a746 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-oxdsx" .
+
+tsd:source_row_d1b0b4ccb455 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-bktws" .
+
+tsd:source_row_d1bfd94c3e75 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-r49q7" .
+
+tsd:source_row_d1e7f9fbc492 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-qf92b" .
+
+tsd:source_row_d1fc89e002d3 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-kvoh4" .
+
+tsd:source_row_d22c20dfc6fb a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-9tpjn" .
+
+tsd:source_row_d23aee50b5a2 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-ve1pz" .
+
+tsd:source_row_d2412051ce49 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-iapz4" .
+
+tsd:source_row_d264b50c9412 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-3uzzw" .
+
+tsd:source_row_d275ddf81615 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-qa5gc" .
+
+tsd:source_row_d276f09b13ed a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ntaet" .
+
+tsd:source_row_d28cf2d3e593 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-jj3ud" .
+
+tsd:source_row_d29ea3c16d8a a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-d9b6v" .
+
+tsd:source_row_d2ae67a37d9f a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-1tcrl" .
+
+tsd:source_row_d2c2f630b00a a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-7nze0" .
+
+tsd:source_row_d2c4ec6ce887 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-0yrt3" .
+
+tsd:source_row_d3176b9871cd a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-gexvi" .
+
+tsd:source_row_d32aa2588a3e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-gq0ts" .
+
+tsd:source_row_d38e456ed8a7 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-pcya6" .
+
+tsd:source_row_d3a43e1d173c a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-h3c82" .
+
+tsd:source_row_d3a57d719353 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-8p1l2" .
+
+tsd:source_row_d3ace442fa24 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-w8twk" .
+
+tsd:source_row_d43f81e825ee a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-2qg8i" .
+
+tsd:source_row_d4dae2f05b88 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-hlpoj" .
+
+tsd:source_row_d4e0e5f728dc a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-fxv2h" .
+
+tsd:source_row_d4ee7336e74d a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-03vgn" .
+
+tsd:source_row_d4fa45996315 a ts:SourceRow ;
+    ts:referenceId "IT-SHB-2026-joaez" .
+
+tsd:source_row_d5022215a953 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-97b8w" .
+
+tsd:source_row_d51f4fbb3f33 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-a2odk" .
+
+tsd:source_row_d5f3db7a5f93 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-5ozww" .
+
+tsd:source_row_d618abf98354 a ts:SourceRow ;
+    ts:referenceId "PL-ND-2026-95dmj" .
+
+tsd:source_row_d64ffd200ef8 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-oq3jf" .
+
+tsd:source_row_d66ec12ad2be a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-zg3ck" .
+
+tsd:source_row_d67744a0ef76 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-5htxu" .
+
+tsd:source_row_d687de800c76 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xrn2i" .
+
+tsd:source_row_d692460624c6 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-w4hs5" .
+
+tsd:source_row_d6b0524d240d a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-yc2pv" .
+
+tsd:source_row_d6ebcf594510 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-v4lo1" .
+
+tsd:source_row_d72288498153 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-8lco0" .
+
+tsd:source_row_d74cd045ad8d a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-6ke86" .
+
+tsd:source_row_d74dfcf152d1 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-3w7xc" .
+
+tsd:source_row_d77f1f0f124b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-t23bk" .
+
+tsd:source_row_d881c1d68922 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-5saim" .
+
+tsd:source_row_d893a5c655e5 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-pvfhk" .
+
+tsd:source_row_d8dfaf733cc4 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-mmpfn" .
+
+tsd:source_row_d926a487da3d a ts:SourceRow ;
+    ts:referenceId "CY-FMD-2026-dygif" .
+
+tsd:source_row_d96c05de8cc2 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-mceth" .
+
+tsd:source_row_d988dba19307 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-enryl" .
+
+tsd:source_row_d9915644a0d8 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-yre4z" .
+
+tsd:source_row_d9bea4809be5 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-horso" .
+
+tsd:source_row_d9bed58f5baf a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-fs2sc" .
+
+tsd:source_row_d9f8d2bbd63c a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-1khgv" .
+
+tsd:source_row_da0e77cf31d1 a ts:SourceRow ;
+    ts:referenceId "NL-HPAI(NON-P)-2026-7lj6f" .
+
+tsd:source_row_da251f8439c9 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-u158g" .
+
+tsd:source_row_dabd26ae41a8 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-vlqj5" .
+
+tsd:source_row_dac2cf4ba16f a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-jbbaq" .
+
+tsd:source_row_db0c5683ad05 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-gfb6v" .
+
+tsd:source_row_db58f2b48b5c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-zoggy" .
+
+tsd:source_row_db73cc02be64 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-7tof0" .
+
+tsd:source_row_dbaaf16123d1 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-kygae" .
+
+tsd:source_row_dc4c56c10955 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-l6yr3" .
+
+tsd:source_row_dc4e97bb7474 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(NON-P)-2026-5h72h" .
+
+tsd:source_row_dca52e79f2ab a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-r8o3u" .
+
+tsd:source_row_dcb657c714d5 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-j2dpo" .
+
+tsd:source_row_dcc614dac2a4 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-czyfq" .
+
+tsd:source_row_dcdb501d00ad a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-70clu" .
+
+tsd:source_row_dce275352e4b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-0olqy" .
+
+tsd:source_row_dcfc51c1d130 a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-utnm0" .
+
+tsd:source_row_dd3c180e6ed2 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-f22z8" .
+
+tsd:source_row_dd89226a03c3 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-dgfmg" .
+
+tsd:source_row_ddb017ae5db5 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-kp5ik" .
+
+tsd:source_row_ddcb12379239 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-79oux" .
+
+tsd:source_row_ddd55bb5e962 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-yj8db" .
+
+tsd:source_row_ddd5e8c74158 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-jdfal" .
+
+tsd:source_row_ddfa6c8576ee a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-uolqa" .
+
+tsd:source_row_de014b41840a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-eu1l5" .
+
+tsd:source_row_de167a9cef0c a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-uysix" .
+
+tsd:source_row_de2aaeab8620 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-mcyhi" .
+
+tsd:source_row_de39bebbb0aa a ts:SourceRow ;
+    ts:referenceId "PL-ND.NON-P-2026-9uh07" .
+
+tsd:source_row_de4dd1c94f85 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-7u30w" .
+
+tsd:source_row_de801fcd7519 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-felnw" .
+
+tsd:source_row_def191b3edab a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-m53b8" .
+
+tsd:source_row_df03045f06b5 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-8rn10" .
+
+tsd:source_row_df3e3717859b a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ux51g" .
+
+tsd:source_row_df4939d159db a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-4qo16" .
+
+tsd:source_row_df64170246f7 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-4dit2" .
+
+tsd:source_row_df71380b5bbb a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-irqgv" .
+
+tsd:source_row_df97ec192540 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-uf70c" .
+
+tsd:source_row_dfbf282ab6d3 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-h73eo" .
+
+tsd:source_row_dfd255dd9d67 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-1wvh0" .
+
+tsd:source_row_dfda0f7101fe a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-x41zj" .
+
+tsd:source_row_e0060b9dc1f5 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-3g59e" .
+
+tsd:source_row_e06f7a13d137 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-oumc8" .
+
+tsd:source_row_e079dc5934ee a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-pf1qt" .
+
+tsd:source_row_e08674b08f3b a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-4gz3u" .
+
+tsd:source_row_e0adc9da2da0 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-0b2is" .
+
+tsd:source_row_e0c551d1c805 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-59l6s" .
+
+tsd:source_row_e0d576b2bdc3 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-sbfvd" .
+
+tsd:source_row_e0f1054b60a7 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-sn6ps" .
+
+tsd:source_row_e0f3ccb00430 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ypwz2" .
+
+tsd:source_row_e114607cad4e a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-n1gi8" .
+
+tsd:source_row_e15eac600e65 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-yxq1h" .
+
+tsd:source_row_e213f925c3bb a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-yqqcw" .
+
+tsd:source_row_e26d760c63f5 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-35efx" .
+
+tsd:source_row_e29de8e1785e a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-d0mx3" .
+
+tsd:source_row_e2aea30a0cbd a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ac7ap" .
+
+tsd:source_row_e2cfecbd99af a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-5yejn" .
+
+tsd:source_row_e34505c93d8e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-b9h9z" .
+
+tsd:source_row_e36ae00470b7 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-5ix3o" .
+
+tsd:source_row_e3a1332ddcb6 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-1cmdp" .
+
+tsd:source_row_e3b56435e4c8 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-39q7p" .
+
+tsd:source_row_e3cf674b4dd0 a ts:SourceRow ;
+    ts:referenceId "FR-WNF-2026-dw4tl" .
+
+tsd:source_row_e3f94189667c a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-k4u2t" .
+
+tsd:source_row_e4689bf9b764 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-08ytl" .
+
+tsd:source_row_e4b09f9b917e a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-38y9c" .
+
+tsd:source_row_e4c3843d9a6c a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xfrg5" .
+
+tsd:source_row_e4cc136e4236 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-jblpm" .
+
+tsd:source_row_e4fa4188676c a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-ktjkp" .
+
+tsd:source_row_e53778a50037 a ts:SourceRow ;
+    ts:referenceId "AT-MTBC-2026-j2zj3" .
+
+tsd:source_row_e5ebab76db68 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-bg5sa" .
+
+tsd:source_row_e6597fbffa94 a ts:SourceRow ;
+    ts:referenceId "UA-HPAI(NON-P)-2026-2iqy4" .
+
+tsd:source_row_e68346b6a4d2 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-zqzsj" .
+
+tsd:source_row_e713552788ec a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-sy1k5" .
+
+tsd:source_row_e71f0bae9197 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-flcku" .
+
+tsd:source_row_e75e273b7c12 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-2j05v" .
+
+tsd:source_row_e7f0b5d541af a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-k7vii" .
+
+tsd:source_row_e80737d52178 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xphbt" .
+
+tsd:source_row_e81d49fb2e91 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-9jbmm" .
+
+tsd:source_row_e83729bcae5a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-27e8o" .
+
+tsd:source_row_e856b6bd9ad2 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-03eiy" .
+
+tsd:source_row_e8608362311e a ts:SourceRow ;
+    ts:referenceId "FI-HPAI(NON-P)-2026-060ka" .
+
+tsd:source_row_e87a21df9338 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-pco0a" .
+
+tsd:source_row_e8a075c3f201 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-u9k7y" .
+
+tsd:source_row_e8b200fac13b a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-zvt1z" .
+
+tsd:source_row_e8d3bb30020f a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-hcxdd" .
+
+tsd:source_row_e8d8bc909049 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-kmapn" .
+
+tsd:source_row_e8f8661b91dd a ts:SourceRow ;
+    ts:referenceId "PL-ND-2026-3yqy1" .
+
+tsd:source_row_e941929bbe2e a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-q04zw" .
+
+tsd:source_row_e9b834657efc a ts:SourceRow ;
+    ts:referenceId "CZ-HPAI(NON-P)-2026-20mi9" .
+
+tsd:source_row_e9eb72ad623b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-456zd" .
+
+tsd:source_row_ea09256df71f a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-4pmn0" .
+
+tsd:source_row_ea50d2c76156 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-ryzcc" .
+
+tsd:source_row_ea6f259b5945 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-koxte" .
+
+tsd:source_row_eaaaf4de2a3d a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-v0qhh" .
+
+tsd:source_row_eab67317b7e4 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-u52qi" .
+
+tsd:source_row_eafd873d5d47 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-dszst" .
+
+tsd:source_row_eb33408e4535 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-x3ltk" .
+
+tsd:source_row_ebb6b8fe3872 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-boyts" .
+
+tsd:source_row_ec0c531eedc3 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-li2ve" .
+
+tsd:source_row_ec16a730dd9d a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-qg9l2" .
+
+tsd:source_row_ec8ff85e4500 a ts:SourceRow ;
+    ts:referenceId "IT-SHB-2025-xghqg" .
+
+tsd:source_row_ec98acad8298 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-kshl4" .
+
+tsd:source_row_ece0cd68a25e a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-xl7b6" .
+
+tsd:source_row_ece9baa51bee a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-d3cxv" .
+
+tsd:source_row_ed1501447273 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-zum0n" .
+
+tsd:source_row_ed78dbdcec24 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-iqmwi" .
+
+tsd:source_row_ed9b8b6d97ae a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-1nesq" .
+
+tsd:source_row_eda3ee073082 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-zseiz" .
+
+tsd:source_row_edc478357f9b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-9o4s4" .
+
+tsd:source_row_ee65af5d61f9 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-n0ax1" .
+
+tsd:source_row_ee8e54bab513 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-f3his" .
+
+tsd:source_row_eed1b7c2f592 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-rjp9s" .
+
+tsd:source_row_eeeacf3344b2 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-rg3br" .
+
+tsd:source_row_ef28ef34309c a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-yie94" .
+
+tsd:source_row_ef62978f2a98 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-35vbc" .
+
+tsd:source_row_ef64e69ab6ff a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-y3pa1" .
+
+tsd:source_row_efa9c38f8cd0 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-vkn2t" .
+
+tsd:source_row_efc898ed2af9 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-19gbb" .
+
+tsd:source_row_efe5128c8b5c a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-e6ahr" .
+
+tsd:source_row_efe672258bc6 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-xwhhg" .
+
+tsd:source_row_efe6fe62f935 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-1ukfm" .
+
+tsd:source_row_f016f3910170 a ts:SourceRow ;
+    ts:referenceId "IS-HPAI(NON-P)-2026-skfbw" .
+
+tsd:source_row_f048fb5722e9 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-zsbsc" .
+
+tsd:source_row_f0b1dd222e97 a ts:SourceRow ;
+    ts:referenceId "IT-WNF-2026-gr8g3" .
+
+tsd:source_row_f0d8535c97a2 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-x08is" .
+
+tsd:source_row_f0fa3d482305 a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-r30qk" .
+
+tsd:source_row_f102bd8d745c a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-fgjhc" .
+
+tsd:source_row_f113d97d46f4 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-51nvr" .
+
+tsd:source_row_f121c6feaaf6 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-u5sp9" .
+
+tsd:source_row_f1424a8e6cf3 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-n5zap" .
+
+tsd:source_row_f16682026ef2 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-0n1g9" .
+
+tsd:source_row_f195466b9607 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-nhb3p" .
+
+tsd:source_row_f19872b70652 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-0klu4" .
+
+tsd:source_row_f1a4aeb98cec a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-8rc17" .
+
+tsd:source_row_f1f4ef6e68ec a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-lbf65" .
+
+tsd:source_row_f22ca71082c0 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-xxbi2" .
+
+tsd:source_row_f255262ef455 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-5oplq" .
+
+tsd:source_row_f26496dcb24b a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ah1mf" .
+
+tsd:source_row_f29645a7823a a ts:SourceRow ;
+    ts:referenceId "MD-ASF-2026-876iq" .
+
+tsd:source_row_f2c60b711bcd a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-trl3v" .
+
+tsd:source_row_f3116a773e96 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-rgtzt" .
+
+tsd:source_row_f323f3a9cf8e a ts:SourceRow ;
+    ts:referenceId "MD-RABIES-2026-gf9lf" .
+
+tsd:source_row_f3ba01886631 a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-tyna0" .
+
+tsd:source_row_f3e31f478f83 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-h5mv8" .
+
+tsd:source_row_f41835771a61 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-8ia76" .
+
+tsd:source_row_f41d4d28b7a7 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-o6gtw" .
+
+tsd:source_row_f421adae2c9c a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-9dpo9" .
+
+tsd:source_row_f4263f12bcd5 a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-u6w0c" .
+
+tsd:source_row_f45282430aba a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-dtgai" .
+
+tsd:source_row_f45d2daf423f a ts:SourceRow ;
+    ts:referenceId "NL-HPAI(NON-P)-2026-kqyrl" .
+
+tsd:source_row_f46b0d4458ef a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-6ihme" .
+
+tsd:source_row_f472b08dd915 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-m3juf" .
+
+tsd:source_row_f4b5f4edc624 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-3l02k" .
+
+tsd:source_row_f4d9a7aea055 a ts:SourceRow ;
+    ts:referenceId "MD-ASF-2026-wtbgq" .
+
+tsd:source_row_f4dbbf937a6f a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-2bsqe" .
+
+tsd:source_row_f4e61e9eacd3 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-p5hyy" .
+
+tsd:source_row_f4f7f86e7106 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-xsnuk" .
+
+tsd:source_row_f50eb198bac0 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-n4s9o" .
+
+tsd:source_row_f563b226b377 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-crogl" .
+
+tsd:source_row_f5a58f73b36a a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-im1cx" .
+
+tsd:source_row_f5b0b194f360 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-44hxl" .
+
+tsd:source_row_f5ee0650660e a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-aplej" .
+
+tsd:source_row_f626e2212f2b a ts:SourceRow ;
+    ts:referenceId "IT-LSD-2026-9n2i7" .
+
+tsd:source_row_f64dd8d670e4 a ts:SourceRow ;
+    ts:referenceId "SK-ASF-2026-8bjf0" .
+
+tsd:source_row_f652ba83aec9 a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-pja9l" .
+
+tsd:source_row_f654456f1bcb a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-lnzih" .
+
+tsd:source_row_f65f9eb3c582 a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-fuf11" .
+
+tsd:source_row_f6f54c14c187 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-hrnss" .
+
+tsd:source_row_f746076b96ab a ts:SourceRow ;
+    ts:referenceId "DK-HPAI(NON-P)-2026-t9dbc" .
+
+tsd:source_row_f7486b1a2f20 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-k1181" .
+
+tsd:source_row_f7c9c16446e8 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-u66p9" .
+
+tsd:source_row_f7d8b3dfad07 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-9bf1k" .
+
+tsd:source_row_f7ecb382fbac a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-2f8qr" .
+
+tsd:source_row_f81693634fb5 a ts:SourceRow ;
+    ts:referenceId "PL-HPAI(P)-2026-huiqs" .
+
+tsd:source_row_f84c6be54503 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-ozqbs" .
+
+tsd:source_row_f8585dcb45cb a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-ywunm" .
+
+tsd:source_row_f875741622df a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-dgvih" .
+
+tsd:source_row_f8bf4411e4c2 a ts:SourceRow ;
+    ts:referenceId "PL-RABIES-2026-sf02x" .
+
+tsd:source_row_f8ce4adeeef8 a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-frqxr" .
+
+tsd:source_row_f902ef4f615c a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-hg36b" .
+
+tsd:source_row_f914f35b29e9 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-yuuod" .
+
+tsd:source_row_f93d7bc26169 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-3jufx" .
+
+tsd:source_row_f95b65afa428 a ts:SourceRow ;
+    ts:referenceId "EE-ASF-2026-l19g8" .
+
+tsd:source_row_f96d7bea2a9a a ts:SourceRow ;
+    ts:referenceId "HU-ASF-2026-59jyv" .
+
+tsd:source_row_f987def8682e a ts:SourceRow ;
+    ts:referenceId "GR-FMD-2026-ivf7o" .
+
+tsd:source_row_f9a0d6c76795 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-zwhp1" .
+
+tsd:source_row_f9a50186c9c4 a ts:SourceRow ;
+    ts:referenceId "EE-ASF-2026-ou2l6" .
+
+tsd:source_row_f9bb9814bf68 a ts:SourceRow ;
+    ts:referenceId "GR-CAPRIPOX-2026-seeuq" .
+
+tsd:source_row_f9e727606928 a ts:SourceRow ;
+    ts:referenceId "RO-ASF-2026-psxau" .
+
+tsd:source_row_fa2adad7b7b7 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-hj3uy" .
+
+tsd:source_row_fa6c183a3f02 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-7t8vk" .
+
+tsd:source_row_fa8cc2f48b59 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-u8hbr" .
+
+tsd:source_row_fac3e3d3971b a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-dneke" .
+
+tsd:source_row_fac6f77062b1 a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-ujrcf" .
+
+tsd:source_row_fadd51e70481 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-sy2gy" .
+
+tsd:source_row_fae1434434f8 a ts:SourceRow ;
+    ts:referenceId "DE-ND-2026-nkqoq" .
+
+tsd:source_row_fafc638228dd a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-ar7kz" .
+
+tsd:source_row_fb25a5328270 a ts:SourceRow ;
+    ts:referenceId "LV-ASF-2026-197fr" .
+
+tsd:source_row_fb64b1e6ad19 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-h8xw6" .
+
+tsd:source_row_fbbd0c2a3820 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-kz0f0" .
+
+tsd:source_row_fc736a88f020 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-hr4xc" .
+
+tsd:source_row_fcb56116cfc4 a ts:SourceRow ;
+    ts:referenceId "CZ-ND.NON-P-2026-5ox02" .
+
+tsd:source_row_fd2be936feff a ts:SourceRow ;
+    ts:referenceId "DE-HPAI(NON-P)-2026-r4qe4" .
+
+tsd:source_row_fd64b5bb7339 a ts:SourceRow ;
+    ts:referenceId "TR-RABIES-2026-n08yg" .
+
+tsd:source_row_fdae077cde81 a ts:SourceRow ;
+    ts:referenceId "ES-ND-2026-8p2aa" .
+
+tsd:source_row_fdb4e55d4cf8 a ts:SourceRow ;
+    ts:referenceId "DE-ASF-2026-k1s8f" .
+
+tsd:source_row_fe1d38e5eb40 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-7i35o" .
+
+tsd:source_row_fe1e85df4304 a ts:SourceRow ;
+    ts:referenceId "AT-HPAI(NON-P)-2026-nyuxx" .
+
+tsd:source_row_fe2671e0f005 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-2dbpd" .
+
+tsd:source_row_fe27c2be0959 a ts:SourceRow ;
+    ts:referenceId "LT-ASF-2026-5qgc4" .
+
+tsd:source_row_fe46233a02d0 a ts:SourceRow ;
+    ts:referenceId "FR-MTBC-2026-h6f1u" .
+
+tsd:source_row_fe8b78d28937 a ts:SourceRow ;
+    ts:referenceId "FR-HPAI(NON-P)-2026-adh56" .
+
+tsd:source_row_fed83fab9df8 a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-265cj" .
+
+tsd:source_row_ff2abeb651ba a ts:SourceRow ;
+    ts:referenceId "PL-ASF-2026-s7ew2" .
+
+tsd:source_row_ff353370a86f a ts:SourceRow ;
+    ts:referenceId "IT-ASF-2026-ay16x" .
+

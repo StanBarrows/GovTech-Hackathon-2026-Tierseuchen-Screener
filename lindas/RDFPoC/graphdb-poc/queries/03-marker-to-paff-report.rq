@@ -1,0 +1,15 @@
+PREFIX ts: <https://data.tierseuchen-screener.example.org/ontology/adis#>
+PREFIX tss: <https://data.tierseuchen-screener.example.org/skos/>
+SELECT ?event ?situation ?stmt ?report ?snippet ?relevance ?severity ?reach ?prevention
+WHERE {
+  VALUES ?event { <https://data.tierseuchen-screener.example.org/data/event_de-hpai-non-p-2026-06u4a> }
+  ?event ts:belongsToSituation ?situation .
+  ?stmt a ts:PaffSituationStatement ;
+        ts:describesSituation ?situation ;
+        ts:extractedFromSource ?report .
+  OPTIONAL { ?stmt ts:hasEvidenceSnippet ?snippet . }
+  OPTIONAL { ?stmt ts:hasRelevanceAssessment/ts:hasRelevanceLevel ?relevance . }
+  OPTIONAL { ?stmt ts:hasSeverityAssessment/ts:hasSeverityLevel ?severity . }
+  OPTIONAL { ?stmt ts:hasReachAssessment/ts:hasReachLevel ?reach . }
+  OPTIONAL { ?stmt ts:hasPreventionMeasure/ts:preventionMeasureText ?prevention . }
+}

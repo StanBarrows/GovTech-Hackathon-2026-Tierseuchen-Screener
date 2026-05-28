@@ -1,0 +1,531 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
+@prefix tss: <https://data.tierseuchen-screener.example.org/skos/> .
+
+tss:a-s-f-in-domestic-pigs a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "A.S.F. in domestic pigs" .
+
+tss:a-s-f-in-wild-boar a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "A.S.F. in wild boar" .
+
+tss:aethina-tumida-inf-with-small-hive-beetle-2006 a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Aethina tumida (Inf. with)(Small hive beetle)(2006-)" .
+
+tss:anthrax a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Anthrax" .
+
+tss:bovine-spongiform-encephalopathy-atypical-for-ahl a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Bovine spongiform encephalopathy (atypical) for AHL" .
+
+tss:country-belgien a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Belgien" .
+
+tss:country-bosnien-und-herzegowina a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Bosnien und Herzegowina" .
+
+tss:country-bulgarien a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Bulgarien" .
+
+tss:country-d-nemark a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Dänemark" .
+
+tss:country-deutschland a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Deutschland" .
+
+tss:country-estland a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Estland" .
+
+tss:country-finnland a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Finnland" .
+
+tss:country-frankreich a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Frankreich" .
+
+tss:country-griechenland a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Griechenland" .
+
+tss:country-irland a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Irland" .
+
+tss:country-island a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Island" .
+
+tss:country-italien a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Italien" .
+
+tss:country-kroatien a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Kroatien" .
+
+tss:country-lettland a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Lettland" .
+
+tss:country-litauen a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Litauen" .
+
+tss:country-moldau-republik a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Moldau, Republik" .
+
+tss:country-niederlande a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Niederlande" .
+
+tss:country-norwegen a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Norwegen" .
+
+tss:country-polen a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Polen" .
+
+tss:country-republik-nordmazedonien a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Republik Nordmazedonien" .
+
+tss:country-rum-nien a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Rumänien" .
+
+tss:country-schweden a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Schweden" .
+
+tss:country-serbien a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Serbien" .
+
+tss:country-slowakei-slowakische-republik a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Slowakei (Slowakische Republik)" .
+
+tss:country-spanien a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Spanien" .
+
+tss:country-sterreich a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Österreich" .
+
+tss:country-t-rkei a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Türkei" .
+
+tss:country-tschechische-republik a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Tschechische Republik" .
+
+tss:country-ukraine a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Ukraine" .
+
+tss:country-ungarn a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Ungarn" .
+
+tss:country-zypern a skos:Concept ;
+    skos:inScheme tss:countries ;
+    skos:prefLabel "Zypern" .
+
+tss:enzootic-bovine-leukosis a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Enzootic bovine leukosis" .
+
+tss:equine-infectious-anaemia a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Equine infectious anaemia" .
+
+tss:foot-and-mouth-disease-virus-inf-with a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Foot and mouth disease virus (Inf. with)" .
+
+tss:h5n1 a skos:Concept,
+        ts:DiseaseSubtype ;
+    skos:inScheme tss:disease_subtypes ;
+    skos:prefLabel "H5N1" .
+
+tss:h5n5 a skos:Concept,
+        ts:DiseaseSubtype ;
+    skos:inScheme tss:disease_subtypes ;
+    skos:prefLabel "H5N5" .
+
+tss:high-pathogenicity-avian-influenza-viruses-inf-with-poultry a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "High pathogenicity avian influenza viruses (Inf. with) (poultry)" .
+
+tss:hpai-non-p-in-captive-birds a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "HPAI(NON-P) in Captive Birds" .
+
+tss:hpai-non-p-in-wild-birds a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "HPAI(NON-P) in Wild Birds" .
+
+tss:lumpy-skin-disease-virus-inf-with a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Lumpy skin disease virus (Inf. with)" .
+
+tss:mycobacterium-tuberculosis-complex-inf-with-2019 a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Mycobacterium tuberculosis complex (Inf. with)(2019-)" .
+
+tss:newcastle-disease-virus-in-non-poultry-for-ahl a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Newcastle disease virus in non-poultry for AHL" .
+
+tss:newcastle-disease-virus-inf-with a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Newcastle disease virus (Inf. with)" .
+
+tss:pertinence-eu a skos:Concept ;
+    skos:inScheme tss:pertinence-values ;
+    skos:prefLabel "EU" .
+
+tss:pertinence-eu-and-woah a skos:Concept ;
+    skos:inScheme tss:pertinence-values ;
+    skos:prefLabel "EU and WOAH" .
+
+tss:rabies-virus-inf-with a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Rabies virus (Inf. with)" .
+
+tss:rabv a skos:Concept,
+        ts:DiseaseSubtype ;
+    skos:inScheme tss:disease_subtypes ;
+    skos:prefLabel "RABV" .
+
+tss:result-negative a skos:Concept ;
+    skos:inScheme tss:result-status ;
+    skos:prefLabel "Negative" .
+
+tss:result-positive a skos:Concept ;
+    skos:inScheme tss:result-status ;
+    skos:prefLabel "Positive" .
+
+tss:sat-1 a skos:Concept,
+        ts:DiseaseSubtype ;
+    skos:inScheme tss:disease_subtypes ;
+    skos:prefLabel "SAT 1" .
+
+tss:sheep-pox-and-goat-pox a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Sheep pox and goat pox" .
+
+tss:species-accipiter-gentilis a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Accipiter gentilis" .
+
+tss:species-accipitridae-incognita a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Accipitridae (incognita)" .
+
+tss:species-alopochen-aegyptiaca a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Alopochen aegyptiaca" .
+
+tss:species-anas-platyrhynchos a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Anas platyrhynchos" .
+
+tss:species-anatidae-incognita a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Anatidae (incognita)" .
+
+tss:species-anser-anser a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Anser anser" .
+
+tss:species-anser-brachyrhynchus a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Anser brachyrhynchus" .
+
+tss:species-anser-caerulescens a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Anser caerulescens" .
+
+tss:species-anserinae-unidentified a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Anserinae (unidentified)" .
+
+tss:species-aquila-chrysaetos a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Aquila chrysaetos" .
+
+tss:species-bees a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Bees" .
+
+tss:species-birds a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Birds" .
+
+tss:species-branta-bernicla a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Branta bernicla" .
+
+tss:species-branta-canadensis a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Branta canadensis" .
+
+tss:species-branta-leucopsis a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Branta leucopsis" .
+
+tss:species-bubo-bubo a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Bubo bubo" .
+
+tss:species-buffaloes a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Buffaloes" .
+
+tss:species-buteo-buteo a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Buteo buteo" .
+
+tss:species-cats a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Cats" .
+
+tss:species-cattle a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Cattle" .
+
+tss:species-ciconia-ciconia a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Ciconia ciconia" .
+
+tss:species-ciconiidae-incognita a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Ciconiidae (incognita)" .
+
+tss:species-circus-aeruginosus a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Circus aeruginosus" .
+
+tss:species-columbidae-incognita a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Columbidae (incognita)" .
+
+tss:species-corvus-corax a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Corvus corax" .
+
+tss:species-corvus-cornix a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Corvus cornix" .
+
+tss:species-corvus-frugilegus a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Corvus frugilegus" .
+
+tss:species-corvus-monedula a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Corvus monedula" .
+
+tss:species-cygnus-cygnus a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Cygnus cygnus" .
+
+tss:species-cygnus-incognita a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Cygnus (incognita)" .
+
+tss:species-cygnus-olor a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Cygnus olor" .
+
+tss:species-dogs a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Dogs" .
+
+tss:species-equidae-dom a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Equidae (dom)" .
+
+tss:species-falco-peregrinus a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Falco peregrinus" .
+
+tss:species-falconidae-incognita a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Falconidae (incognita)" .
+
+tss:species-goats a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Goats" .
+
+tss:species-larus-argentatus a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Larus argentatus" .
+
+tss:species-larus-cachinnans a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Larus cachinnans" .
+
+tss:species-milvus-milvus a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Milvus milvus" .
+
+tss:species-nyctereutes-procyonoides a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Nyctereutes procyonoides" .
+
+tss:species-oncorhynchus-mykiss a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Oncorhynchus mykiss" .
+
+tss:species-phalacrocoracidae-incognita a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Phalacrocoracidae (incognita)" .
+
+tss:species-rissa-tridactyla a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Rissa tridactyla" .
+
+tss:species-sheep a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Sheep" .
+
+tss:species-sheep-goats-mixed-herd a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Sheep/goats (mixed herd)" .
+
+tss:species-sus-scrofa a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Sus scrofa" .
+
+tss:species-swine a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Swine" .
+
+tss:species-vulpes-vulpes a skos:Concept,
+        ts:Species ;
+    skos:inScheme tss:species ;
+    skos:prefLabel "Vulpes vulpes" .
+
+tss:status-continuing a skos:Concept ;
+    skos:inScheme tss:event-status ;
+    skos:prefLabel "Continuing" .
+
+tss:status-resolved a skos:Concept ;
+    skos:inScheme tss:event-status ;
+    skos:prefLabel "Resolved" .
+
+tss:unit-hives a skos:Concept ;
+    skos:inScheme tss:measuring-units ;
+    skos:prefLabel "Hives" .
+
+tss:unit-tiere a skos:Concept ;
+    skos:inScheme tss:measuring-units ;
+    skos:prefLabel "Tiere" .
+
+tss:viral-haemorrhagic-septicaemia-virus-inf-with a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "Viral haemorrhagic septicaemia virus (Inf. with)" .
+
+tss:west-nile-fever a skos:Concept,
+        ts:Disease ;
+    skos:inScheme tss:diseases ;
+    skos:prefLabel "West Nile Fever" .
+
+tss:event-status a skos:ConceptScheme .
+
+tss:measuring-units a skos:ConceptScheme .
+
+tss:pertinence-values a skos:ConceptScheme .
+
+tss:result-status a skos:ConceptScheme .
+
+tss:disease_subtypes a skos:ConceptScheme .
+
+tss:diseases a skos:ConceptScheme .
+
+tss:countries a skos:ConceptScheme .
+
+tss:species a skos:ConceptScheme .
+
