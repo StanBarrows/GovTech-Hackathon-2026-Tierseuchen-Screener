@@ -17,6 +17,10 @@ Use `--data-dir <path>` to override the default `data/unstructured`.
 Use `ts fetch --limit <n>` to fetch only the first `n` manifest entries.
 `ts fetch` shows a progress bar while downloading articles.
 
+Defaults live in `config.yaml` at the repository root. Relative paths in that
+file resolve from the repository root, so the default output directory is always
+`data/unstructured` even when `ts` is run from a subdirectory.
+
 ## Outputs
 
 Generated files live under `data/unstructured/gefluegelnews/`:

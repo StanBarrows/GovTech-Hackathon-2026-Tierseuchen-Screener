@@ -15,47 +15,66 @@ from rich.progress import (
     TimeElapsedColumn,
 )
 
+from govtech_tierseuchen.config import AppConfig, load_config, resolve_config_path
+
 LOGGER = logging.getLogger(__name__)
 
 
-def build_parser() -> argparse.ArgumentParser:
+def build_parser(config: AppConfig | None = None) -> argparse.ArgumentParser:
+    config = config or load_config()
+    default_source = next(iter(config.sources.values()))
     parser = argparse.ArgumentParser(prog="ts")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    for command in ["discover", "fetch", "parse", "filter-disease", "extract-reports"]:
+    for command in config.scraper.commands:
         subparser = subparsers.add_parser(command)
-        subparser.add_argument("source", choices=["gefluegelnews"])
-        subparser.add_argument("--data-dir", default="data/unstructured")
-        subparser.add_argument("--timeout-seconds", type=float, default=20.0)
-        subparser.add_argument("--delay-seconds", type=float, default=1.0)
-        subparser.add_argument("--limit", type=int, default=None)
+        subparser.add_argument("source", choices=sorted(config.sources))
+        subparser.add_argument("--data-dir", default=None)
+        subparser.add_argument(
+            "--timeout-seconds", type=float, default=default_source.timeout_seconds
+        )
+        subparser.add_argument(
+            "--delay-seconds", type=float, default=default_source.delay_seconds
+        )
+        subparser.add_argument("--limit", type=int, default=default_source.limit)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
+    config = load_config()
     console = Console()
-    _configure_logging(console)
-    parser = build_parser()
+    _configure_logging(console, config)
+    parser = build_parser(config)
     args = parser.parse_args(argv)
-    data_dir = Path(args.data_dir)
+    data_dir = resolve_data_dir(args.data_dir, config)
     if args.command == "discover":
-        return _discover(data_dir, args.timeout_seconds, console)
+        return _discover(data_dir, args.source, args.timeout_seconds, console, config)
     if args.command == "fetch":
         return _fetch(
-            data_dir, args.timeout_seconds, args.delay_seconds, args.limit, console
+            data_dir,
+            args.source,
+            args.timeout_seconds,
+            args.delay_seconds,
+            args.limit,
+            console,
+            config,
         )
     if args.command == "parse":
-        return _parse(data_dir, args.limit, console)
+        return _parse(data_dir, args.source, args.limit, console, config)
     if args.command == "filter-disease":
-        return _filter_disease(data_dir, console)
+        return _filter_disease(data_dir, args.source, console, config)
     if args.command == "extract-reports":
-        return _extract_reports(data_dir, console)
+        return _extract_reports(data_dir, args.source, console, config)
     parser.error(f"Unknown command {args.command}")
     return 2
 
 
-def _configure_logging(console: Console) -> None:
+def resolve_data_dir(value: str | None, config: AppConfig) -> Path:
+    return resolve_config_path(value or config.scraper.data_dir, config)
+
+
+def _configure_logging(console: Console, config: AppConfig) -> None:
     logging.basicConfig(
-        level=logging.INFO,
+        level=getattr(logging, config.scraper.log_level.upper()),
         format="%(message)s",
         datefmt="[%X]",
         handlers=[
@@ -65,7 +84,13 @@ def _configure_logging(console: Console) -> None:
     )
 
 
-def _discover(data_dir: Path, timeout_seconds: float, console: Console) -> int:
+def _discover(
+    data_dir: Path,
+    source: str,
+    timeout_seconds: float,
+    console: Console,
+    config: AppConfig,
+) -> int:
     from govtech_tierseuchen.gefluegelnews import (
         SITEMAP_URL,
         fetch_url,
@@ -77,7 +102,7 @@ def _discover(data_dir: Path, timeout_seconds: float, console: Console) -> int:
     articles = parse_sitemap_articles(
         xml.encode("utf-8"), discovered_at=datetime.now(UTC)
     )
-    write_jsonl(data_dir / "gefluegelnews" / "manifest.jsonl", articles)
+    write_jsonl(config.output_path(data_dir, source, "manifest"), articles)
     console.print(
         f"[green]Discovered {len(articles)} Gefluegelnews article URLs[/green]"
     )
@@ -86,15 +111,17 @@ def _discover(data_dir: Path, timeout_seconds: float, console: Console) -> int:
 
 def _fetch(
     data_dir: Path,
+    source: str,
     timeout_seconds: float,
     delay_seconds: float,
     limit: int | None,
     console: Console,
+    config: AppConfig,
 ) -> int:
     from govtech_tierseuchen.gefluegelnews import fetch_and_cache_article
     from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
 
-    manifest_path = data_dir / "gefluegelnews" / "manifest.jsonl"
+    manifest_path = config.output_path(data_dir, source, "manifest")
     rows = read_jsonl(manifest_path)
     selected_rows = rows if limit is None else rows[:limit]
     untouched_rows = [] if limit is None else rows[limit:]
@@ -107,7 +134,9 @@ def _fetch(
         TimeElapsedColumn(),
         console=console,
     ) as progress:
-        task = progress.add_task("Fetching articles", total=len(selected_rows))
+        task = progress.add_task(
+            config.scraper.progress_description, total=len(selected_rows)
+        )
         for row in selected_rows:
             fetched = fetch_and_cache_article(
                 base_dir=data_dir,
@@ -147,12 +176,18 @@ def _fetch(
     return 0
 
 
-def _parse(data_dir: Path, limit: int | None, console: Console) -> int:
+def _parse(
+    data_dir: Path,
+    source: str,
+    limit: int | None,
+    console: Console,
+    config: AppConfig,
+) -> int:
     from govtech_tierseuchen.gefluegelnews import parse_article_html
     from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
     from govtech_tierseuchen.models import ParseError
 
-    manifest = read_jsonl(data_dir / "gefluegelnews" / "manifest.jsonl")
+    manifest = read_jsonl(config.output_path(data_dir, source, "manifest"))
     rows = manifest if limit is None else manifest[:limit]
     parsed = []
     parse_errors = []
@@ -186,8 +221,8 @@ def _parse(data_dir: Path, limit: int | None, console: Console) -> int:
                     occurred_at=datetime.now(UTC),
                 )
             )
-    write_jsonl(data_dir / "gefluegelnews" / "articles.jsonl", parsed)
-    write_jsonl(data_dir / "gefluegelnews" / "parse_errors.jsonl", parse_errors)
+    write_jsonl(config.output_path(data_dir, source, "articles"), parsed)
+    write_jsonl(config.output_path(data_dir, source, "parse_errors"), parse_errors)
     console.print(
         f"[green]Parsed {len(parsed)} articles[/green]; "
         f"[yellow]{len(parse_errors)} parse errors[/yellow]"
@@ -195,28 +230,32 @@ def _parse(data_dir: Path, limit: int | None, console: Console) -> int:
     return 0
 
 
-def _filter_disease(data_dir: Path, console: Console) -> int:
+def _filter_disease(
+    data_dir: Path, source: str, console: Console, config: AppConfig
+) -> int:
     from govtech_tierseuchen.disease_filter import assess_disease_relevance
     from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
     from govtech_tierseuchen.models import news_article_from_dict
 
     articles = [
         news_article_from_dict(row)
-        for row in read_jsonl(data_dir / "gefluegelnews" / "articles.jsonl")
+        for row in read_jsonl(config.output_path(data_dir, source, "articles"))
     ]
     relevant = []
     for article in articles:
         relevance = assess_disease_relevance(article)
         if relevance.is_relevant:
             relevant.append({"article": article, "relevance": relevance})
-    write_jsonl(data_dir / "gefluegelnews" / "disease_articles.jsonl", relevant)
+    write_jsonl(config.output_path(data_dir, source, "disease_articles"), relevant)
     console.print(
         f"[green]Filtered {len(relevant)} disease-relevant articles from {len(articles)} parsed articles[/green]"
     )
     return 0
 
 
-def _extract_reports(data_dir: Path, console: Console) -> int:
+def _extract_reports(
+    data_dir: Path, source: str, console: Console, config: AppConfig
+) -> int:
     from govtech_tierseuchen.disease_filter import assess_disease_relevance
     from govtech_tierseuchen.disease_reports import extract_report_rules
     from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
@@ -224,14 +263,14 @@ def _extract_reports(data_dir: Path, console: Console) -> int:
 
     articles = [
         news_article_from_dict(row)
-        for row in read_jsonl(data_dir / "gefluegelnews" / "articles.jsonl")
+        for row in read_jsonl(config.output_path(data_dir, source, "articles"))
     ]
     reports = []
     for article in articles:
         relevance = assess_disease_relevance(article)
         if relevance.is_relevant:
             reports.append(extract_report_rules(article, relevance))
-    write_jsonl(data_dir / "gefluegelnews" / "disease_reports.jsonl", reports)
+    write_jsonl(config.output_path(data_dir, source, "disease_reports"), reports)
     console.print(
         f"[green]Extracted {len(reports)} candidate DiseaseReport records[/green]"
     )

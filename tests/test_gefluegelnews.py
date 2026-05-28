@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
 from pathlib import Path
 
-from govtech_tierseuchen.cli import build_parser, main
+from govtech_tierseuchen.cli import build_parser, main, resolve_data_dir
+from govtech_tierseuchen.config import load_config
 from govtech_tierseuchen.gefluegelnews import (
     cache_html,
     fetch_and_cache_article,
@@ -163,6 +164,28 @@ def test_cli_parser_accepts_fetch_limit():
     assert args.command == "fetch"
     assert args.source == "gefluegelnews"
     assert args.limit == 5
+
+
+def test_default_config_resolves_data_dir_from_repo_root(monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+
+    config = load_config()
+    data_dir = resolve_data_dir(None, config)
+
+    assert data_dir.is_absolute()
+    assert data_dir.name == "unstructured"
+    assert data_dir.parent.name == "data"
+    assert data_dir.parent.parent == config.project_root
+
+
+def test_cli_parser_uses_config_defaults():
+    config = load_config()
+    parser = build_parser(config)
+    args = parser.parse_args(["fetch", "gefluegelnews"])
+
+    assert args.timeout_seconds == config.sources["gefluegelnews"].timeout_seconds
+    assert args.delay_seconds == config.sources["gefluegelnews"].delay_seconds
+    assert args.limit == config.sources["gefluegelnews"].limit
 
 
 def test_fetch_stage_reports_limited_progress(monkeypatch, tmp_path, capsys):
