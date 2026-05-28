@@ -5,6 +5,8 @@ use Inertia\Inertia;
 
 Route::redirect('/', '/dashboard/map')->name('home');
 
+Route::get('/imprint', fn () => Inertia::render('imprint'))->name('imprint');
+
 Route::get('/dashboard/map', function () {
     // Deterministic synthetic HPAI events clustered around Swiss hotspots.
     mt_srand(42);
@@ -32,6 +34,7 @@ Route::get('/dashboard/map', function () {
         'captive' => ['Zoo-Vögel', 'Falknerei'],
     ];
     $subtypes = ['H5N1', 'H5N1', 'H5N1', 'H5N1', 'H5N1', 'H5N8', 'H5N5'];
+    $sources = ['BLV', 'Kantonstierarzt', 'Labor', 'Tierarzt', 'Bürger-Meldung'];
 
     $cantonByName = [
         'Bern' => 'BE', 'Zürich' => 'ZH', 'Bodensee' => 'TG', 'Genfersee' => 'VD',
@@ -51,7 +54,7 @@ Route::get('/dashboard/map', function () {
     };
 
     $cases = [];
-    for ($i = 1; $i <= 500; $i++) {
+    for ($i = 1; $i <= 1000; $i++) {
         $roll = mt_rand(1, $totalWeight);
         $acc = 0;
         $hotspot = $hotspots[0];
@@ -76,6 +79,7 @@ Route::get('/dashboard/map', function () {
             'lat' => round($hotspot['lat'] + $gauss() * $hotspot['spread'], 4),
             'lng' => round($hotspot['lng'] + $gauss() * $hotspot['spread'], 4),
             'reportedAt' => date('Y-m-d\TH:i', $start + mt_rand(0, $span)),
+            'source' => $sources[array_rand($sources)],
         ];
     }
 

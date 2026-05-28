@@ -1,10 +1,11 @@
-name: Upload TTL to LINDAS
+name: Merge TTLs and Upload to LINDAS
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - "lindas/test-upload.ttl"
+      - "RDFPoC/graphdb-poc/load/**/*.ttl"
+      - "!RDFPoC/graphdb-poc/load/merged.ttl"
 
 jobs:
   upload-ttl:
@@ -12,17 +13,30 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Upload TTL to LINDAS
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Install Python dependencies
+        run: |
+          pip install rdflib
+
+      - name: Merge TTL files
+        run: |
+          python lindas/merge.py
+
+      - name: Upload merged TTL to LINDAS
         env:
           LINDAS_USERNAME: ${{ secrets.LINDAS_USERNAME }}
           LINDAS_PASSWORD: ${{ secrets.LINDAS_PW }}
           GRAPH_URI: "https://lindas.admin.ch/fsvo/govtech26-tierseuchen-screener"
         run: |
           curl -v \
-            -u "$LINDAS_USERNAME:$LINDAS_PW" \
-            -X POST \
+            -u "$LINDAS_USERNAME:$LINDAS_PASSWORD" \
+            -X PUT \
             -H "Content-Type: text/turtle" \
-            --data-binary @lindas/test-upload.ttl \
-            "https://int.graphdb.lindas.admin.ch/repositories/lindas/rdf-graphs/service?graph=$GRAPH_URI"
+            --data-binary @lindas/RDFPoC/graphdb-poc/load/merged.ttl \
+            "https://int.graphdb.lindas.admin.ch/repositories/lindas/rdf-graphs/service?graph=$GRAPH_URI"            

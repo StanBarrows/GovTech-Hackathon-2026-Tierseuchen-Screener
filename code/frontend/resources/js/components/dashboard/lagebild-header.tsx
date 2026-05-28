@@ -1,7 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { Download } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -48,11 +46,6 @@ export default function LagebildHeader({ title, subtitle }: Props) {
                     })}
                 </NavigationMenuList>
             </NavigationMenu>
-
-            <Button variant="outline" size="sm" className="gap-2">
-                <Download className="size-4" />
-                Export CSV / XLSX
-            </Button>
         </header>
     );
 }

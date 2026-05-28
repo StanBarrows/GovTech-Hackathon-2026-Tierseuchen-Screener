@@ -1,4 +1,4 @@
-import { Pause, Play, RotateCcw } from 'lucide-react';
+import { FastForward, Pause, Play, RotateCcw } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ type Props = {
     playing: boolean;
     onTogglePlay: () => void;
     onReset: () => void;
+    onSkipToEnd: () => void;
     stepHours?: number;
     tickMs?: number;
 };
@@ -40,6 +41,7 @@ export default function PlayBar({
     playing,
     onTogglePlay,
     onReset,
+    onSkipToEnd,
     stepHours = 6,
     tickMs = 120,
 }: Props) {
@@ -97,9 +99,20 @@ export default function PlayBar({
                 size="icon"
                 variant="outline"
                 onClick={onReset}
-                aria-label="Zurücksetzen"
+                aria-label="Auf Anfang zurücksetzen"
+                title="Auf Anfang zurücksetzen"
             >
                 <RotateCcw className="size-4" />
+            </Button>
+            <Button
+                type="button"
+                size="icon"
+                variant="outline"
+                onClick={onSkipToEnd}
+                aria-label="Zum Ende springen (alle Daten anzeigen)"
+                title="Zum Ende springen (alle Daten)"
+            >
+                <FastForward className="size-4" />
             </Button>
 
             <div className="flex flex-1 flex-col gap-1">

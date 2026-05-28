@@ -1,0 +1,23 @@
+scraper:
+  data_dir: data/unstructured
+  log_level: INFO
+  progress_description: Fetching articles
+  commands:
+    - discover
+    - fetch
+    - parse
+    - filter-disease
+    - extract-reports
+  files:
+    manifest: manifest.jsonl
+    articles: articles.jsonl
+    parse_errors: parse_errors.jsonl
+    disease_articles: disease_articles.jsonl
+    disease_reports: disease_reports.jsonl
+
+sources:
+  gefluegelnews:
+    output_dir: gefluegelnews
+    timeout_seconds: 20.0
+    delay_seconds: 1.0
+    limit:

@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react';
 import { Crosshair } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -145,9 +146,14 @@ export default function FilterPanel({
                 </select>
             </div>
 
-            <div className="mt-auto border-t pt-3 text-[10px] text-muted-foreground">
-                <div>Letztes Update</div>
-                <div>ADIS: 2026-05-12 · WAHIS: 2026-05-12</div>
+            <div className="mt-auto space-y-2 border-t pt-3 text-[10px] text-muted-foreground">
+                <div>
+                    <div>Letztes Update</div>
+                    <div>ADIS: 2026-05-12 · WAHIS: 2026-05-12</div>
+                </div>
+                <Link href="/imprint" className="text-primary hover:underline">
+                    Impressum
+                </Link>
             </div>
         </aside>
     );

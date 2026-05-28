@@ -14,14 +14,14 @@ export type Case = {
     reportedAt: string;
 };
 
-type Props = { cases: Case[] };
+type Props = { cases: Case[]; centerLat?: number; centerLng?: number };
 
 const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
 const CH_CENTER: [number, number] = [8.23, 46.82];
 const CH_ZOOM = 7;
 
-const SATELLITE_STYLE = 'mapbox://styles/mapbox/satellite-v9';
+const MAP_STYLE = 'mapbox://styles/mapbox/dark-v11';
 
 function casesToFeatureCollection(cases: Case[]): GeoJSON.FeatureCollection<GeoJSON.Point> {
     return {
@@ -47,7 +47,7 @@ function colorMatchExpression(): mapboxgl.ExpressionSpecification {
     return ['match', ['get', 'disease'], ...stops, DISEASE_FALLBACK] as mapboxgl.ExpressionSpecification;
 }
 
-export default function CaseMap({ cases }: Props) {
+export default function CaseMap({ cases, centerLat, centerLng }: Props) {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
 
@@ -62,7 +62,7 @@ export default function CaseMap({ cases }: Props) {
 
         const map = new mapboxgl.Map({
             container: containerRef.current,
-            style: SATELLITE_STYLE,
+            style: MAP_STYLE,
             center: CH_CENTER,
             zoom: CH_ZOOM,
             attributionControl: true,
