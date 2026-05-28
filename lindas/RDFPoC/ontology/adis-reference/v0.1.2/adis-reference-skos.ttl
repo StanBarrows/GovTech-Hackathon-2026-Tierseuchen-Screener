@@ -60,3 +60,19 @@ tss:research-technical-report a skos:Concept ; skos:prefLabel "technical-report"
 tss:research-dataset a skos:Concept ; skos:prefLabel "dataset"@en ; skos:inScheme tss:research-link-types .
 tss:research-legal-reference a skos:Concept ; skos:prefLabel "legal-reference"@en ; skos:inScheme tss:research-link-types .
 tss:research-other a skos:Concept ; skos:prefLabel "other"@en ; skos:inScheme tss:research-link-types .
+
+
+# Additional SKOS schemes for filter dimensions
+c:production-systems a skos:ConceptScheme ; skos:prefLabel "Production systems (provisional)"@en .
+
+c:epidemiological-units a skos:ConceptScheme ; skos:prefLabel "Epidemiological units (provisional)"@en .
+
+c:test-categories a skos:ConceptScheme ; skos:prefLabel "Test categories (provisional)"@en .
+
+c:test-subcategories a skos:ConceptScheme ; skos:prefLabel "Test subcategories (provisional)"@en .
+
+c:test-names a skos:ConceptScheme ; skos:prefLabel "Test names (provisional)"@en .
+
+c:test-types a skos:ConceptScheme ; skos:prefLabel "Test types (provisional)"@en .
+
+c:laboratory-types a skos:ConceptScheme ; skos:prefLabel "Laboratory types (provisional)"@en .

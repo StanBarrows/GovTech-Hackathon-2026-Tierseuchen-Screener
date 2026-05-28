@@ -232,6 +232,36 @@ def test_extract_report_rules_populates_europe_and_consequences():
     )
 
 
+def test_extract_report_rules_slug_normalizes_accented_country_names():
+    article = NewsArticle(
+        source_id="gefluegelnews",
+        source_name="Gefluegelnews",
+        source_link="https://www.gefluegelnews.de/article/oesterreich",
+        canonical_url="https://www.gefluegelnews.de/article/oesterreich",
+        title="HPAI in Österreich",
+        description="Österreich meldet Vogelgrippe.",
+        keywords=["Vogelgrippe", "H5N1"],
+        publication_date=date(2026, 5, 26),
+        retrieved_at=datetime(2026, 5, 28, 12, 0, tzinfo=timezone.utc),
+        category="Biosicherheit",
+        author="Gefluegelnews",
+        image_url=None,
+        image_credit=None,
+        source_attribution=None,
+        partner_content=False,
+        fulltext="Österreich meldet einen H5N1-Ausbruch.",
+        raw_html_path="raw.html",
+        content_hash="abc123",
+    )
+    relevance = assess_disease_relevance(article)
+
+    report = extract_report_rules(article, relevance)
+
+    assert report.country_or_territory == "Österreich"
+    assert report.country_concept_id == "country-osterreich"
+    assert report.situation_key == "hpai|osterreich|2026-05"
+
+
 def test_news_article_from_dict_restores_dates():
     article = news_article_from_dict(
         {

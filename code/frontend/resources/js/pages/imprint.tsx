@@ -8,13 +8,17 @@ import DashboardLayout from '@/layouts/dashboard-layout';
 
 type Population = 'wild' | 'poultry' | 'captive';
 
-const ALL_POPULATIONS: Population[] = ['wild', 'poultry', 'captive'];
-
 export default function Imprint() {
-    const [population, setPopulation] = useState<Population[]>(ALL_POPULATIONS);
+    const [population, setPopulation] = useState<Population[]>([]);
     const [dateFrom, setDateFrom] = useState('2026-03-01T00:00');
     const [dateTo, setDateTo] = useState('2026-05-28T23:59');
-    const [species, setSpecies] = useState('');
+    const [species, setSpecies] = useState<string[]>([]);
+
+    const toggleSpecies = (s: string) => {
+        setSpecies((prev) =>
+            prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
+        );
+    };
     const [subtype, setSubtype] = useState('H5N1');
     const [center, setCenter] = useState('Bern');
     const [radiusKm, setRadiusKm] = useState(50);
@@ -33,12 +37,14 @@ export default function Imprint() {
                 <FilterPanel
                     population={population}
                     onTogglePopulation={togglePopulation}
+                    onResetPopulation={() => setPopulation([])}
                     dateFrom={dateFrom}
                     dateTo={dateTo}
                     onDateFromChange={setDateFrom}
                     onDateToChange={setDateTo}
                     species={species}
-                    onSpeciesChange={setSpecies}
+                    onToggleSpecies={toggleSpecies}
+                    onResetSpecies={() => setSpecies([])}
                     speciesOptions={[]}
                     subtype={subtype}
                     onSubtypeChange={setSubtype}

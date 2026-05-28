@@ -46,6 +46,30 @@ def test_parse_sitemap_articles_returns_only_article_urls():
     )
 
 
+def test_gefluegelnews_discover_stage_writes_limited_manifest(monkeypatch, tmp_path):
+    sitemap_xml = """<?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      <url><loc>https://www.gefluegelnews.de/article/one</loc></url>
+      <url><loc>https://www.gefluegelnews.de/article/two</loc></url>
+    </urlset>
+    """
+
+    def fake_fetch_url(source_link, timeout_seconds):
+        return 200, sitemap_xml
+
+    monkeypatch.setattr("govtech_tierseuchen.gefluegelnews.fetch_url", fake_fetch_url)
+
+    exit_code = main(
+        ["discover", "gefluegelnews", "--data-dir", str(tmp_path), "--limit", "1"]
+    )
+
+    rows = read_jsonl(tmp_path / "gefluegelnews" / "manifest.jsonl")
+    assert exit_code == 0
+    assert [row["source_link"] for row in rows] == [
+        "https://www.gefluegelnews.de/article/one"
+    ]
+
+
 def test_parse_article_html_extracts_metadata_and_markdown():
     html = """
     <html>
@@ -295,3 +319,49 @@ def test_parse_stage_skips_bad_html_and_writes_parse_error(tmp_path):
     assert [article["title"] for article in articles] == ["Guter Artikel"]
     assert parse_errors[0]["source_link"] == bad.source_link
     assert parse_errors[0]["error_type"] == "ValueError"
+
+
+def test_parse_stage_records_missing_raw_path_and_missing_file(tmp_path):
+    write_jsonl(
+        tmp_path / "gefluegelnews" / "manifest.jsonl",
+        [
+            {"source_link": "https://www.gefluegelnews.de/article/no-path"},
+            {
+                "source_link": "https://www.gefluegelnews.de/article/missing",
+                "raw_html_path": str(
+                    tmp_path / "gefluegelnews" / "raw_html" / "gone.html"
+                ),
+            },
+        ],
+    )
+
+    exit_code = main(["parse", "gefluegelnews", "--data-dir", str(tmp_path)])
+
+    parse_errors = read_jsonl(tmp_path / "gefluegelnews" / "parse_errors.jsonl")
+    assert exit_code == 0
+    assert [error["error_type"] for error in parse_errors] == [
+        "MissingRawPath",
+        "MissingRawFile",
+    ]
+
+
+def test_parse_stage_rejects_raw_paths_outside_source_directory(tmp_path):
+    outside_path = tmp_path / "outside.html"
+    outside_path.write_text("<html><title>Outside</title></html>", encoding="utf-8")
+    write_jsonl(
+        tmp_path / "gefluegelnews" / "manifest.jsonl",
+        [
+            {
+                "source_link": "https://www.gefluegelnews.de/article/outside",
+                "raw_html_path": str(outside_path),
+            }
+        ],
+    )
+
+    exit_code = main(["parse", "gefluegelnews", "--data-dir", str(tmp_path)])
+
+    articles = read_jsonl(tmp_path / "gefluegelnews" / "articles.jsonl")
+    parse_errors = read_jsonl(tmp_path / "gefluegelnews" / "parse_errors.jsonl")
+    assert exit_code == 0
+    assert articles == []
+    assert parse_errors[0]["error_type"] == "UnsafeRawPath"

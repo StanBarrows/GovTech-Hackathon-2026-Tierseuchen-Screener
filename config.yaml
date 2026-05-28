@@ -19,12 +19,110 @@ scraper:
 
 sources:
   gefluegelnews:
+    base_url: https://www.gefluegelnews.de
+    sitemap_path: /sitemap.xml
+    user_agent: "GovTech-Tierseuchen prototype scraper (+local research; respects robots.txt)"
     output_dir: gefluegelnews
+    raw_subdir: raw_html
     timeout_seconds: 20.0
     delay_seconds: 0.5
     limit:
   padi_web:
+    base_url: https://padi-web.cirad.fr
+    articles_api_path: /en/articles/api/
+    user_agent: "GovTech-Tierseuchen prototype scraper (+local research; PADI public API)"
     output_dir: padi_web
+    raw_subdir: raw_json
     timeout_seconds: 20.0
     delay_seconds: 0.5
     limit:
+    article_serializer: sentences
+    discovery:
+      published_after_days: 7
+      per_page: 25
+      relevance_label: 1
+      is_archived: 0
+      ordering: -published_at
+      order_by_key: published_at
+      order_by_order: "-"
+
+disease_filter:
+  version: rules-v1
+  snippet_radius: 90
+  max_snippets: 5
+  acronym_terms:
+    - ASP
+    - HPAI
+    - H5N1
+    - H5N5
+  terms:
+    - HPAI
+    - H5N1
+    - H5N5
+    - Vogelgrippe
+    - Geflügelpest
+    - Gefluegelpest
+    - Aviäre Influenza
+    - Avian Influenza
+    - Newcastle
+    - Afrikanische Schweinepest
+    - ASP
+    - Lumpy Skin Disease
+    - Tierseuche
+    - Ausbruch
+    - Sperrzone
+    - Keulung
+    - Biosicherheit
+
+disease_reports:
+  extraction_version: rules-v1
+  european_countries:
+    - Albanien
+    - Andorra
+    - Belgien
+    - Bosnien
+    - Bulgarien
+    - Dänemark
+    - Deutschland
+    - Estland
+    - Finnland
+    - Frankreich
+    - Griechenland
+    - Irland
+    - Island
+    - Italien
+    - Kroatien
+    - Lettland
+    - Liechtenstein
+    - Litauen
+    - Luxemburg
+    - Malta
+    - Moldau
+    - Niederlande
+    - Norwegen
+    - Österreich
+    - Polen
+    - Portugal
+    - Rumänien
+    - Schweden
+    - Schweiz
+    - Serbien
+    - Slowakei
+    - Slowenien
+    - Spanien
+    - Tschechien
+    - Ukraine
+    - Ungarn
+    - Vereinigtes Königreich
+  consequence_terms:
+    Sperrzone: Sperrzonen
+    Sperrzonen: Sperrzonen
+    keulen: Keulung
+    gekeult: Keulung
+    Keulung: Keulung
+    Stallpflicht: Stallpflicht
+    Impfung: Impfung
+    Monitoring: Monitoring
+    Biosicherheit: Biosicherheit
+    Handel: Handel
+    Export: Export

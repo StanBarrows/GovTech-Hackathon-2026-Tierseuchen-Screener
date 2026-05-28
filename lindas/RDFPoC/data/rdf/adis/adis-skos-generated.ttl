@@ -176,6 +176,51 @@ tss:enzootic-bovine-leukosis a skos:Concept,
     skos:inScheme tss:diseases ;
     skos:prefLabel "Enzootic bovine leukosis" .
 
+tss:epiu-apiary a skos:Concept,
+        ts:EpidemiologicalUnit ;
+    skos:inScheme tss:epidemiological-units ;
+    skos:prefLabel "Apiary" .
+
+tss:epiu-backyard a skos:Concept,
+        ts:EpidemiologicalUnit ;
+    skos:inScheme tss:epidemiological-units ;
+    skos:prefLabel "Backyard" .
+
+tss:epiu-body-of-water a skos:Concept,
+        ts:EpidemiologicalUnit ;
+    skos:inScheme tss:epidemiological-units ;
+    skos:prefLabel "Body of water" .
+
+tss:epiu-farm a skos:Concept,
+        ts:EpidemiologicalUnit ;
+    skos:inScheme tss:epidemiological-units ;
+    skos:prefLabel "Farm" .
+
+tss:epiu-forest a skos:Concept,
+        ts:EpidemiologicalUnit ;
+    skos:inScheme tss:epidemiological-units ;
+    skos:prefLabel "Forest" .
+
+tss:epiu-natural-park a skos:Concept,
+        ts:EpidemiologicalUnit ;
+    skos:inScheme tss:epidemiological-units ;
+    skos:prefLabel "Natural park" .
+
+tss:epiu-not-applicable a skos:Concept,
+        ts:EpidemiologicalUnit ;
+    skos:inScheme tss:epidemiological-units ;
+    skos:prefLabel "Not applicable" .
+
+tss:epiu-other a skos:Concept,
+        ts:EpidemiologicalUnit ;
+    skos:inScheme tss:epidemiological-units ;
+    skos:prefLabel "Other" .
+
+tss:epiu-village a skos:Concept,
+        ts:EpidemiologicalUnit ;
+    skos:inScheme tss:epidemiological-units ;
+    skos:prefLabel "Village" .
+
 tss:equine-infectious-anaemia a skos:Concept,
         ts:Disease ;
     skos:inScheme tss:diseases ;
@@ -205,6 +250,31 @@ tss:hpai-non-p a skos:Concept,
         ts:Disease ;
     skos:inScheme tss:diseases ;
     skos:prefLabel "HPAI(NON-P)" .
+
+tss:lab-type-local-laboratory a skos:Concept,
+        ts:LaboratoryType ;
+    skos:inScheme tss:laboratory-types ;
+    skos:prefLabel "Local laboratory" .
+
+tss:lab-type-national-reference-laboratory a skos:Concept,
+        ts:LaboratoryType ;
+    skos:inScheme tss:laboratory-types ;
+    skos:prefLabel "National Reference Laboratory" .
+
+tss:lab-type-private-laboratory a skos:Concept,
+        ts:LaboratoryType ;
+    skos:inScheme tss:laboratory-types ;
+    skos:prefLabel "Private Laboratory" .
+
+tss:lab-type-regional-reference-laboratory a skos:Concept,
+        ts:LaboratoryType ;
+    skos:inScheme tss:laboratory-types ;
+    skos:prefLabel "Regional Reference Laboratory" .
+
+tss:lab-type-woah-reference-laboratory a skos:Concept,
+        ts:LaboratoryType ;
+    skos:inScheme tss:laboratory-types ;
+    skos:prefLabel "WOAH Reference Laboratory" .
 
 tss:lumpy-skin-disease-virus-inf-with a skos:Concept,
         ts:Disease ;
@@ -243,6 +313,11 @@ tss:production-poultry a skos:Concept,
         ts:ProductionType ;
     skos:inScheme tss:production-types ;
     skos:prefLabel "Poultry" .
+
+tss:production-system-semi-closed-e-g-ponds-or-raceways a skos:Concept,
+        ts:ProductionSystem ;
+    skos:inScheme tss:production-systems ;
+    skos:prefLabel "Semi-closed (e.g. ponds or raceways)" .
 
 tss:rabies-virus-inf-with a skos:Concept,
         ts:Disease ;
@@ -520,6 +595,156 @@ tss:status-resolved a skos:Concept ;
     skos:inScheme tss:event-status ;
     skos:prefLabel "Resolved" .
 
+tss:test-category-antibody-detection a skos:Concept,
+        ts:TestCategory ;
+    skos:inScheme tss:test-categories ;
+    skos:prefLabel "Antibody detection" .
+
+tss:test-category-other-other-than-pathogen-or-antibody-detection a skos:Concept,
+        ts:TestCategory ;
+    skos:inScheme tss:test-categories ;
+    skos:prefLabel "Other (other than pathogen or antibody detection)" .
+
+tss:test-category-pathogen-detection a skos:Concept,
+        ts:TestCategory ;
+    skos:inScheme tss:test-categories ;
+    skos:prefLabel "Pathogen detection" .
+
+tss:test-name-ascoli-test a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Ascoli test" .
+
+tss:test-name-bacterial-culture a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Bacterial culture" .
+
+tss:test-name-blocking-enzyme-linked-immunosorbent-assay-b-elisa a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Blocking enzyme-linked immunosorbent assay (B-ELISA)" .
+
+tss:test-name-coggin-s-test a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Coggin's test" .
+
+tss:test-name-direct-immunofluorescence-test a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Direct immunofluorescence test" .
+
+tss:test-name-elisa-for-the-detection-of-antibodies-against-non-structural-proteins-nsp-elisa a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "ELISA for the detection of antibodies against non-structural proteins (NSP ELISA)" .
+
+tss:test-name-enzyme-linked-immunosorbent-assay-elisa a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Enzyme-linked immunosorbent assay (ELISA)" .
+
+tss:test-name-gamma-interferon-release-assay a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Gamma interferon release assay" .
+
+tss:test-name-gene-sequencing a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Gene sequencing" .
+
+tss:test-name-immunohistochemistry-ihc a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Immunohistochemistry (IHC)" .
+
+tss:test-name-morphological-identification a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Morphological identification" .
+
+tss:test-name-polymerase-chain-reaction-pcr a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Polymerase chain reaction (PCR)" .
+
+tss:test-name-real-time-polymerase-chain-reaction-real-time-pcr a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Real-time polymerase chain reaction (real-time PCR)" .
+
+tss:test-name-real-time-reverse-transcription-polymerase-chain-reaction-rrt-pcr a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Real-time reverse transcription polymerase chain reaction (rRT-PCR)" .
+
+tss:test-name-real-time-rt-pcr a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Real-time RT-PCR" .
+
+tss:test-name-reverse-transcription-polymerase-chain-reaction-rt-pcr a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Reverse transcription-polymerase chain reaction (RT-PCR)" .
+
+tss:test-name-tuberculin-test-bovine a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Tuberculin test, bovine" .
+
+tss:test-name-virus-isolation a skos:Concept,
+        ts:TestName ;
+    skos:inScheme tss:test-names ;
+    skos:prefLabel "Virus isolation" .
+
+tss:test-subcat-antibody-detection-tests a skos:Concept,
+        ts:TestSubcategory ;
+    skos:inScheme tss:test-subcategories ;
+    skos:prefLabel "Antibody detection tests" .
+
+tss:test-subcat-cellular-immunity-tests a skos:Concept,
+        ts:TestSubcategory ;
+    skos:inScheme tss:test-subcategories ;
+    skos:prefLabel "Cellular immunity tests" .
+
+tss:test-subcat-genotyping a skos:Concept,
+        ts:TestSubcategory ;
+    skos:inScheme tss:test-subcategories ;
+    skos:prefLabel "Genotyping" .
+
+tss:test-subcat-immunological-methods-for-antigen-or-protein-detection a skos:Concept,
+        ts:TestSubcategory ;
+    skos:inScheme tss:test-subcategories ;
+    skos:prefLabel "Immunological methods for antigen or protein detection" .
+
+tss:test-subcat-microbiological-culture a skos:Concept,
+        ts:TestSubcategory ;
+    skos:inScheme tss:test-subcategories ;
+    skos:prefLabel "Microbiological culture" .
+
+tss:test-subcat-nucleic-acid-detection a skos:Concept,
+        ts:TestSubcategory ;
+    skos:inScheme tss:test-subcategories ;
+    skos:prefLabel "Nucleic acid detection" .
+
+tss:test-subcat-other-tests-other-than-pathogen-or-antibody-detection a skos:Concept,
+        ts:TestSubcategory ;
+    skos:inScheme tss:test-subcategories ;
+    skos:prefLabel "Other (tests other than pathogen or antibody detection)" .
+
+tss:test-type-field a skos:Concept,
+        ts:TestType ;
+    skos:inScheme tss:test-types ;
+    skos:prefLabel "Field" .
+
+tss:test-type-laboratory a skos:Concept,
+        ts:TestType ;
+    skos:inScheme tss:test-types ;
+    skos:prefLabel "Laboratory" .
+
 tss:unit-hives a skos:Concept ;
     skos:inScheme tss:measuring-units ;
     skos:prefLabel "Hives" .
@@ -548,6 +773,8 @@ tss:wildlife-wild a skos:Concept,
     skos:inScheme tss:wildlife-types ;
     skos:prefLabel "Wild" .
 
+tss:production-systems a skos:ConceptScheme .
+
 tss:event-status a skos:ConceptScheme .
 
 tss:measuring-units a skos:ConceptScheme .
@@ -558,13 +785,25 @@ tss:production-types a skos:ConceptScheme .
 
 tss:result-status a skos:ConceptScheme .
 
+tss:test-types a skos:ConceptScheme .
+
 tss:wildlife-types a skos:ConceptScheme .
+
+tss:test-categories a skos:ConceptScheme .
 
 tss:disease_subtypes a skos:ConceptScheme .
 
 tss:animal-contexts a skos:ConceptScheme .
 
+tss:laboratory-types a skos:ConceptScheme .
+
+tss:test-subcategories a skos:ConceptScheme .
+
+tss:epidemiological-units a skos:ConceptScheme .
+
 tss:diseases a skos:ConceptScheme .
+
+tss:test-names a skos:ConceptScheme .
 
 tss:countries a skos:ConceptScheme .
 

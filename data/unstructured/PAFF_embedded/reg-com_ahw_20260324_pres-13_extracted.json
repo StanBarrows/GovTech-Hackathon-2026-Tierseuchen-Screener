@@ -1,0 +1,29 @@
+{
+  "_source": "reg-com_ahw_20260324_pres-13_extracted.json",
+  "Relevanz": {
+    "label": null,
+    "evidence": null,
+    "rationale": null
+  },
+  "Severity": {
+    "label": null,
+    "evidence": null,
+    "rationale": null
+  },
+  "Reichweite": {
+    "label": null,
+    "evidence": null,
+    "rationale": null
+  },
+  "Prävention": {
+    "bekämpfung": {
+      "measures": [],
+      "evidence": null
+    },
+    "surveilance": {
+      "measures": [],
+      "evidence": null
+    }
+  },
+  "_error": "json parse: Expecting value: line 1 column 1 (char 0)"
+}

@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 from govtech_tierseuchen.cli import build_parser, main
@@ -32,6 +32,13 @@ def test_build_articles_api_url_preserves_relevance_and_date_filters():
     assert "general_labels_per_task%5BRelevance%5D=1" in url
     assert "is_archived=0" in url
     assert "ordering=-published_at" in url
+
+
+def test_build_articles_api_url_defaults_to_recent_bounded_discovery_window():
+    url = build_articles_api_url(today=date(2026, 5, 28))
+
+    assert "per_page=25" in url
+    assert "published_after=2026-05-21" in url
 
 
 def test_parse_article_page_returns_discovered_articles_and_next_page():
@@ -71,6 +78,28 @@ def test_parse_article_page_returns_discovered_articles_and_next_page():
     assert articles[0].last_modified == datetime(
         2026, 5, 28, 8, 42, 19, tzinfo=timezone.utc
     )
+
+
+def test_parse_article_page_skips_rows_with_missing_id_or_bad_date(caplog):
+    payload = {
+        "next": None,
+        "results": [
+            {"published_at": "2026-05-28T08:42:19"},
+            {"id": "BADDATE", "published_at": "not-a-date"},
+            {"id": "OK123", "published_at": "2026-05-28T08:42:19"},
+        ],
+    }
+
+    articles, next_url = parse_article_page(
+        payload,
+        discovered_at=datetime(2026, 5, 28, 12, 0, tzinfo=timezone.utc),
+    )
+
+    assert next_url is None
+    assert [article.source_link for article in articles] == [
+        "https://padi-web.cirad.fr/en/articles/api/OK123/"
+    ]
+    assert "Skipping malformed PADI article row" in caplog.text
 
 
 def test_parse_article_page_rejects_external_next_url():
@@ -262,6 +291,7 @@ def test_cli_uses_selected_source_defaults_for_padi_web(monkeypatch, tmp_path):
 
 
 def test_padi_discover_stage_writes_limited_manifest(monkeypatch, tmp_path):
+    calls = []
     payload = {
         "next": None,
         "results": [
@@ -271,6 +301,7 @@ def test_padi_discover_stage_writes_limited_manifest(monkeypatch, tmp_path):
     }
 
     def fake_fetch_json(source_link, timeout_seconds):
+        calls.append(source_link)
         return 200, payload
 
     monkeypatch.setattr("govtech_tierseuchen.padi_web.fetch_json", fake_fetch_json)
@@ -281,6 +312,8 @@ def test_padi_discover_stage_writes_limited_manifest(monkeypatch, tmp_path):
 
     rows = read_jsonl(tmp_path / "padi_web" / "manifest.jsonl")
     assert exit_code == 0
+    assert "per_page=25" in calls[0]
+    assert "published_after=" in calls[0]
     assert len(rows) == 1
     assert rows[0]["source_link"] == "https://padi-web.cirad.fr/en/articles/api/AAA111/"
 

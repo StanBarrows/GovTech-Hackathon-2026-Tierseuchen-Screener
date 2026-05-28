@@ -3,31 +3,15 @@ from __future__ import annotations
 import hashlib
 import re
 
+from govtech_tierseuchen.config import load_config
 from govtech_tierseuchen.models import DiseaseRelevance, EvidenceSnippet, NewsArticle
 
-FILTER_VERSION = "rules-v1"
-
-DISEASE_TERMS = [
-    "HPAI",
-    "H5N1",
-    "H5N5",
-    "Vogelgrippe",
-    "Geflügelpest",
-    "Gefluegelpest",
-    "Aviäre Influenza",
-    "Avian Influenza",
-    "Newcastle",
-    "Afrikanische Schweinepest",
-    "ASP",
-    "Lumpy Skin Disease",
-    "Tierseuche",
-    "Ausbruch",
-    "Sperrzone",
-    "Keulung",
-    "Biosicherheit",
-]
-
-ACRONYM_TERMS = {"ASP", "HPAI", "H5N1", "H5N5"}
+_CONFIG = load_config().disease_filter
+FILTER_VERSION = _CONFIG.version
+DISEASE_TERMS = _CONFIG.terms
+ACRONYM_TERMS = _CONFIG.acronym_terms
+SNIPPET_RADIUS = _CONFIG.snippet_radius
+MAX_SNIPPETS = _CONFIG.max_snippets
 
 
 def assess_disease_relevance(article: NewsArticle) -> DiseaseRelevance:
@@ -47,7 +31,9 @@ def assess_disease_relevance(article: NewsArticle) -> DiseaseRelevance:
     for term in DISEASE_TERMS:
         if _term_matches(haystack, term):
             matched_terms.append(term)
-            snippet = _snippet_for_term(article.source_link, haystack, term)
+            snippet = _snippet_for_term(
+                article.source_link, haystack, term, radius=SNIPPET_RADIUS
+            )
             if snippet and all(existing.text != snippet.text for existing in snippets):
                 snippets.append(snippet)
     score = len(matched_terms)
@@ -56,7 +42,7 @@ def assess_disease_relevance(article: NewsArticle) -> DiseaseRelevance:
         is_relevant=score > 0,
         score=score,
         matched_terms=matched_terms,
-        evidence_snippets=snippets[:5],
+        evidence_snippets=snippets[:MAX_SNIPPETS],
         filter_version=FILTER_VERSION,
     )
 

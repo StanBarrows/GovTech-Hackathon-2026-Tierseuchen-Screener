@@ -39,6 +39,16 @@ ts:BulletinStatement a owl:Class .
 
 # PAFF / unstructured support
 ts:SourceDocument a owl:Class .
+
+# Added filter dimensions v0.1.2 hardening
+ts:ProductionSystem a owl:Class ; rdfs:label "Production System"@en .
+ts:EpidemiologicalUnit a owl:Class ; rdfs:label "Epidemiological Unit"@en .
+ts:TestCategory a owl:Class ; rdfs:label "Test Category"@en .
+ts:TestSubcategory a owl:Class ; rdfs:label "Test Subcategory"@en .
+ts:TestName a owl:Class ; rdfs:label "Test Name"@en .
+ts:TestType a owl:Class ; rdfs:label "Test Type"@en .
+ts:LaboratoryType a owl:Class ; rdfs:label "Laboratory Type"@en .
+
 ts:PaffReport a owl:Class ; rdfs:subClassOf ts:SourceDocument .
 ts:PaffSituationStatement a owl:Class .
 ts:EvidenceSnippet a owl:Class .
