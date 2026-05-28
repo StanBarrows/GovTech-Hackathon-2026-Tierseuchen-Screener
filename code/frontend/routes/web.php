@@ -5,6 +5,8 @@ use Inertia\Inertia;
 
 Route::redirect('/', '/dashboard/map')->name('home');
 
+Route::get('/imprint', fn () => Inertia::render('imprint'))->name('imprint');
+
 Route::get('/dashboard/map', function () {
     // Deterministic synthetic HPAI events clustered around Swiss hotspots.
     mt_srand(42);

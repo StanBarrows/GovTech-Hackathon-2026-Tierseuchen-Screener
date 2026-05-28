@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { Map as MapIcon, List as ListIcon, BarChart3 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import CaseList from '@/components/dashboard/case-list';
 import FilterPanel from '@/components/dashboard/filter-panel';
@@ -35,7 +35,15 @@ const DEFAULT_FROM = '2026-03-01T00:00';
 const DEFAULT_TO = '2026-05-28T23:59';
 
 export default function DashboardMap({ cases }: Props) {
-    const [view, setView] = useState<'map' | 'list' | 'stats'>('map');
+    const [view, setView] = useState<'map' | 'list' | 'stats'>(() => {
+        if (typeof window === 'undefined') return 'map';
+        const stored = window.localStorage.getItem('ts-scanner:view');
+        return stored === 'list' || stored === 'stats' ? stored : 'map';
+    });
+
+    useEffect(() => {
+        window.localStorage.setItem('ts-scanner:view', view);
+    }, [view]);
     const [population, setPopulation] = useState<Population[]>(ALL_POPULATIONS);
     const [dateFrom, setDateFrom] = useState(DEFAULT_FROM);
     const [dateTo, setDateTo] = useState(DEFAULT_TO);
@@ -60,9 +68,10 @@ export default function DashboardMap({ cases }: Props) {
             if (c.population && !population.includes(c.population)) return false;
             if (dateFrom && c.reportedAt < dateFrom) return false;
             if (effectiveTo && c.reportedAt > effectiveTo) return false;
+            if (subtype && c.subtype !== subtype) return false;
             return true;
         });
-    }, [cases, population, dateFrom, effectiveTo]);
+    }, [cases, population, dateFrom, effectiveTo, subtype]);
 
     const [centerLat, centerLng] = CENTER_COORDS[center] ?? CENTER_COORDS.Bern;
 

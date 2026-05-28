@@ -14,7 +14,7 @@ export type Case = {
     reportedAt: string;
 };
 
-type Props = { cases: Case[] };
+type Props = { cases: Case[]; centerLat?: number; centerLng?: number };
 
 const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
@@ -47,7 +47,7 @@ function colorMatchExpression(): mapboxgl.ExpressionSpecification {
     return ['match', ['get', 'disease'], ...stops, DISEASE_FALLBACK] as mapboxgl.ExpressionSpecification;
 }
 
-export default function CaseMap({ cases }: Props) {
+export default function CaseMap({ cases, centerLat, centerLng }: Props) {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
 
