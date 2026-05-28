@@ -1,0 +1,44 @@
+PREFIX ts: <https://data.tierseuchen-screener.example.org/ontology/adis#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?event ?eventRef ?nationalRef ?confirmationDate ?suspicionStartDate
+       ?situation ?disease ?diseaseLabel ?subtype ?subtypeLabel ?species ?speciesLabel
+       ?countryLabel ?admin1 ?admin2 ?admin3 ?lat ?lon
+WHERE {
+  GRAPH <https://lindas.admin.ch/fsvo/govtech26-tierseuchen-screener> {
+    ?event a ts:OutbreakEvent .
+    OPTIONAL { ?event ts:referenceId ?eventRef . }
+    OPTIONAL { ?event ts:nationalReferenceId ?nationalRef . }
+    OPTIONAL { ?event ts:confirmationDate ?confirmationDate . }
+    OPTIONAL { ?event ts:suspicionStartDate ?suspicionStartDate . }
+    OPTIONAL { ?event ts:belongsToSituation ?situation . }
+    OPTIONAL { ?event ts:countryLabel ?countryLabel . }
+    OPTIONAL {
+      ?event ts:hasDisease ?disease .
+      OPTIONAL { ?disease skos:prefLabel ?diseaseLabel . }
+    }
+    OPTIONAL {
+      ?event ts:hasDiseaseSubtype ?subtype .
+      OPTIONAL { ?subtype skos:prefLabel ?subtypeLabel . }
+    }
+    OPTIONAL {
+      ?event ts:hasSpecies ?species .
+      OPTIONAL { ?species skos:prefLabel ?speciesLabel . }
+    }
+    OPTIONAL {
+      ?event ts:occursAt ?loc .
+      OPTIONAL { ?loc ts:adminLevel1Label ?admin1 . }
+      OPTIONAL { ?loc ts:adminLevel2Label ?admin2 . }
+      OPTIONAL { ?loc ts:adminLevel3Label ?admin3 . }
+      OPTIONAL { ?loc ts:latitude ?lat . }
+      OPTIONAL { ?loc ts:longitude ?lon . }
+    }
+    {{country_filter}}
+    {{date_from_filter}}
+    {{date_to_filter}}
+  }
+}
+ORDER BY DESC(?confirmationDate)
+LIMIT {{limit}}
+OFFSET {{offset}}
