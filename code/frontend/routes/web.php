@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\LindasController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::redirect('/', '/dashboard/map')->name('home');
+
+Route::get('/lindas', [LindasController::class, 'index'])->name('lindas');
+Route::post('/lindas/cache/clear', [LindasController::class, 'clearCache'])->name('lindas.cache.clear');
 
 Route::get('/imprint', fn () => Inertia::render('imprint'))->name('imprint');
 
@@ -50,6 +54,7 @@ Route::get('/dashboard/map', function () {
     $gauss = function () {
         $u1 = (mt_rand(1, mt_getrandmax()) / mt_getrandmax());
         $u2 = (mt_rand(0, mt_getrandmax()) / mt_getrandmax());
+
         return sqrt(-2 * log($u1)) * cos(2 * M_PI * $u2);
     };
 

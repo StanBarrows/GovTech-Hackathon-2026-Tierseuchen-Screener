@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'lindas' => [
+        'sparql_endpoint' => env('LINDAS_SPARQL_ENDPOINT', 'https://int.lindas.admin.ch/query'),
+        'graph_uri' => env('LINDAS_GRAPH_URI', 'https://lindas.admin.ch/fsvo/govtech26-tierseuchen-screener'),
+        'timeout' => (int) env('LINDAS_SPARQL_TIMEOUT', 30),
+        'queries_path' => env('LINDAS_QUERIES_PATH'),
+        'cache_ttl' => (int) env('LINDAS_CACHE_TTL', 900),
+    ],
+
 ];
