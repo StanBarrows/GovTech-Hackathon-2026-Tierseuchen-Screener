@@ -9,6 +9,7 @@ from govtech_tierseuchen.gefluegelnews import (
     parse_sitemap_articles,
 )
 from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
+from govtech_tierseuchen.models import FetchedArticle
 
 
 def test_parse_sitemap_articles_returns_only_article_urls():
@@ -152,6 +153,75 @@ def test_cli_parser_accepts_pipeline_stage_and_source():
     assert args.command == "discover"
     assert args.source == "gefluegelnews"
     assert args.data_dir == "data/unstructured"
+    assert parser.prog == "ts"
+
+
+def test_cli_parser_accepts_fetch_limit():
+    parser = build_parser()
+    args = parser.parse_args(["fetch", "gefluegelnews", "--limit", "5"])
+
+    assert args.command == "fetch"
+    assert args.source == "gefluegelnews"
+    assert args.limit == 5
+
+
+def test_fetch_stage_reports_limited_progress(monkeypatch, tmp_path, capsys):
+    calls = []
+    manifest_rows = [
+        {"source_link": "https://www.gefluegelnews.de/article/one"},
+        {"source_link": "https://www.gefluegelnews.de/article/two"},
+        {"source_link": "https://www.gefluegelnews.de/article/three"},
+    ]
+    write_jsonl(tmp_path / "gefluegelnews" / "manifest.jsonl", manifest_rows)
+
+    def fake_fetch_and_cache_article(
+        base_dir,
+        source_link,
+        fetched_at,
+        timeout_seconds,
+        delay_seconds,
+    ):
+        calls.append(source_link)
+        return FetchedArticle(
+            source_id="gefluegelnews",
+            source_name="Gefluegelnews",
+            source_link=source_link,
+            fetched_at=fetched_at,
+            status_code=200,
+            raw_html_path=str(base_dir / "gefluegelnews" / "raw_html" / "fake.html"),
+            content_hash="abc123",
+            canonical_url=source_link,
+        )
+
+    monkeypatch.setattr(
+        "govtech_tierseuchen.gefluegelnews.fetch_and_cache_article",
+        fake_fetch_and_cache_article,
+    )
+
+    exit_code = main(
+        [
+            "fetch",
+            "gefluegelnews",
+            "--data-dir",
+            str(tmp_path),
+            "--limit",
+            "2",
+            "--delay-seconds",
+            "0",
+        ]
+    )
+
+    captured = capsys.readouterr()
+    rows = read_jsonl(tmp_path / "gefluegelnews" / "manifest.jsonl")
+    assert exit_code == 0
+    assert calls == [
+        "https://www.gefluegelnews.de/article/one",
+        "https://www.gefluegelnews.de/article/two",
+    ]
+    assert rows[0]["status_code"] == 200
+    assert rows[1]["status_code"] == 200
+    assert "status_code" not in rows[2]
+    assert "Fetched 2 of 3 manifest entries" in captured.out
 
 
 def test_parse_stage_skips_bad_html_and_writes_parse_error(tmp_path):

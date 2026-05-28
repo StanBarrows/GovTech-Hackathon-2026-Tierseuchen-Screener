@@ -1,12 +1,25 @@
 from __future__ import annotations
 
 import argparse
+import logging
 from datetime import UTC, datetime
 from pathlib import Path
 
+from rich.console import Console
+from rich.logging import RichHandler
+from rich.progress import (
+    BarColumn,
+    Progress,
+    TaskProgressColumn,
+    TextColumn,
+    TimeElapsedColumn,
+)
+
+LOGGER = logging.getLogger(__name__)
+
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="govtech-tierseuchen")
+    parser = argparse.ArgumentParser(prog="ts")
     subparsers = parser.add_subparsers(dest="command", required=True)
     for command in ["discover", "fetch", "parse", "filter-disease", "extract-reports"]:
         subparser = subparsers.add_parser(command)
@@ -19,24 +32,40 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    console = Console()
+    _configure_logging(console)
     parser = build_parser()
     args = parser.parse_args(argv)
     data_dir = Path(args.data_dir)
     if args.command == "discover":
-        return _discover(data_dir, args.timeout_seconds)
+        return _discover(data_dir, args.timeout_seconds, console)
     if args.command == "fetch":
-        return _fetch(data_dir, args.timeout_seconds, args.delay_seconds, args.limit)
+        return _fetch(
+            data_dir, args.timeout_seconds, args.delay_seconds, args.limit, console
+        )
     if args.command == "parse":
-        return _parse(data_dir, args.limit)
+        return _parse(data_dir, args.limit, console)
     if args.command == "filter-disease":
-        return _filter_disease(data_dir)
+        return _filter_disease(data_dir, console)
     if args.command == "extract-reports":
-        return _extract_reports(data_dir)
+        return _extract_reports(data_dir, console)
     parser.error(f"Unknown command {args.command}")
     return 2
 
 
-def _discover(data_dir: Path, timeout_seconds: float) -> int:
+def _configure_logging(console: Console) -> None:
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(message)s",
+        datefmt="[%X]",
+        handlers=[
+            RichHandler(console=console, markup=True, show_path=False, show_time=False)
+        ],
+        force=True,
+    )
+
+
+def _discover(data_dir: Path, timeout_seconds: float, console: Console) -> int:
     from govtech_tierseuchen.gefluegelnews import (
         SITEMAP_URL,
         fetch_url,
@@ -49,11 +78,18 @@ def _discover(data_dir: Path, timeout_seconds: float) -> int:
         xml.encode("utf-8"), discovered_at=datetime.now(UTC)
     )
     write_jsonl(data_dir / "gefluegelnews" / "manifest.jsonl", articles)
+    console.print(
+        f"[green]Discovered {len(articles)} Gefluegelnews article URLs[/green]"
+    )
     return 0
 
 
 def _fetch(
-    data_dir: Path, timeout_seconds: float, delay_seconds: float, limit: int | None
+    data_dir: Path,
+    timeout_seconds: float,
+    delay_seconds: float,
+    limit: int | None,
+    console: Console,
 ) -> int:
     from govtech_tierseuchen.gefluegelnews import fetch_and_cache_article
     from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
@@ -63,39 +99,55 @@ def _fetch(
     selected_rows = rows if limit is None else rows[:limit]
     untouched_rows = [] if limit is None else rows[limit:]
     fetched_rows = []
-    for row in selected_rows:
-        fetched = fetch_and_cache_article(
-            base_dir=data_dir,
-            source_link=row["source_link"],
-            fetched_at=datetime.now(UTC),
-            timeout_seconds=timeout_seconds,
-            delay_seconds=delay_seconds,
-        )
-        merged = dict(row)
-        if hasattr(fetched, "raw_html_path"):
-            merged.update(
-                {
-                    "fetched_at": fetched.fetched_at.isoformat(),
-                    "status_code": fetched.status_code,
-                    "raw_html_path": fetched.raw_html_path,
-                    "content_hash": fetched.content_hash,
-                    "canonical_url": fetched.canonical_url,
-                }
+
+    with Progress(
+        TextColumn("[bold blue]{task.description}"),
+        BarColumn(),
+        TaskProgressColumn(),
+        TimeElapsedColumn(),
+        console=console,
+    ) as progress:
+        task = progress.add_task("Fetching articles", total=len(selected_rows))
+        for row in selected_rows:
+            fetched = fetch_and_cache_article(
+                base_dir=data_dir,
+                source_link=row["source_link"],
+                fetched_at=datetime.now(UTC),
+                timeout_seconds=timeout_seconds,
+                delay_seconds=delay_seconds,
             )
-        else:
-            merged.update(
-                {
-                    "fetch_error_type": fetched.error_type,
-                    "fetch_error_message": fetched.message,
-                    "fetch_error_at": fetched.occurred_at.isoformat(),
-                }
-            )
-        fetched_rows.append(merged)
+            merged = dict(row)
+            if hasattr(fetched, "raw_html_path"):
+                merged.update(
+                    {
+                        "fetched_at": fetched.fetched_at.isoformat(),
+                        "status_code": fetched.status_code,
+                        "raw_html_path": fetched.raw_html_path,
+                        "content_hash": fetched.content_hash,
+                        "canonical_url": fetched.canonical_url,
+                    }
+                )
+            else:
+                LOGGER.warning(
+                    "Fetch failed for %s: %s", row["source_link"], fetched.message
+                )
+                merged.update(
+                    {
+                        "fetch_error_type": fetched.error_type,
+                        "fetch_error_message": fetched.message,
+                        "fetch_error_at": fetched.occurred_at.isoformat(),
+                    }
+                )
+            fetched_rows.append(merged)
+            progress.advance(task)
     write_jsonl(manifest_path, [*fetched_rows, *untouched_rows])
+    console.print(
+        f"[green]Fetched {len(selected_rows)} of {len(rows)} manifest entries[/green]"
+    )
     return 0
 
 
-def _parse(data_dir: Path, limit: int | None) -> int:
+def _parse(data_dir: Path, limit: int | None, console: Console) -> int:
     from govtech_tierseuchen.gefluegelnews import parse_article_html
     from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
     from govtech_tierseuchen.models import ParseError
@@ -136,10 +188,14 @@ def _parse(data_dir: Path, limit: int | None) -> int:
             )
     write_jsonl(data_dir / "gefluegelnews" / "articles.jsonl", parsed)
     write_jsonl(data_dir / "gefluegelnews" / "parse_errors.jsonl", parse_errors)
+    console.print(
+        f"[green]Parsed {len(parsed)} articles[/green]; "
+        f"[yellow]{len(parse_errors)} parse errors[/yellow]"
+    )
     return 0
 
 
-def _filter_disease(data_dir: Path) -> int:
+def _filter_disease(data_dir: Path, console: Console) -> int:
     from govtech_tierseuchen.disease_filter import assess_disease_relevance
     from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
     from govtech_tierseuchen.models import news_article_from_dict
@@ -154,10 +210,13 @@ def _filter_disease(data_dir: Path) -> int:
         if relevance.is_relevant:
             relevant.append({"article": article, "relevance": relevance})
     write_jsonl(data_dir / "gefluegelnews" / "disease_articles.jsonl", relevant)
+    console.print(
+        f"[green]Filtered {len(relevant)} disease-relevant articles from {len(articles)} parsed articles[/green]"
+    )
     return 0
 
 
-def _extract_reports(data_dir: Path) -> int:
+def _extract_reports(data_dir: Path, console: Console) -> int:
     from govtech_tierseuchen.disease_filter import assess_disease_relevance
     from govtech_tierseuchen.disease_reports import extract_report_rules
     from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
@@ -173,6 +232,9 @@ def _extract_reports(data_dir: Path) -> int:
         if relevance.is_relevant:
             reports.append(extract_report_rules(article, relevance))
     write_jsonl(data_dir / "gefluegelnews" / "disease_reports.jsonl", reports)
+    console.print(
+        f"[green]Extracted {len(reports)} candidate DiseaseReport records[/green]"
+    )
     return 0
 
 

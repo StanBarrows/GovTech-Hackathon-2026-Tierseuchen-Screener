@@ -81,11 +81,11 @@ The news scraper is staged so discovery, fetching, parsing, filtering, and repor
 extraction can be rerun independently.
 
 ```bash
-uv run govtech-tierseuchen discover gefluegelnews
-uv run govtech-tierseuchen fetch gefluegelnews --delay-seconds 1
-uv run govtech-tierseuchen parse gefluegelnews
-uv run govtech-tierseuchen filter-disease gefluegelnews
-uv run govtech-tierseuchen extract-reports gefluegelnews
+uv run ts discover gefluegelnews
+uv run ts fetch gefluegelnews --limit 25 --delay-seconds 1
+uv run ts parse gefluegelnews
+uv run ts filter-disease gefluegelnews
+uv run ts extract-reports gefluegelnews
 ```
 
 Raw HTML and generated JSONL files are local artifacts under
