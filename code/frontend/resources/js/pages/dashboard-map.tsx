@@ -115,7 +115,7 @@ set.add(c.species);
         <DashboardLayout>
             <Head title="TS-Scanner" />
             <LagebildHeader title="TS-Scanner" subtitle="" />
-            <div className="flex gap-4 p-4" style={{ height: 'calc(100vh - 3.5rem)' }}>
+            <div className="flex flex-col gap-4 p-4 md:flex-row md:h-[calc(100vh-3.5rem)]">
                 <FilterPanel
                     population={population}
                     onTogglePopulation={togglePopulation}
@@ -133,7 +133,7 @@ set.add(c.species);
                     radiusKm={radiusKm}
                     onRadiusChange={setRadiusKm}
                 />
-                <div className="flex flex-1 flex-col gap-3 overflow-hidden">
+                <div className="flex min-h-[70vh] flex-1 flex-col gap-3 md:min-h-0 md:overflow-hidden">
                     <div className="inline-flex w-fit rounded-md border bg-card p-0.5 text-sm">
                         <button
                             type="button"
@@ -173,7 +173,7 @@ set.add(c.species);
                         </button>
                     </div>
                     {view === 'map' ? (
-                        <div className="relative flex-1 overflow-hidden rounded-md border">
+                        <div className="relative min-h-[60vh] flex-1 overflow-hidden rounded-md border md:min-h-0">
                             <ClientOnly
                                 fallback={
                                     <div className="flex h-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">
