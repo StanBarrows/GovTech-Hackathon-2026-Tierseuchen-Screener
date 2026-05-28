@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import time
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
@@ -24,15 +24,21 @@ ARTICLES_API_URL = f"{BASE_URL}/en/articles/api/"
 DEFAULT_USER_AGENT = (
     "GovTech-Tierseuchen prototype scraper (+local research; PADI public API)"
 )
+DEFAULT_DISCOVERY_DAYS = 7
+DEFAULT_DISCOVERY_PER_PAGE = 25
 
 
 def build_articles_api_url(
     *,
     page: int = 1,
-    per_page: int = 100,
+    per_page: int = DEFAULT_DISCOVERY_PER_PAGE,
     published_after: str | None = None,
     source_category: str | None = None,
+    today: date | None = None,
 ) -> str:
+    if published_after is None:
+        today = today or date.today()
+        published_after = (today - timedelta(days=DEFAULT_DISCOVERY_DAYS)).isoformat()
     params: dict[str, str | int] = {
         "page": page,
         "per_page": per_page,
@@ -42,8 +48,7 @@ def build_articles_api_url(
         "order_by[key]": "published_at",
         "order_by[order]": "-",
     }
-    if published_after:
-        params["published_after"] = published_after
+    params["published_after"] = published_after
     if source_category:
         params["source_category"] = source_category
     return f"{ARTICLES_API_URL}?{urlencode(params)}"

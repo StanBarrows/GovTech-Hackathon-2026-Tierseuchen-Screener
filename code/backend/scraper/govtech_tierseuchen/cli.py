@@ -174,11 +174,17 @@ def _discover(
         articles = []
         next_url: str | None = build_articles_api_url()
         seen_page_urls: set[str] = set()
+        page_number = 0
         while next_url:
             if next_url in seen_page_urls:
                 LOGGER.warning("Stopping repeated PADI pagination URL: %s", next_url)
                 break
             seen_page_urls.add(next_url)
+            page_number += 1
+            console.print(
+                f"[cyan]Fetching PADI discovery page {page_number} "
+                f"({len(articles)} articles found so far)[/cyan]"
+            )
             _, payload = fetch_json(next_url, timeout_seconds=timeout_seconds)
             page_articles, next_url = parse_article_page(
                 payload, discovered_at=datetime.now(UTC)
