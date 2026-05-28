@@ -41,6 +41,12 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'seoDefaults' => [
+                'siteName' => config('seo.site_name'),
+                'siteUrl' => config('seo.site_url'),
+                'defaultDescription' => config('seo.default_description'),
+                'defaultOgImage' => url((string) config('seo.default_og_image')),
+            ],
         ];
     }
 }

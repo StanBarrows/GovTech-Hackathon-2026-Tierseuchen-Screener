@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LindasController;
+use App\Support\SeoMeta;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -9,7 +10,12 @@ Route::redirect('/', '/dashboard/map')->name('home');
 Route::get('/lindas', [LindasController::class, 'index'])->name('lindas');
 Route::post('/lindas/cache/clear', [LindasController::class, 'clearCache'])->name('lindas.cache.clear');
 
-Route::get('/imprint', fn () => Inertia::render('imprint'))->name('imprint');
+Route::get('/imprint', fn () => Inertia::render('imprint', [
+    'seo' => SeoMeta::forPage([
+        'title' => 'Impressum',
+        'description' => 'Impressum und rechtliche Angaben zum Tierseuchen Screener.',
+    ]),
+]))->name('imprint');
 
 Route::get('/dashboard/map', function () {
     // Deterministic synthetic HPAI events clustered around Swiss hotspots.
@@ -117,5 +123,11 @@ Route::get('/dashboard/map', function () {
         ];
     }
 
-    return Inertia::render('dashboard-map', ['cases' => $cases]);
+    return Inertia::render('dashboard-map', [
+        'cases' => $cases,
+        'seo' => SeoMeta::forPage([
+            'title' => 'Karte',
+            'description' => 'Interaktives Lagebild zu Tierseuchen-Ausbrüchen in der Schweiz.',
+        ]),
+    ]);
 })->name('dashboard.map');

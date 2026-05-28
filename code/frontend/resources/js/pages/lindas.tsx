@@ -1,8 +1,10 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, Database } from 'lucide-react';
 import type { ReactNode } from 'react';
 
+import { PageHead } from '@/components/seo/page-head';
 import DashboardLayout from '@/layouts/dashboard-layout';
+import type { SeoMeta } from '@/types/seo';
 
 type EntityCounts = {
     outbreakEvents: number;
@@ -92,6 +94,7 @@ type Snapshot = {
 type Props = {
     snapshot: Snapshot;
     error: string | null;
+    seo: SeoMeta;
 };
 
 const TABS = [
@@ -142,13 +145,13 @@ function tabHref(tab: string, page = 1) {
     return `/lindas?${params.toString()}`;
 }
 
-export default function Lindas({ snapshot, error }: Props) {
+export default function Lindas({ snapshot, error, seo }: Props) {
     const { meta, counts, data } = snapshot;
     const activeTab = meta.tab;
 
     return (
         <DashboardLayout>
-            <Head title="LINDAS Data Validator" />
+            <PageHead seo={seo} />
 
             <header className="border-b bg-card px-4 py-3">
                 <div className="flex flex-wrap items-center justify-between gap-3">

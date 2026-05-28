@@ -1,4 +1,3 @@
-import { Head } from '@inertiajs/react';
 import { Map as MapIcon, List as ListIcon, BarChart3 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -12,8 +11,10 @@ import type {Case} from '@/components/map/case-map';
 import ClientOnly from '@/components/map/client-only';
 import type {DiseaseCode} from '@/components/map/disease-colors';
 import Legend from '@/components/map/legend';
+import { PageHead } from '@/components/seo/page-head';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DashboardLayout from '@/layouts/dashboard-layout';
+import type { SeoMeta } from '@/types/seo';
 
 type Population = 'wild' | 'poultry' | 'captive';
 
@@ -24,7 +25,10 @@ type MapCase = Case & {
     subtype?: string;
 };
 
-type Props = { cases: MapCase[] };
+type Props = {
+    cases: MapCase[];
+    seo: SeoMeta;
+};
 
 const CENTER_COORDS: Record<string, [number, number]> = {
     Bern: [46.9480, 7.4474],
@@ -36,7 +40,7 @@ const CENTER_COORDS: Record<string, [number, number]> = {
 const DEFAULT_FROM = '2026-03-01T00:00';
 const DEFAULT_TO = '2026-05-28T23:59';
 
-export default function DashboardMap({ cases }: Props) {
+export default function DashboardMap({ cases, seo }: Props) {
     const [view, setView] = useState<'map' | 'list' | 'stats'>(() => {
         if (typeof window === 'undefined') {
 return 'map';
@@ -118,7 +122,7 @@ set.add(c.species);
 
     return (
         <DashboardLayout>
-            <Head title="TS-Scanner" />
+            <PageHead seo={seo} />
             <LagebildHeader title="TS-Scanner" subtitle="" />
             <div className="flex flex-col gap-4 p-4 md:flex-row md:h-[calc(100vh-3.5rem)]">
                 <FilterPanel
