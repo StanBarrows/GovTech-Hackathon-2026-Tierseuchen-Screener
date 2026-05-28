@@ -1,0 +1,69 @@
+# Merges upstream main into this fork every 5 minutes (GitHub schedule minimum).
+#
+# Runs only on the StanBarrows fork (skipped on BLV-OSAV-USAV upstream).
+#
+# Uses GITHUB_TOKEN (contents: write) to push merged changes back to this repo.
+# If push is blocked by fork policy, set MY_GITHUB_TOKEN (StanBarrows PAT with
+# Contents: Read and write on this repository) — same secret as stanbarrows-push-laravel.
+#
+# Upstream: https://github.com/BLV-OSAV-USAV/GovTech-Hackathon-2026-Tierseuchen-Screener
+
+name: stanbarrows-sync-upstream
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  UPSTREAM_OWNER: BLV-OSAV-USAV
+  UPSTREAM_REPO: GovTech-Hackathon-2026-Tierseuchen-Screener
+
+concurrency:
+  group: sync-upstream-main
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'StanBarrows/GovTech-Hackathon-2026-Tierseuchen-Screener'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Sync from upstream
+        env:
+          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ -n "${MY_GITHUB_TOKEN:-}" ]; then
+            git remote set-url origin "https://x-access-token:${MY_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          fi
+
+          UPSTREAM="https://github.com/${UPSTREAM_OWNER}/${UPSTREAM_REPO}.git"
+          git remote add upstream "$UPSTREAM"
+          git fetch upstream main
+
+          if git merge-base --is-ancestor upstream/main HEAD; then
+            echo "Fork main is already up to date with upstream/main."
+            exit 0
+          fi
+
+          if ! git merge upstream/main --no-edit \
+            -m "Sync from ${UPSTREAM_OWNER}/${UPSTREAM_REPO}@upstream/main"; then
+            echo "::error::Merge conflict while syncing upstream/main. Resolve manually on the fork, then re-run."
+            git merge --abort || true
+            exit 1
+          fi
+
+          git push origin main
