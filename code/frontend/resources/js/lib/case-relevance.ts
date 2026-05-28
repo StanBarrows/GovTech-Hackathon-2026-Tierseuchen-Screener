@@ -1,6 +1,63 @@
+import type { Case, RelevanceContext } from '@/types/case';
+
 export type Geo = { lat: number; lng: number };
 
 export type Weighted = Geo & { weight?: number };
+
+const EPSILON = 1e-4;
+
+export function contextMatches(
+    centerLat: number,
+    centerLng: number,
+    radiusKm: number,
+    ctx?: RelevanceContext | null,
+): boolean {
+    if (!ctx) {
+        return false;
+    }
+
+    return (
+        Math.abs(ctx.centerLat - centerLat) < EPSILON &&
+        Math.abs(ctx.centerLng - centerLng) < EPSILON &&
+        Math.abs(ctx.radiusKm - radiusKm) < EPSILON
+    );
+}
+
+// Server-provided values are preferred when the user hasn't moved the center
+// or radius from the request-time defaults; otherwise we recompute client-side.
+export function resolveDistanceKm(
+    c: Case,
+    center: Geo,
+    radiusKm: number,
+    ctx?: RelevanceContext | null,
+): number {
+    if (c.latitude == null || c.longitude == null) {
+        return 0;
+    }
+
+    if (contextMatches(center.lat, center.lng, radiusKm, ctx) && c.distanceKm != null) {
+        return c.distanceKm;
+    }
+
+    return haversineKm({ lat: c.latitude, lng: c.longitude }, center);
+}
+
+export function resolveRelevance(
+    c: Case,
+    center: Geo,
+    radiusKm: number,
+    ctx?: RelevanceContext | null,
+): number {
+    if (contextMatches(center.lat, center.lng, radiusKm, ctx) && c.relevanceIndex != null) {
+        return c.relevanceIndex;
+    }
+
+    if (c.latitude == null || c.longitude == null) {
+        return 1;
+    }
+
+    return relevance({ lat: c.latitude, lng: c.longitude }, center, radiusKm);
+}
 
 const EARTH_KM = 6371;
 

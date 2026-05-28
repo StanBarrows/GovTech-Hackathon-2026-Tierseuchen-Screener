@@ -7,7 +7,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 
-type Population = 'wild' | 'poultry' | 'captive';
+import type { Population } from '@/types/case';
 
 type DetailCase = {
     id: number | string;
@@ -17,8 +17,8 @@ type DetailCase = {
     canton?: string;
     species?: string;
     subtype?: string;
-    lat: number;
-    lng: number;
+    lat: number | null;
+    lng: number | null;
     reportedAt: string;
     distance?: number;
     priority?: 'high' | 'medium' | 'low';
@@ -60,6 +60,10 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
 }
 
 function formatTimestamp(iso: string) {
+    if (!iso) {
+        return '—';
+    }
+
     const [date, time] = iso.split('T');
     const [y, m, d] = date.split('-');
 
@@ -119,9 +123,13 @@ export default function CaseDetailDialog({ open, onOpenChange, item }: Props) {
                             <Row
                                 label="Koordinaten"
                                 value={
-                                    <span className="tabular-nums">
-                                        {item.lat.toFixed(4)}, {item.lng.toFixed(4)}
-                                    </span>
+                                    item.lat != null && item.lng != null ? (
+                                        <span className="tabular-nums">
+                                            {item.lat.toFixed(4)}, {item.lng.toFixed(4)}
+                                        </span>
+                                    ) : (
+                                        '—'
+                                    )
                                 }
                             />
                             {typeof item.distance === 'number' && (

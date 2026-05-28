@@ -12,24 +12,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { haversineKm, relevance as relevanceFn } from '@/lib/case-relevance';
-
-type Population = 'wild' | 'poultry' | 'captive';
-
-type Case = {
-    id: number | string;
-    disease: string;
-    population?: Population;
-    location: string;
-    canton?: string;
-    species?: string;
-    subtype?: string;
-    source?: string;
-    weight?: number;
-    lat: number;
-    lng: number;
-    reportedAt: string;
-};
+import { resolveDistanceKm, resolveRelevance } from '@/lib/case-relevance';
+import type { Case, Population, RelevanceContext } from '@/types/case';
 
 type Priority = 'high' | 'medium' | 'low';
 
@@ -41,6 +25,7 @@ type Props = {
     centerLat: number;
     centerLng: number;
     radiusKm: number;
+    relevanceContext?: RelevanceContext | null;
 };
 
 type SortKey = 'relevance' | 'priority' | 'reportedAt' | 'distance';
@@ -98,6 +83,10 @@ function PopulationIcon({ p }: { p?: Population }) {
 }
 
 function formatDate(iso: string) {
+    if (!iso) {
+        return '—';
+    }
+
     const datePart = iso.split('T')[0];
     const [y, m, d] = datePart.split('-');
     const timePart = iso.includes('T') ? ` · ${iso.split('T')[1].slice(0, 5)}` : '';
@@ -105,7 +94,24 @@ function formatDate(iso: string) {
     return `${d}.${m}.${y.slice(2)}${timePart}`;
 }
 
-type DetailRow = Case & { distance: number; relevance: number; priority: 'high' | 'medium' | 'low' };
+// Display projection of a Lindas Case used by the list/report/dialog.
+export type DetailRow = {
+    raw: Case;
+    id: string;
+    disease: string;
+    population?: Population;
+    location: string;
+    canton?: string;
+    species?: string;
+    subtype?: string;
+    source?: string;
+    lat: number | null;
+    lng: number | null;
+    reportedAt: string;
+    distance: number;
+    relevance: number;
+    priority: 'high' | 'medium' | 'low';
+};
 
 function escapeHtml(s: string): string {
     return s
@@ -247,7 +253,7 @@ ${Object.entries(bySource)
     setTimeout(() => win.print(), 400);
 }
 
-export default function CaseList({ cases, centerLat, centerLng, radiusKm }: Props) {
+export default function CaseList({ cases, centerLat, centerLng, radiusKm, relevanceContext }: Props) {
     const [sortKey, setSortKey] = useState<SortKey>('relevance');
     const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
     const [detail, setDetail] = useState<DetailRow | null>(null);
@@ -257,18 +263,34 @@ export default function CaseList({ cases, centerLat, centerLng, radiusKm }: Prop
     const [page, setPage] = useState(1);
     const [generatingReport, setGeneratingReport] = useState(false);
 
-    const rows = useMemo(() => {
+    const rows = useMemo<DetailRow[]>(() => {
         const center = { lat: centerLat, lng: centerLng };
 
         return cases.map((c) => {
-            const distance = haversineKm({ lat: c.lat, lng: c.lng }, center);
-            const r = relevanceFn(c, center, radiusKm);
+            const distance = resolveDistanceKm(c, center, radiusKm, relevanceContext);
+            const r = resolveRelevance(c, center, radiusKm, relevanceContext);
             const priority: 'high' | 'medium' | 'low' =
                 r >= 3 ? 'high' : r >= 1 ? 'medium' : 'low';
 
-            return { ...c, distance, relevance: r, priority };
+            return {
+                raw: c,
+                id: c.iri,
+                disease: c.diseaseLabel ?? c.disease ?? '',
+                population: c.population ?? undefined,
+                location: c.admin2 ?? c.admin1 ?? c.countryLabel ?? '',
+                canton: c.admin1 ?? undefined,
+                species: c.speciesLabel ?? c.species ?? undefined,
+                subtype: c.subtypeLabel ?? c.subtype ?? undefined,
+                source: c.source ?? undefined,
+                lat: c.latitude ?? null,
+                lng: c.longitude ?? null,
+                reportedAt: c.confirmationDate ?? c.suspicionStartDate ?? '',
+                distance,
+                relevance: r,
+                priority,
+            };
         });
-    }, [cases, centerLat, centerLng, radiusKm]);
+    }, [cases, centerLat, centerLng, radiusKm, relevanceContext]);
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();

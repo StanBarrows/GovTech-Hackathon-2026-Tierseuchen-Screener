@@ -136,9 +136,11 @@ function Td({ children, mono = false }: { children: ReactNode; mono?: boolean })
 
 function tabHref(tab: string, page = 1) {
     const params = new URLSearchParams({ tab });
+
     if (tab === 'events' && page > 1) {
         params.set('page', String(page));
     }
+
     return `/lindas?${params.toString()}`;
 }
 

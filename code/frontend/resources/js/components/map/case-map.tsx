@@ -3,26 +3,20 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import { relevance } from '@/lib/case-relevance';
+import { resolveRelevance } from '@/lib/case-relevance';
+import type { Case, RelevanceContext } from '@/types/case';
 
 import { DISEASE_COLORS, DISEASE_FALLBACK  } from './disease-colors';
 import type {DiseaseCode} from './disease-colors';
 
-export type Case = {
-    id: number | string;
-    disease: string;
-    location: string;
-    lat: number;
-    lng: number;
-    reportedAt: string;
-    weight?: number;
-};
+export type { Case } from '@/types/case';
 
 type Props = {
     cases: Case[];
     centerLat?: number;
     centerLng?: number;
     radiusKm: number;
+    relevanceContext?: RelevanceContext | null;
 };
 
 const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
@@ -36,20 +30,24 @@ function casesToFeatureCollection(
     cases: Case[],
     center: { lat: number; lng: number } | null,
     radiusKm: number,
+    ctx?: RelevanceContext | null,
 ): GeoJSON.FeatureCollection<GeoJSON.Point> {
     return {
         type: 'FeatureCollection',
-        features: cases.map((c) => ({
-            type: 'Feature',
-            geometry: { type: 'Point', coordinates: [c.lng, c.lat] },
-            properties: {
-                id: c.id,
-                disease: c.disease,
-                location: c.location,
-                reportedAt: c.reportedAt,
-                relevance: relevance(c, center, radiusKm),
-            },
-        })),
+        features: cases
+            .filter((c) => c.latitude != null && c.longitude != null)
+            .map((c) => ({
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [c.longitude as number, c.latitude as number] },
+                properties: {
+                    id: c.iri,
+                    disease: c.disease ?? '',
+                    diseaseLabel: c.diseaseLabel ?? c.disease ?? '',
+                    location: c.admin1 ?? c.admin2 ?? c.countryLabel ?? '',
+                    reportedAt: c.confirmationDate ?? c.suspicionStartDate ?? '',
+                    relevance: center ? resolveRelevance(c, center, radiusKm, ctx) : 1,
+                },
+            })),
     };
 }
 
@@ -62,14 +60,14 @@ function colorMatchExpression(): mapboxgl.ExpressionSpecification {
     return ['match', ['get', 'disease'], ...stops, DISEASE_FALLBACK] as mapboxgl.ExpressionSpecification;
 }
 
-export default function CaseMap({ cases, centerLat, centerLng, radiusKm }: Props) {
+export default function CaseMap({ cases, centerLat, centerLng, radiusKm, relevanceContext }: Props) {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
 
     const center = centerLat != null && centerLng != null ? { lat: centerLat, lng: centerLng } : null;
     const data = useMemo(
-        () => casesToFeatureCollection(cases, center, radiusKm),
-        [cases, centerLat, centerLng, radiusKm],
+        () => casesToFeatureCollection(cases, center, radiusKm, relevanceContext),
+        [cases, centerLat, centerLng, radiusKm, relevanceContext],
     );
 
     useEffect(() => {
@@ -176,7 +174,7 @@ return;
                         `<div style="font-family: inherit; font-size: 12px; line-height: 1.4;">
                             <div style="display:flex; align-items:center; gap:6px; font-weight:600;">
                                 <span style="display:inline-block;width:8px;height:8px;border-radius:9999px;background:${color}"></span>
-                                ${props.disease}
+                                ${props.diseaseLabel ?? props.disease}
                             </div>
                             <div style="margin-top:4px;">${props.location}</div>
                             <div style="color:#71717a;">${props.reportedAt}</div>

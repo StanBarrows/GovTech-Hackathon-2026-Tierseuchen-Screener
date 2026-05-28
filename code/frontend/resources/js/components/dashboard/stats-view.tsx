@@ -3,29 +3,15 @@ import { useMemo } from 'react';
 import { DISEASE_COLORS, DISEASE_FALLBACK  } from '@/components/map/disease-colors';
 import type {DiseaseCode} from '@/components/map/disease-colors';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { relevance as relevanceFn } from '@/lib/case-relevance';
-
-type Population = 'wild' | 'poultry' | 'captive';
-
-type Case = {
-    id: number | string;
-    disease: string;
-    population?: Population;
-    location: string;
-    canton?: string;
-    species?: string;
-    subtype?: string;
-    weight?: number;
-    lat: number;
-    lng: number;
-    reportedAt: string;
-};
+import { resolveRelevance } from '@/lib/case-relevance';
+import type { Case, Population, RelevanceContext } from '@/types/case';
 
 type Props = {
     cases: Case[];
     centerLat: number;
     centerLng: number;
     radiusKm: number;
+    relevanceContext?: RelevanceContext | null;
 };
 
 function fmt(v: number): string {
@@ -219,12 +205,12 @@ function TimeSeries({ buckets }: { buckets: { key: string; count: number }[] }) 
     );
 }
 
-export default function StatsView({ cases, centerLat, centerLng, radiusKm }: Props) {
+export default function StatsView({ cases, centerLat, centerLng, radiusKm, relevanceContext }: Props) {
     const scored = useMemo(() => {
         const center = { lat: centerLat, lng: centerLng };
 
-        return cases.map((c) => ({ c, r: relevanceFn(c, center, radiusKm) }));
-    }, [cases, centerLat, centerLng, radiusKm]);
+        return cases.map((c) => ({ c, r: resolveRelevance(c, center, radiusKm, relevanceContext) }));
+    }, [cases, centerLat, centerLng, radiusKm, relevanceContext]);
 
     const total = scored.reduce((s, x) => s + x.r, 0);
 
@@ -232,7 +218,10 @@ export default function StatsView({ cases, centerLat, centerLng, radiusKm }: Pro
         const map = new Map<string, number>();
 
         for (const { c, r } of scored) {
-map.set(c.disease, (map.get(c.disease) ?? 0) + r);
+{
+    const k = c.diseaseLabel ?? c.disease ?? '—';
+    map.set(k, (map.get(k) ?? 0) + r);
+}
 }
 
         return [...map.entries()]
@@ -259,7 +248,7 @@ sums[c.population] += r;
         const map = new Map<string, number>();
 
         for (const { c, r } of scored) {
-            const k = c.canton ?? '—';
+            const k = c.admin1 ?? '—';
             map.set(k, (map.get(k) ?? 0) + r);
         }
 
@@ -273,11 +262,13 @@ sums[c.population] += r;
         const map = new Map<string, number>();
 
         for (const { c, r } of scored) {
-            if (!c.subtype) {
-continue;
-}
+            const k = c.subtypeLabel ?? c.subtype;
 
-            map.set(c.subtype, (map.get(c.subtype) ?? 0) + r);
+            if (!k) {
+                continue;
+            }
+
+            map.set(k, (map.get(k) ?? 0) + r);
         }
 
         return [...map.entries()]
@@ -286,16 +277,18 @@ continue;
     }, [scored]);
 
     const timeBuckets = useMemo(() => {
-        if (scored.length === 0) {
-return [];
-}
+        const dated = scored.filter(({ c }) => c.confirmationDate);
+
+        if (dated.length === 0) {
+            return [];
+        }
 
         const map = new Map<string, number>();
-        let min = dayKey(scored[0].c.reportedAt);
+        let min = dayKey(dated[0].c.confirmationDate as string);
         let max = min;
 
-        for (const { c, r } of scored) {
-            const k = dayKey(c.reportedAt);
+        for (const { c, r } of dated) {
+            const k = dayKey(c.confirmationDate as string);
 
             if (k < min) {
 min = k;
