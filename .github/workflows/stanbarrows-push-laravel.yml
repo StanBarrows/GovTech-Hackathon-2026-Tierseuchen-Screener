@@ -3,7 +3,7 @@
 # Runs only on the StanBarrows fork (skipped on BLV-OSAV-USAV upstream).
 #
 # Required secret (fork Settings → Secrets and variables → Actions):
-#   MY_GITHUB_TOKEN — fine-grained or classic PAT for StanBarrows with
+#   MY_GITHUB_TOKEN — classic PAT (repo scope) or fine-grained PAT for StanBarrows with
 #   Contents: Read and write on GovTech-Hackathon-2026-Tierseuchen-Screener-Laravel
 #
 # Target: https://github.com/StanBarrows/GovTech-Hackathon-2026-Tierseuchen-Screener-Laravel
@@ -21,6 +21,10 @@ on:
 permissions:
   contents: read
 
+env:
+  TARGET_OWNER: StanBarrows
+  TARGET_REPO: GovTech-Hackathon-2026-Tierseuchen-Screener-Laravel
+
 jobs:
   sync:
     if: github.repository == 'StanBarrows/GovTech-Hackathon-2026-Tierseuchen-Screener'
@@ -29,19 +33,41 @@ jobs:
       - name: Checkout monorepo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Clone target repository
+      - name: Authenticate to GitHub
         env:
           MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          TARGET_URL="https://x-access-token:${MY_GITHUB_TOKEN}@github.com/StanBarrows/GovTech-Hackathon-2026-Tierseuchen-Screener-Laravel.git"
 
-          if git ls-remote --heads "$TARGET_URL" main | grep -q .; then
-            git clone "$TARGET_URL" target-repo
+          if [ -z "${MY_GITHUB_TOKEN:-}" ]; then
+            echo "::error::Actions secret MY_GITHUB_TOKEN is not set on this fork. Add a StanBarrows PAT with Contents read/write on ${TARGET_OWNER}/${TARGET_REPO}. See code/frontend/SYNC.md."
+            exit 1
+          fi
+
+          printf '%s' "$MY_GITHUB_TOKEN" | gh auth login --with-token
+          gh auth setup-git
+
+          if ! gh api "repos/${TARGET_OWNER}/${TARGET_REPO}" --jq .full_name >/dev/null; then
+            echo "::error::MY_GITHUB_TOKEN cannot read ${TARGET_OWNER}/${TARGET_REPO}. Check PAT repository access and expiration."
+            exit 1
+          fi
+
+          if [ "$(gh api "repos/${TARGET_OWNER}/${TARGET_REPO}" --jq .permissions.push)" != "true" ]; then
+            echo "::error::MY_GITHUB_TOKEN has no push access to ${TARGET_OWNER}/${TARGET_REPO}. Grant Contents: Read and write."
+            exit 1
+          fi
+
+      - name: Clone target repository
+        run: |
+          set -euo pipefail
+          TARGET="https://github.com/${TARGET_OWNER}/${TARGET_REPO}.git"
+
+          if git ls-remote --heads "$TARGET" main | grep -q .; then
+            gh repo clone "${TARGET_OWNER}/${TARGET_REPO}" target-repo
           else
             mkdir target-repo
             git -C target-repo init -b main
-            git -C target-repo remote add origin "$TARGET_URL"
+            git -C target-repo remote add origin "$TARGET"
           fi
 
       - name: Sync code/frontend to target
@@ -52,9 +78,9 @@ jobs:
 
       - name: Commit and push
         working-directory: target-repo
-        env:
-          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -66,4 +92,4 @@ jobs:
           fi
 
           git commit -m "Sync from ${{ github.repository }}@${{ github.sha }}"
-          git push "https://x-access-token:${MY_GITHUB_TOKEN}@github.com/StanBarrows/GovTech-Hackathon-2026-Tierseuchen-Screener-Laravel.git" HEAD:main
+          git push origin HEAD:main
