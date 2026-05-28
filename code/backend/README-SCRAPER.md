@@ -3,6 +3,28 @@
 Prototype news-ingestion pipeline for animal disease screening. The current
 source adapters are `gefluegelnews` and `padi_web`.
 
+## Install `uv`
+
+The scraper CLI is run through [`uv`](https://docs.astral.sh/uv/), which manages
+the Python environment and installed project dependencies.
+
+Install `uv` once on your machine:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then open a new shell or follow the installer instructions to add `uv` to your
+`PATH`. From the repository root, install the dependencies declared by the
+project:
+
+```bash
+uv sync
+```
+
+Run scraper commands with `uv run ts ...`. `uv run` uses the managed project
+environment, so the `ts` CLI does not need to be installed globally.
+
 ## Run
 
 ```bash
