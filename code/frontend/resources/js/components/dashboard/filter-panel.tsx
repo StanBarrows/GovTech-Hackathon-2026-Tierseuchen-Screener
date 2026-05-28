@@ -1,11 +1,27 @@
 import { Link } from '@inertiajs/react';
-import { CalendarIcon, Crosshair } from 'lucide-react';
+import { CalendarIcon, CheckIcon, ChevronsUpDownIcon, Crosshair } from 'lucide-react';
+import { useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from '@/components/ui/command';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
 // "YYYY-MM-DDTHH:mm" <-> Date
@@ -70,11 +86,12 @@ function DateTimePicker({
             </Popover>
             <Input
                 type="time"
+                step="60"
                 value={time}
                 onChange={(e) => {
                     if (date) onChange(formatDateTimeLocal(date, e.target.value));
                 }}
-                className="w-[6.5rem] shrink-0"
+                className="w-[6.5rem] shrink-0 bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
             />
         </div>
     );
@@ -85,12 +102,14 @@ type Population = 'wild' | 'poultry' | 'captive';
 type Props = {
     population: Population[];
     onTogglePopulation: (p: Population) => void;
+    onResetPopulation: () => void;
     dateFrom: string;
     dateTo: string;
     onDateFromChange: (v: string) => void;
     onDateToChange: (v: string) => void;
-    species: string;
-    onSpeciesChange: (v: string) => void;
+    species: string[];
+    onToggleSpecies: (v: string) => void;
+    onResetSpecies: () => void;
     speciesOptions: string[];
     subtype: string;
     onSubtypeChange: (v: string) => void;
@@ -109,12 +128,14 @@ const POP_OPTIONS: { value: Population; label: string }[] = [
 export default function FilterPanel({
     population,
     onTogglePopulation,
+    onResetPopulation,
     dateFrom,
     dateTo,
     onDateFromChange,
     onDateToChange,
     species,
-    onSpeciesChange,
+    onToggleSpecies,
+    onResetSpecies,
     speciesOptions,
     subtype,
     onSubtypeChange,
@@ -123,6 +144,8 @@ export default function FilterPanel({
     radiusKm,
     onRadiusChange,
 }: Props) {
+    const [speciesOpen, setSpeciesOpen] = useState(false);
+
     return (
         <aside className="flex w-full shrink-0 flex-col gap-5 rounded-md border bg-card p-4 text-sm md:h-full md:w-72 md:overflow-y-auto">
             <div className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
@@ -131,40 +154,85 @@ export default function FilterPanel({
 
             <div className="space-y-1.5">
                 <label className="text-xs font-medium">Tierseuche</label>
-                <select
-                    className="w-full rounded-md border bg-background px-2 py-1.5 text-sm"
-                    value="HPAI"
-                    disabled
-                >
-                    <option value="HPAI">HPAI · aviäre Influenza</option>
-                </select>
+                <Select value="HPAI" disabled>
+                    <SelectTrigger className="w-full">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="HPAI">HPAI · aviäre Influenza</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
 
             <div className="space-y-1.5">
                 <div className="flex items-baseline justify-between">
                     <label className="text-xs font-medium">Population</label>
+                    {population.length > 0 && (
+                        <button
+                            type="button"
+                            onClick={onResetPopulation}
+                            className="text-[11px] text-primary hover:underline"
+                        >
+                            Zurücksetzen
+                        </button>
+                    )}
                 </div>
-                <div className="flex flex-wrap gap-1.5">
-                    {POP_OPTIONS.map((opt) => {
-                        const active = population.includes(opt.value);
-
-                        return (
-                            <Badge
-                                key={opt.value}
-                                asChild
-                                variant={active ? 'default' : 'outline'}
-                            >
-                                <button
-                                    type="button"
-                                    onClick={() => onTogglePopulation(opt.value)}
-                                    className="cursor-pointer px-2.5"
-                                >
-                                    {opt.label}
-                                </button>
-                            </Badge>
-                        );
-                    })}
-                </div>
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            role="combobox"
+                            className="w-full justify-between px-2 font-normal"
+                        >
+                            <span className="flex flex-1 flex-wrap gap-1 text-left">
+                                {population.length === 0 ? (
+                                    <span className="text-muted-foreground">
+                                        Alle Populationen
+                                    </span>
+                                ) : (
+                                    population.map((p) => (
+                                        <Badge
+                                            key={p}
+                                            variant="secondary"
+                                            className="px-1.5 py-0 text-[10px]"
+                                        >
+                                            {POP_OPTIONS.find((o) => o.value === p)?.label ?? p}
+                                        </Badge>
+                                    ))
+                                )}
+                            </span>
+                            <ChevronsUpDownIcon className="ml-1 size-3.5 shrink-0 opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
+                        <Command>
+                            <CommandInput placeholder="Suchen…" />
+                            <CommandList>
+                                <CommandEmpty>Keine Treffer.</CommandEmpty>
+                                <CommandGroup>
+                                    {POP_OPTIONS.map((opt) => {
+                                        const active = population.includes(opt.value);
+                                        return (
+                                            <CommandItem
+                                                key={opt.value}
+                                                value={opt.label}
+                                                onSelect={() => onTogglePopulation(opt.value)}
+                                            >
+                                                <CheckIcon
+                                                    className={cn(
+                                                        'size-4',
+                                                        active ? 'opacity-100' : 'opacity-0',
+                                                    )}
+                                                />
+                                                {opt.label}
+                                            </CommandItem>
+                                        );
+                                    })}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
             </div>
 
             <div className="space-y-1.5">
@@ -178,32 +246,89 @@ export default function FilterPanel({
             </div>
 
             <div className="space-y-1.5">
-                <label className="text-xs font-medium">Spezies</label>
-                <select
-                    className="w-full rounded-md border bg-background px-2 py-1.5 text-sm"
-                    value={species}
-                    onChange={(e) => onSpeciesChange(e.target.value)}
-                >
-                    <option value="">Alle Spezies</option>
-                    {speciesOptions.map((s) => (
-                        <option key={s} value={s}>
-                            {s}
-                        </option>
-                    ))}
-                </select>
+                <div className="flex items-baseline justify-between">
+                    <label className="text-xs font-medium">Spezies</label>
+                    {species.length > 0 && (
+                        <button
+                            type="button"
+                            onClick={onResetSpecies}
+                            className="text-[11px] text-primary hover:underline"
+                        >
+                            Zurücksetzen
+                        </button>
+                    )}
+                </div>
+                <Popover open={speciesOpen} onOpenChange={setSpeciesOpen}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={speciesOpen}
+                            className="w-full justify-between px-2 font-normal"
+                        >
+                            <span className="flex flex-1 flex-wrap gap-1 text-left">
+                                {species.length === 0 ? (
+                                    <span className="text-muted-foreground">
+                                        Alle Spezies
+                                    </span>
+                                ) : (
+                                    species.map((s) => (
+                                        <Badge
+                                            key={s}
+                                            variant="secondary"
+                                            className="px-1.5 py-0 text-[10px]"
+                                        >
+                                            {s}
+                                        </Badge>
+                                    ))
+                                )}
+                            </span>
+                            <ChevronsUpDownIcon className="ml-1 size-3.5 shrink-0 opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
+                        <Command>
+                            <CommandInput placeholder="Spezies suchen…" />
+                            <CommandList>
+                                <CommandEmpty>Keine Treffer.</CommandEmpty>
+                                <CommandGroup>
+                                    {speciesOptions.map((s) => {
+                                        const active = species.includes(s);
+                                        return (
+                                            <CommandItem
+                                                key={s}
+                                                value={s}
+                                                onSelect={() => onToggleSpecies(s)}
+                                            >
+                                                <CheckIcon
+                                                    className={cn(
+                                                        'size-4',
+                                                        active ? 'opacity-100' : 'opacity-0',
+                                                    )}
+                                                />
+                                                {s}
+                                            </CommandItem>
+                                        );
+                                    })}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
             </div>
 
             <div className="space-y-1.5">
                 <label className="text-xs font-medium">Subtype</label>
-                <select
-                    className="w-full rounded-md border bg-background px-2 py-1.5 text-sm"
-                    value={subtype}
-                    onChange={(e) => onSubtypeChange(e.target.value)}
-                >
-                    <option value="H5N1">H5N1</option>
-                    <option value="H5N8">H5N8</option>
-                    <option value="H7N9">H7N9</option>
-                </select>
+                <Select value={subtype} onValueChange={onSubtypeChange}>
+                    <SelectTrigger className="w-full">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="H5N1">H5N1</SelectItem>
+                        <SelectItem value="H5N8">H5N8</SelectItem>
+                        <SelectItem value="H7N9">H7N9</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
 
             <div className="space-y-1.5">
@@ -211,16 +336,17 @@ export default function FilterPanel({
                     <Crosshair className="size-3.5" />
                     Ausgangsort (Zentrum)
                 </label>
-                <select
-                    className="w-full rounded-md border bg-background px-2 py-1.5 text-sm"
-                    value={center}
-                    onChange={(e) => onCenterChange(e.target.value)}
-                >
-                    <option value="Bern">Bern</option>
-                    <option value="Zürich">Zürich</option>
-                    <option value="Genf">Genf</option>
-                    <option value="Basel">Basel</option>
-                </select>
+                <Select value={center} onValueChange={onCenterChange}>
+                    <SelectTrigger className="w-full">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="Bern">Bern</SelectItem>
+                        <SelectItem value="Zürich">Zürich</SelectItem>
+                        <SelectItem value="Genf">Genf</SelectItem>
+                        <SelectItem value="Basel">Basel</SelectItem>
+                    </SelectContent>
+                </Select>
                 <div className="space-y-1 pt-2">
                     <div className="flex items-baseline justify-between">
                         <label className="text-xs font-medium">Reichweite</label>

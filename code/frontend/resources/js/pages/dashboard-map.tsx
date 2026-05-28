@@ -12,6 +12,7 @@ import type {Case} from '@/components/map/case-map';
 import ClientOnly from '@/components/map/client-only';
 import type {DiseaseCode} from '@/components/map/disease-colors';
 import Legend from '@/components/map/legend';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DashboardLayout from '@/layouts/dashboard-layout';
 
 type Population = 'wild' | 'poultry' | 'captive';
@@ -24,8 +25,6 @@ type MapCase = Case & {
 };
 
 type Props = { cases: MapCase[] };
-
-const ALL_POPULATIONS: Population[] = ['wild', 'poultry', 'captive'];
 
 const CENTER_COORDS: Record<string, [number, number]> = {
     Bern: [46.9480, 7.4474],
@@ -51,10 +50,16 @@ return 'map';
     useEffect(() => {
         window.localStorage.setItem('ts-scanner:view', view);
     }, [view]);
-    const [population, setPopulation] = useState<Population[]>(ALL_POPULATIONS);
+    const [population, setPopulation] = useState<Population[]>([]);
     const [dateFrom, setDateFrom] = useState(DEFAULT_FROM);
     const [dateTo, setDateTo] = useState(DEFAULT_TO);
-    const [species, setSpecies] = useState('');
+    const [species, setSpecies] = useState<string[]>([]);
+
+    const toggleSpecies = (s: string) => {
+        setSpecies((prev) =>
+            prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
+        );
+    };
     const [subtype, setSubtype] = useState('H5N1');
     const [center, setCenter] = useState('Bern');
     const [radiusKm, setRadiusKm] = useState(50);
@@ -73,7 +78,7 @@ return 'map';
 
     const filtered = useMemo(() => {
         return cases.filter((c) => {
-            if (c.population && !population.includes(c.population)) {
+            if (population.length > 0 && (!c.population || !population.includes(c.population))) {
 return false;
 }
 
@@ -89,7 +94,7 @@ return false;
 return false;
 }
 
-            if (species && c.species !== species) {
+            if (species.length > 0 && (!c.species || !species.includes(c.species))) {
 return false;
 }
 
@@ -119,12 +124,14 @@ set.add(c.species);
                 <FilterPanel
                     population={population}
                     onTogglePopulation={togglePopulation}
+                    onResetPopulation={() => setPopulation([])}
                     dateFrom={dateFrom}
                     dateTo={dateTo}
                     onDateFromChange={setDateFrom}
                     onDateToChange={setDateTo}
                     species={species}
-                    onSpeciesChange={setSpecies}
+                    onToggleSpecies={toggleSpecies}
+                    onResetSpecies={() => setSpecies([])}
                     speciesOptions={speciesOptions}
                     subtype={subtype}
                     onSubtypeChange={setSubtype}
@@ -134,85 +141,65 @@ set.add(c.species);
                     onRadiusChange={setRadiusKm}
                 />
                 <div className="flex min-h-[70vh] flex-1 flex-col gap-3 md:min-h-0 md:overflow-hidden">
-                    <div className="inline-flex w-fit rounded-md border bg-card p-0.5 text-sm">
-                        <button
-                            type="button"
-                            onClick={() => setView('map')}
-                            className={`inline-flex items-center gap-1.5 rounded px-3 py-1 ${
-                                view === 'map'
-                                    ? 'bg-foreground text-background'
-                                    : 'text-muted-foreground hover:bg-muted'
-                            }`}
-                        >
-                            <MapIcon className="size-3.5" />
-                            Map / Heatmap
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setView('list')}
-                            className={`inline-flex items-center gap-1.5 rounded px-3 py-1 ${
-                                view === 'list'
-                                    ? 'bg-foreground text-background'
-                                    : 'text-muted-foreground hover:bg-muted'
-                            }`}
-                        >
-                            <ListIcon className="size-3.5" />
-                            Liste
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setView('stats')}
-                            className={`inline-flex items-center gap-1.5 rounded px-3 py-1 ${
-                                view === 'stats'
-                                    ? 'bg-foreground text-background'
-                                    : 'text-muted-foreground hover:bg-muted'
-                            }`}
-                        >
-                            <BarChart3 className="size-3.5" />
-                            Statistik
-                        </button>
-                    </div>
-                    {view === 'map' ? (
-                        <div className="relative min-h-[60vh] flex-1 overflow-hidden rounded-md border md:min-h-0">
-                            <ClientOnly
-                                fallback={
-                                    <div className="flex h-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">
-                                        Karte wird geladen…
-                                    </div>
-                                }
-                            >
-                                <CaseMap
-                                    cases={filtered}
-                                    centerLat={centerLat}
-                                    centerLng={centerLng}
+                    <Tabs
+                        value={view}
+                        onValueChange={(v) => setView(v as 'map' | 'list' | 'stats')}
+                        className="flex min-h-0 flex-1 flex-col gap-3"
+                    >
+                        <TabsList>
+                            <TabsTrigger value="map">
+                                <MapIcon />
+                                Map / Heatmap
+                            </TabsTrigger>
+                            <TabsTrigger value="list">
+                                <ListIcon />
+                                Liste
+                            </TabsTrigger>
+                            <TabsTrigger value="stats">
+                                <BarChart3 />
+                                Statistik
+                            </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="map" className="flex min-h-0 flex-col">
+                            <div className="relative min-h-[60vh] flex-1 overflow-hidden rounded-md border md:min-h-0">
+                                <ClientOnly
+                                    fallback={
+                                        <div className="flex h-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">
+                                            Karte wird geladen…
+                                        </div>
+                                    }
+                                >
+                                    <CaseMap
+                                        cases={filtered}
+                                        centerLat={centerLat}
+                                        centerLng={centerLng}
+                                        radiusKm={radiusKm}
+                                    />
+                                </ClientOnly>
+                                <Legend
+                                    diseases={['HPAI' as DiseaseCode]}
+                                    center={center}
                                     radiusKm={radiusKm}
                                 />
-                            </ClientOnly>
-                            <Legend
-                                diseases={['HPAI' as DiseaseCode]}
-                                center={center}
-                                radiusKm={radiusKm}
-                            />
-                        </div>
-                    ) : view === 'list' ? (
-                        <div className="flex-1 overflow-hidden">
+                            </div>
+                        </TabsContent>
+                        <TabsContent value="list" className="overflow-hidden">
                             <CaseList
                                 cases={filtered}
                                 centerLat={centerLat}
                                 centerLng={centerLng}
                                 radiusKm={radiusKm}
                             />
-                        </div>
-                    ) : (
-                        <div className="flex-1 overflow-hidden">
+                        </TabsContent>
+                        <TabsContent value="stats" className="overflow-hidden">
                             <StatsView
                                 cases={filtered}
                                 centerLat={centerLat}
                                 centerLng={centerLng}
                                 radiusKm={radiusKm}
                             />
-                        </div>
-                    )}
+                        </TabsContent>
+                    </Tabs>
                     <PlayBar
                         from={dateFrom}
                         to={dateTo}
