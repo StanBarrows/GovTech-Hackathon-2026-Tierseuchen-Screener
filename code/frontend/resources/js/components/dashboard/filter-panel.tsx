@@ -26,8 +26,12 @@ import { cn } from '@/lib/utils';
 
 // "YYYY-MM-DDTHH:mm" <-> Date
 function parseDateTimeLocal(value: string): Date | undefined {
-    if (!value) return undefined;
+    if (!value) {
+return undefined;
+}
+
     const d = new Date(value);
+
     return Number.isNaN(d.getTime()) ? undefined : d;
 }
 
@@ -35,6 +39,7 @@ function formatDateTimeLocal(date: Date, time: string): string {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
+
     return `${y}-${m}-${d}T${time || '00:00'}`;
 }
 
@@ -78,7 +83,9 @@ function DateTimePicker({
                         mode="single"
                         selected={date}
                         onSelect={(d) => {
-                            if (d) onChange(formatDateTimeLocal(d, time));
+                            if (d) {
+onChange(formatDateTimeLocal(d, time));
+}
                         }}
                         autoFocus
                     />
@@ -89,7 +96,9 @@ function DateTimePicker({
                 step="60"
                 value={time}
                 onChange={(e) => {
-                    if (date) onChange(formatDateTimeLocal(date, e.target.value));
+                    if (date) {
+onChange(formatDateTimeLocal(date, e.target.value));
+}
                 }}
                 className="w-[6.5rem] shrink-0 bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
             />
@@ -103,6 +112,7 @@ type Props = {
     population: Population[];
     onTogglePopulation: (p: Population) => void;
     onResetPopulation: () => void;
+    populationOptions: Population[];
     dateFrom: string;
     dateTo: string;
     onDateFromChange: (v: string) => void;
@@ -111,24 +121,29 @@ type Props = {
     onToggleSpecies: (v: string) => void;
     onResetSpecies: () => void;
     speciesOptions: string[];
-    subtype: string;
-    onSubtypeChange: (v: string) => void;
+    subtype: string[];
+    onToggleSubtype: (v: string) => void;
+    onResetSubtype: () => void;
+    subtypeOptions: string[];
     center: string;
     onCenterChange: (v: string) => void;
     radiusKm: number;
     onRadiusChange: (v: number) => void;
 };
 
-const POP_OPTIONS: { value: Population; label: string }[] = [
-    { value: 'wild', label: 'Wild' },
-    { value: 'poultry', label: 'Poultry' },
-    { value: 'captive', label: 'Captive' },
-];
+const POP_LABELS: Record<Population, string> = {
+    wild: 'Wild',
+    poultry: 'Poultry',
+    captive: 'Captive',
+};
+
+const POP_FALLBACK: Population[] = ['wild', 'poultry', 'captive'];
 
 export default function FilterPanel({
     population,
     onTogglePopulation,
     onResetPopulation,
+    populationOptions,
     dateFrom,
     dateTo,
     onDateFromChange,
@@ -138,13 +153,17 @@ export default function FilterPanel({
     onResetSpecies,
     speciesOptions,
     subtype,
-    onSubtypeChange,
+    onToggleSubtype,
+    onResetSubtype,
+    subtypeOptions,
     center,
     onCenterChange,
     radiusKm,
     onRadiusChange,
 }: Props) {
     const [speciesOpen, setSpeciesOpen] = useState(false);
+    const [subtypeOpen, setSubtypeOpen] = useState(false);
+    const popOptions = populationOptions.length > 0 ? populationOptions : POP_FALLBACK;
 
     return (
         <aside className="flex w-full shrink-0 flex-col gap-5 rounded-md border bg-card p-4 text-sm md:h-full md:w-72 md:overflow-y-auto">
@@ -196,7 +215,7 @@ export default function FilterPanel({
                                             variant="secondary"
                                             className="px-1.5 py-0 text-[10px]"
                                         >
-                                            {POP_OPTIONS.find((o) => o.value === p)?.label ?? p}
+                                            {POP_LABELS[p] ?? p}
                                         </Badge>
                                     ))
                                 )}
@@ -210,13 +229,15 @@ export default function FilterPanel({
                             <CommandList>
                                 <CommandEmpty>Keine Treffer.</CommandEmpty>
                                 <CommandGroup>
-                                    {POP_OPTIONS.map((opt) => {
-                                        const active = population.includes(opt.value);
+                                    {popOptions.map((value) => {
+                                        const active = population.includes(value);
+                                        const label = POP_LABELS[value] ?? value;
+
                                         return (
                                             <CommandItem
-                                                key={opt.value}
-                                                value={opt.label}
-                                                onSelect={() => onTogglePopulation(opt.value)}
+                                                key={value}
+                                                value={label}
+                                                onSelect={() => onTogglePopulation(value)}
                                             >
                                                 <CheckIcon
                                                     className={cn(
@@ -224,7 +245,7 @@ export default function FilterPanel({
                                                         active ? 'opacity-100' : 'opacity-0',
                                                     )}
                                                 />
-                                                {opt.label}
+                                                {label}
                                             </CommandItem>
                                         );
                                     })}
@@ -294,6 +315,7 @@ export default function FilterPanel({
                                 <CommandGroup>
                                     {speciesOptions.map((s) => {
                                         const active = species.includes(s);
+
                                         return (
                                             <CommandItem
                                                 key={s}
@@ -318,17 +340,76 @@ export default function FilterPanel({
             </div>
 
             <div className="space-y-1.5">
-                <label className="text-xs font-medium">Subtype</label>
-                <Select value={subtype} onValueChange={onSubtypeChange}>
-                    <SelectTrigger className="w-full">
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="H5N1">H5N1</SelectItem>
-                        <SelectItem value="H5N8">H5N8</SelectItem>
-                        <SelectItem value="H7N9">H7N9</SelectItem>
-                    </SelectContent>
-                </Select>
+                <div className="flex items-baseline justify-between">
+                    <label className="text-xs font-medium">Subtype</label>
+                    {subtype.length > 0 && (
+                        <button
+                            type="button"
+                            onClick={onResetSubtype}
+                            className="text-[11px] text-primary hover:underline"
+                        >
+                            Zurücksetzen
+                        </button>
+                    )}
+                </div>
+                <Popover open={subtypeOpen} onOpenChange={setSubtypeOpen}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={subtypeOpen}
+                            className="w-full justify-between px-2 font-normal"
+                        >
+                            <span className="flex flex-1 flex-wrap gap-1 text-left">
+                                {subtype.length === 0 ? (
+                                    <span className="text-muted-foreground">
+                                        Alle Subtypes
+                                    </span>
+                                ) : (
+                                    subtype.map((s) => (
+                                        <Badge
+                                            key={s}
+                                            variant="secondary"
+                                            className="px-1.5 py-0 text-[10px]"
+                                        >
+                                            {s}
+                                        </Badge>
+                                    ))
+                                )}
+                            </span>
+                            <ChevronsUpDownIcon className="ml-1 size-3.5 shrink-0 opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
+                        <Command>
+                            <CommandInput placeholder="Subtype suchen…" />
+                            <CommandList>
+                                <CommandEmpty>Keine Treffer.</CommandEmpty>
+                                <CommandGroup>
+                                    {subtypeOptions.map((s) => {
+                                        const active = subtype.includes(s);
+
+                                        return (
+                                            <CommandItem
+                                                key={s}
+                                                value={s}
+                                                onSelect={() => onToggleSubtype(s)}
+                                            >
+                                                <CheckIcon
+                                                    className={cn(
+                                                        'size-4',
+                                                        active ? 'opacity-100' : 'opacity-0',
+                                                    )}
+                                                />
+                                                {s}
+                                            </CommandItem>
+                                        );
+                                    })}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
             </div>
 
             <div className="space-y-1.5">

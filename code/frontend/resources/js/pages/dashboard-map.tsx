@@ -1,6 +1,8 @@
 import { Head } from '@inertiajs/react';
-import { Map as MapIcon, List as ListIcon, BarChart3 } from 'lucide-react';
+import { Map as MapIcon, List as ListIcon, BarChart3, AlertCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 import CaseList from '@/components/dashboard/case-list';
 import FilterPanel from '@/components/dashboard/filter-panel';
@@ -8,23 +10,27 @@ import LagebildHeader from '@/components/dashboard/lagebild-header';
 import PlayBar from '@/components/dashboard/play-bar';
 import StatsView from '@/components/dashboard/stats-view';
 import CaseMap from '@/components/map/case-map';
-import type {Case} from '@/components/map/case-map';
 import ClientOnly from '@/components/map/client-only';
 import type {DiseaseCode} from '@/components/map/disease-colors';
 import Legend from '@/components/map/legend';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DashboardLayout from '@/layouts/dashboard-layout';
+import type { Case, Population, RelevanceContext } from '@/types/case';
 
-type Population = 'wild' | 'poultry' | 'captive';
-
-type MapCase = Case & {
-    population?: Population;
-    canton?: string;
-    species?: string;
-    subtype?: string;
+type Totals = {
+    outbreakEvents: number;
+    outbreakSituations: number;
+    paffReports: number;
+    paffSituationStatements: number;
+    evidenceSnippets: number;
 };
 
-type Props = { cases: MapCase[] };
+type Props = {
+    cases: Case[];
+    relevanceContext?: RelevanceContext | null;
+    error?: string | null;
+    totals?: Totals;
+};
 
 const CENTER_COORDS: Record<string, [number, number]> = {
     Bern: [46.9480, 7.4474],
@@ -36,7 +42,7 @@ const CENTER_COORDS: Record<string, [number, number]> = {
 const DEFAULT_FROM = '2026-03-01T00:00';
 const DEFAULT_TO = '2026-05-28T23:59';
 
-export default function DashboardMap({ cases }: Props) {
+export default function DashboardMap({ cases, relevanceContext, error, totals }: Props) {
     const [view, setView] = useState<'map' | 'list' | 'stats'>(() => {
         if (typeof window === 'undefined') {
 return 'map';
@@ -60,7 +66,13 @@ return 'map';
             prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
         );
     };
-    const [subtype, setSubtype] = useState('H5N1');
+    const [subtype, setSubtype] = useState<string[]>([]);
+
+    const toggleSubtype = (s: string) => {
+        setSubtype((prev) =>
+            prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
+        );
+    };
     const [center, setCenter] = useState('Bern');
     const [radiusKm, setRadiusKm] = useState(50);
 
@@ -79,24 +91,30 @@ return 'map';
     const filtered = useMemo(() => {
         return cases.filter((c) => {
             if (population.length > 0 && (!c.population || !population.includes(c.population))) {
-return false;
-}
+                return false;
+            }
 
-            if (dateFrom && c.reportedAt < dateFrom) {
-return false;
-}
+            const date = c.confirmationDate ?? c.suspicionStartDate ?? '';
 
-            if (effectiveTo && c.reportedAt > effectiveTo) {
-return false;
-}
+            if (dateFrom && date && date < dateFrom) {
+                return false;
+            }
 
-            if (subtype && c.subtype !== subtype) {
-return false;
-}
+            if (effectiveTo && date && date > effectiveTo) {
+                return false;
+            }
 
-            if (species.length > 0 && (!c.species || !species.includes(c.species))) {
-return false;
-}
+            const subtypeKey = c.subtypeLabel ?? c.subtype ?? '';
+
+            if (subtype.length > 0 && (!subtypeKey || !subtype.includes(subtypeKey))) {
+                return false;
+            }
+
+            const speciesKey = c.speciesLabel ?? c.species ?? '';
+
+            if (species.length > 0 && (!speciesKey || !species.includes(speciesKey))) {
+                return false;
+            }
 
             return true;
         });
@@ -106,12 +124,40 @@ return false;
         const set = new Set<string>();
 
         for (const c of cases) {
-            if (c.species) {
-set.add(c.species);
-}
+            const k = c.speciesLabel ?? c.species;
+
+            if (k) {
+                set.add(k);
+            }
         }
 
         return Array.from(set).sort((a, b) => a.localeCompare(b, 'de-CH'));
+    }, [cases]);
+
+    const subtypeOptions = useMemo(() => {
+        const set = new Set<string>();
+
+        for (const c of cases) {
+            const k = c.subtypeLabel ?? c.subtype;
+
+            if (k) {
+                set.add(k);
+            }
+        }
+
+        return Array.from(set).sort((a, b) => a.localeCompare(b, 'de-CH'));
+    }, [cases]);
+
+    const populationOptions = useMemo(() => {
+        const set = new Set<Population>();
+
+        for (const c of cases) {
+            if (c.population) {
+                set.add(c.population);
+            }
+        }
+
+        return Array.from(set).sort();
     }, [cases]);
 
     const [centerLat, centerLng] = CENTER_COORDS[center] ?? CENTER_COORDS.Bern;
@@ -119,7 +165,23 @@ set.add(c.species);
     return (
         <DashboardLayout>
             <Head title="TS-Scanner" />
-            <LagebildHeader title="TS-Scanner" subtitle="" />
+            <LagebildHeader
+                title="TS-Scanner"
+                subtitle={
+                    totals
+                        ? `${cases.length.toLocaleString('de-CH')} von ${totals.outbreakEvents.toLocaleString('de-CH')} Ereignissen geladen`
+                        : ''
+                }
+            />
+            {error && (
+                <div className="px-4 pt-4">
+                    <Alert variant="destructive">
+                        <AlertCircle className="size-4" />
+                        <AlertTitle>Lindas-Datenquelle nicht erreichbar</AlertTitle>
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                </div>
+            )}
             <div className="flex flex-col gap-4 p-4 md:flex-row md:h-[calc(100vh-3.5rem)]">
                 <FilterPanel
                     population={population}
@@ -134,7 +196,10 @@ set.add(c.species);
                     onResetSpecies={() => setSpecies([])}
                     speciesOptions={speciesOptions}
                     subtype={subtype}
-                    onSubtypeChange={setSubtype}
+                    onToggleSubtype={toggleSubtype}
+                    onResetSubtype={() => setSubtype([])}
+                    subtypeOptions={subtypeOptions}
+                    populationOptions={populationOptions}
                     center={center}
                     onCenterChange={setCenter}
                     radiusKm={radiusKm}
@@ -174,6 +239,7 @@ set.add(c.species);
                                         centerLat={centerLat}
                                         centerLng={centerLng}
                                         radiusKm={radiusKm}
+                                        relevanceContext={relevanceContext}
                                     />
                                 </ClientOnly>
                                 <Legend
@@ -189,6 +255,7 @@ set.add(c.species);
                                 centerLat={centerLat}
                                 centerLng={centerLng}
                                 radiusKm={radiusKm}
+                                relevanceContext={relevanceContext}
                             />
                         </TabsContent>
                         <TabsContent value="stats" className="overflow-hidden">
@@ -197,6 +264,7 @@ set.add(c.species);
                                 centerLat={centerLat}
                                 centerLng={centerLng}
                                 radiusKm={radiusKm}
+                                relevanceContext={relevanceContext}
                             />
                         </TabsContent>
                     </Tabs>
