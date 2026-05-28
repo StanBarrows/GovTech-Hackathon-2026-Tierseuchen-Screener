@@ -5,8 +5,7 @@ on:
   push:
     paths:
       - "RDFPoC/graphdb-poc/load/**/*.ttl"
-    paths-ignore:
-      - "RDFPoC/graphdb-poc/load/merge.ttl"
+      - "!RDFPoC/graphdb-poc/load/merged.ttl"
 
 jobs:
   upload-ttl:
