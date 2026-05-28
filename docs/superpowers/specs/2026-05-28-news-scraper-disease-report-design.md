@@ -134,25 +134,87 @@ Filtering returns a `DiseaseRelevance` record with:
 
 This makes false positives and false negatives reviewable.
 
+## LiNDAS/RDF Alignment
+
+The LiNDAS proof of concept in `lindas/RDFPoC` defines the semantic target for
+scraped news output. The relevant ontology version is
+`lindas/RDFPoC/ontology/adis-reference/v0.1.1/`.
+
+The scraper should align with these RDF classes and properties:
+
+- `ts:SourceDocument`: the scraped news article as a source document.
+- `ts:sourceDocumentTitle`: article title.
+- `ts:sourceURL`: original news URL for QA traceability.
+- `ts:EvidenceSnippet`: evidence used for filtering or extraction.
+- `ts:snippetText`: evidence text.
+- `ts:PaffSituationStatement`: current unstructured extraction statement class.
+  The name is PAFF-specific, but the modelling pattern fits news-derived
+  candidate statements.
+- `ts:OutbreakSituation`: normalized disease-country-month situation.
+- `ts:hasSituationKey`: stable situation key.
+- `ts:situationDisease`: normalized disease concept.
+- `ts:situationCountry`: normalized country/location concept.
+- `ts:situationMonth`: `YYYY-MM` situation month.
+- `ts:hasExtractionConfidence`: SKOS concept such as `tss:confidence-low`,
+  `tss:confidence-medium`, `tss:confidence-high`, or
+  `tss:confidence-unknown`.
+- `ts:hasExtractionStatus`: SKOS concept such as `tss:status-candidate`,
+  `tss:status-needs-review`, `tss:status-reviewed`, `tss:status-rejected`, or
+  `tss:status-published`.
+- `ts:hasRelevanceAssessment`, `ts:hasSeverityAssessment`,
+  `ts:hasReachAssessment`: assessment nodes with normalized SKOS levels and raw
+  evidence/rationale text.
+- `ts:hasPreventionMeasure`: prevention/control/consequence measures extracted
+  from source text.
+- `ts:hasResearchReference`: scientific, surveillance, legal, or other
+  references mentioned by the source.
+
+The scraper keeps JSONL as its first output format, but field names should be
+chosen so RDF export to this model is direct. Raw article strings are retained
+alongside normalized concept IDs because the ontology explicitly uses a
+raw-plus-normalized modelling pattern.
+
 ## DiseaseReport Model
 
-`DiseaseReport` is the ADIS-like media-derived report dataclass. It should keep
-ADIS-compatible field names where practical, while allowing nulls because media
-articles often omit official outbreak details.
+`DiseaseReport` is the media-derived candidate extraction dataclass. It keeps
+ADIS-compatible event fields where practical, but its primary semantic role is a
+candidate situation statement extracted from a `NewsArticle`. Most fields are
+nullable because media articles often omit official outbreak details.
 
 Required provenance and article fields:
 
 - `report_id`
 - `source_id`
 - `source_name`
+- `source_document_id`
+- `source_document_title`
 - `source_link`
 - `source_publication_date`
 - `source_retrieved_at`
 - `fulltext`
+- `raw_html_path`
+- `content_hash`
 - `extraction_method`
 - `extraction_version`
-- `confidence`
+- `extraction_status`
+- `extraction_confidence`
 - `evidence_snippets`
+
+`source_link` maps to `ts:sourceURL`. `fulltext` stores the cleaned Markdown
+representation of the article. `raw_html_path` points to the local scraped
+ground-truth artifact and is not an RDF upload field.
+
+Situation fields:
+
+- `situation_key`
+- `situation_month`
+- `country_or_territory`
+- `country_concept_id`
+- `disease_name`
+- `disease_concept_id`
+- `disease_type`
+- `disease_type_concept_id`
+- `is_in_europe`
 
 ADIS-like event fields:
 
@@ -188,17 +250,44 @@ ADIS-like event fields:
 - `result_type`
 - `control_measures`
 
-Extended screening fields:
+Assessment and screening fields:
 
-- `is_in_europe`
+- `relevance_level`
+- `relevance_rationale`
+- `raw_relevance_evidence`
+- `severity_level`
+- `severity_rationale`
+- `raw_severity_evidence`
+- `reach_level`
+- `reach_rationale`
 - `has_consequences`
 - `consequences`
+- `prevention_measures`
+- `research_references`
 
 `is_in_europe` and `has_consequences` are nullable booleans. They should be
 `None` when the article does not provide enough evidence. `consequences` stores
 a short string description of reported impacts, measures, restrictions,
 economic effects, trade effects, public-health implications, or other relevant
 consequences.
+
+`prevention_measures` should be a list of extracted control, prevention, or
+mitigation statements. In RDF export these map to `ts:PreventionMeasure`.
+`consequences` remains as a human-friendly summary for analyst QA. If the same
+text contains both a consequence and a control measure, store it in both fields
+with the same evidence snippet.
+
+`evidence_snippets` should be structured objects, not plain strings:
+
+- `snippet_id`
+- `text`
+- `source_link`
+- `locator`
+- `matched_terms`
+
+For news articles, `locator` can be a paragraph index, heading path, or another
+stable source-text locator. `ts:sourceSlideNumber` is PAFF-specific and should
+not be populated for news.
 
 ## Extraction Strategy
 
