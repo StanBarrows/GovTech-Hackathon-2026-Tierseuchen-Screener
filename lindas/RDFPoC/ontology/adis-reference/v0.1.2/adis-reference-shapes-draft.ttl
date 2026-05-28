@@ -1,0 +1,55 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Structural quality funnel only
+
+ts:PaffReportShape a sh:NodeShape ; sh:targetClass ts:PaffReport ;
+  sh:property [ sh:path ts:paffDate ; sh:minCount 1 ; sh:datatype xsd:date ] ;
+  sh:property [ sh:path ts:sourceDocumentTitle ; sh:minCount 1 ] .
+
+ts:OutbreakSituationShape a sh:NodeShape ; sh:targetClass ts:OutbreakSituation ;
+  sh:property [ sh:path ts:hasSituationKey ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:situationDisease ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:situationCountry ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:situationMonth ; sh:minCount 1 ] .
+
+ts:OutbreakEventShape a sh:NodeShape ; sh:targetClass ts:OutbreakEvent ;
+  sh:property [ sh:path ts:referenceId ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:hasDisease ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:occursAt ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:belongsToSituation ; sh:minCount 1 ] .
+
+ts:PaffSituationStatementShape a sh:NodeShape ; sh:targetClass ts:PaffSituationStatement ;
+  sh:property [ sh:path ts:describesSituation ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:hasEvidenceSnippet ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:hasExtractionConfidence ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:hasExtractionStatus ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:extractedFromSource ; sh:minCount 1 ] .
+
+ts:EvidenceSnippetShape a sh:NodeShape ; sh:targetClass ts:EvidenceSnippet ;
+  sh:property [ sh:path ts:snippetText ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:sourceSlideNumber ; sh:minCount 0 ] .
+
+ts:RelevanceAssessmentShape a sh:NodeShape ; sh:targetClass ts:RelevanceAssessment ;
+  sh:property [ sh:path ts:assessesSituation ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:hasRelevanceLevel ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:rawRelevanceEvidence ; sh:minCount 0 ] ;
+  sh:property [ sh:path ts:relevanceRationale ; sh:minCount 0 ] .
+
+ts:SeverityAssessmentShape a sh:NodeShape ; sh:targetClass ts:SeverityAssessment ;
+  sh:property [ sh:path ts:assessesSituation ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:hasSeverityLevel ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:rawSeverityEvidence ; sh:minCount 0 ] ;
+  sh:property [ sh:path ts:severityRationale ; sh:minCount 0 ] .
+
+ts:ReachAssessmentShape a sh:NodeShape ; sh:targetClass ts:ReachAssessment ;
+  sh:property [ sh:path ts:assessesSituation ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:hasReachLevel ; sh:minCount 1 ] ;
+  sh:property [ sh:path ts:derivedByRule ; sh:minCount 0 ] .
+
+ts:ResearchReferenceShape a sh:NodeShape ; sh:targetClass ts:ResearchReference ;
+  sh:property [ sh:path ts:researchTitle ; sh:minCount 0 ] ;
+  sh:property [ sh:path ts:researchURL ; sh:minCount 0 ] ;
+  sh:property [ sh:path ts:researchCitationText ; sh:minCount 0 ] ;
+  sh:property [ sh:path ts:hasResearchLinkType ; sh:minCount 0 ] .

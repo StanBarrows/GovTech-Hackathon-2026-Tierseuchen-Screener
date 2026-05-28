@@ -1,0 +1,42 @@
+PREFIX ts: <https://data.tierseuchen-screener.example.org/ontology/adis#>
+
+# Input: bind ?event to one ADIS event IRI
+# Example:
+#   VALUES ?event { <https://data.tierseuchen-screener.example.org/data/event/DE-HPAI-NON-P-2026-xsyaz> }
+
+SELECT ?event ?situation ?peerEvent ?stmt ?report ?snippet ?relevanceLevel ?severityLevel ?reachLevel ?prevention ?research
+WHERE {
+  ?event ts:belongsToSituation ?situation .
+
+  OPTIONAL { ?peerEvent ts:belongsToSituation ?situation . }
+
+  OPTIONAL {
+    ?stmt a ts:PaffSituationStatement ;
+          ts:describesSituation ?situation ;
+          ts:extractedFromSource ?report .
+    OPTIONAL { ?stmt ts:hasEvidenceSnippet ?snippet . }
+
+    OPTIONAL {
+      ?stmt ts:hasRelevanceAssessment ?rel .
+      ?rel ts:hasRelevanceLevel ?relevanceLevel .
+    }
+    OPTIONAL {
+      ?stmt ts:hasSeverityAssessment ?sev .
+      ?sev ts:hasSeverityLevel ?severityLevel .
+    }
+    OPTIONAL {
+      ?stmt ts:hasReachAssessment ?reach .
+      ?reach ts:hasReachLevel ?reachLevel .
+    }
+    OPTIONAL {
+      ?stmt ts:hasPreventionMeasure ?pm .
+      ?pm ts:preventionMeasureText ?prevention .
+    }
+    OPTIONAL {
+      ?stmt ts:hasResearchReference ?rr .
+      OPTIONAL { ?rr ts:researchTitle ?research }
+      OPTIONAL { ?rr ts:researchURL ?research }
+    }
+  }
+}
+ORDER BY ?event ?peerEvent ?stmt ?snippet

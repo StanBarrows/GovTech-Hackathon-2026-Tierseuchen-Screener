@@ -1,0 +1,53 @@
+@prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
+@prefix tss: <https://data.tierseuchen-screener.example.org/skos/> .
+@prefix tsd: <https://data.tierseuchen-screener.example.org/data/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+tsd:report_paff_2026_05_12 a ts:PaffReport ;
+  ts:referenceId "reg-com_ahw_20260512_pres-01.pdf" ;
+  ts:sourceDocumentTitle "PAFF AHW presentation (example candidate modelling)" ;
+  ts:paffDate "2026-05-12"^^xsd:date .
+
+tsd:stmt_asf_germany a ts:PaffSituationStatement ;
+  ts:extractedFromSource tsd:report_paff_2026_05_12 ;
+  ts:describesSituation tsd:situation_asf_wild_boar_hu_2026_03 ;
+  ts:hasEvidenceSnippet tsd:snip_1 ;
+  ts:hasExtractionConfidence tss:confidence-medium ;
+  ts:hasExtractionStatus tss:status-candidate ;
+  ts:hasRelevanceAssessment tsd:rel_1 ;
+  ts:hasSeverityAssessment tsd:sev_1 ;
+  ts:hasReachAssessment tsd:reach_1 ;
+  ts:hasPreventionMeasure tsd:pm_1, tsd:pm_2 .
+
+tsd:snip_1 a ts:EvidenceSnippet ;
+  ts:sourceSlideNumber 2 ;
+  ts:snippetText "ASF in Saxony with 58 positive; intensive surveillance and searches with dogs and drones (candidate extraction snippet)." .
+
+tsd:rel_1 a ts:RelevanceAssessment ;
+  ts:assessesSituation tsd:situation_asf_wild_boar_hu_2026_03 ;
+  ts:hasRelevanceLevel tss:relevance-high ;
+  ts:rawRelevanceEvidence "ASF highlighted with active control context" .
+
+tsd:sev_1 a ts:SeverityAssessment ;
+  ts:assessesSituation tsd:situation_asf_wild_boar_hu_2026_03 ;
+  ts:hasSeverityLevel tss:severity-medium ;
+  ts:rawSeverityEvidence "58 positive mentioned in one area" .
+
+tsd:rule_reach_admin_spread a ts:DerivedAssessmentRule ;
+  ts:snippetText "same adminLevel3=>local; diff adminLevel3 same adminLevel2=>regional; diff adminLevel2=>national; insufficient=>unknown" .
+
+tsd:reach_1 a ts:ReachAssessment ;
+  ts:assessesSituation tsd:situation_asf_wild_boar_hu_2026_03 ;
+  ts:hasReachLevel tss:reach-regional ;
+  ts:derivedByRule tsd:rule_reach_admin_spread ;
+  ts:reachRationale "Candidate level only, derived from distribution statement context." .
+
+tsd:pm_1 a ts:PreventionMeasure ;
+  ts:relatesToSituation tsd:situation_asf_wild_boar_hu_2026_03 ;
+  ts:preventionMeasureText "intensive surveillance" ;
+  ts:rawPreventionEvidence "intensive surveillance" .
+
+tsd:pm_2 a ts:PreventionMeasure ;
+  ts:relatesToSituation tsd:situation_asf_wild_boar_hu_2026_03 ;
+  ts:preventionMeasureText "active searches with dogs and drones" ;
+  ts:rawPreventionEvidence "searching with dogs and drones" .
