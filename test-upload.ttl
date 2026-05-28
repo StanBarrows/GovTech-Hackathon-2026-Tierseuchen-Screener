@@ -1,0 +1,21 @@
+@prefix ex: <http://example.org/> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:person1
+    a schema:Person ;
+    schema:name "Max Muster" ;
+    schema:email "max.muster@example.org" ;
+    schema:birthDate "1990-05-12"^^xsd:date ;
+    schema:knows ex:person2 .
+
+ex:person2
+    a schema:Person ;
+    schema:name "Erika Beispiel" ;
+    schema:email "erika.beispiel@example.org" .
+
+ex:project1
+    a schema:Project ;
+    schema:name "GraphDB Upload Test" ;
+    schema:creator ex:person1 ;
+    schema:startDate "2026-05-28"^^xsd:date .
