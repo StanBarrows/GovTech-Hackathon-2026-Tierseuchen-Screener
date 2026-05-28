@@ -1,12 +1,18 @@
 PREFIX ts: <https://data.tierseuchen-screener.example.org/ontology/adis#>
+
 SELECT ?situation ?key ?disease ?country ?month (COUNT(?event) AS ?eventCount)
 WHERE {
-  ?situation a ts:OutbreakSituation ;
-             ts:hasSituationKey ?key ;
-             ts:situationDisease ?disease ;
-             ts:situationCountry ?country ;
-             ts:situationMonth ?month .
-  ?event a ts:OutbreakEvent ; ts:belongsToSituation ?situation .
+  GRAPH <https://lindas.admin.ch/fsvo/govtech26-tierseuchen-screener> {
+
+    ?situation a ts:OutbreakSituation ;
+               ts:hasSituationKey ?key ;
+               ts:situationDisease ?disease ;
+               ts:situationCountry ?country ;
+               ts:situationMonth ?month .
+
+    ?event a ts:OutbreakEvent ;
+           ts:belongsToSituation ?situation .
+  }
 }
 GROUP BY ?situation ?key ?disease ?country ?month
 ORDER BY DESC(?eventCount)
