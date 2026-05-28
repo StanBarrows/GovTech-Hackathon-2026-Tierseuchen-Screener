@@ -3,7 +3,10 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import { DISEASE_COLORS, DISEASE_FALLBACK, type DiseaseCode } from './disease-colors';
+import { relevance } from '@/lib/case-relevance';
+
+import { DISEASE_COLORS, DISEASE_FALLBACK  } from './disease-colors';
+import type {DiseaseCode} from './disease-colors';
 
 export type Case = {
     id: number | string;
@@ -12,9 +15,15 @@ export type Case = {
     lat: number;
     lng: number;
     reportedAt: string;
+    weight?: number;
 };
 
-type Props = { cases: Case[]; centerLat?: number; centerLng?: number };
+type Props = {
+    cases: Case[];
+    centerLat?: number;
+    centerLng?: number;
+    radiusKm: number;
+};
 
 const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
@@ -23,7 +32,11 @@ const CH_ZOOM = 7;
 
 const MAP_STYLE = 'mapbox://styles/mapbox/dark-v11';
 
-function casesToFeatureCollection(cases: Case[]): GeoJSON.FeatureCollection<GeoJSON.Point> {
+function casesToFeatureCollection(
+    cases: Case[],
+    center: { lat: number; lng: number } | null,
+    radiusKm: number,
+): GeoJSON.FeatureCollection<GeoJSON.Point> {
     return {
         type: 'FeatureCollection',
         features: cases.map((c) => ({
@@ -34,6 +47,7 @@ function casesToFeatureCollection(cases: Case[]): GeoJSON.FeatureCollection<GeoJ
                 disease: c.disease,
                 location: c.location,
                 reportedAt: c.reportedAt,
+                relevance: relevance(c, center, radiusKm),
             },
         })),
     };
@@ -44,17 +58,24 @@ function colorMatchExpression(): mapboxgl.ExpressionSpecification {
     (Object.entries(DISEASE_COLORS) as [DiseaseCode, string][]).forEach(([code, color]) => {
         stops.push(code, color);
     });
+
     return ['match', ['get', 'disease'], ...stops, DISEASE_FALLBACK] as mapboxgl.ExpressionSpecification;
 }
 
-export default function CaseMap({ cases, centerLat, centerLng }: Props) {
+export default function CaseMap({ cases, centerLat, centerLng, radiusKm }: Props) {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
 
-    const data = useMemo(() => casesToFeatureCollection(cases), [cases]);
+    const center = centerLat != null && centerLng != null ? { lat: centerLat, lng: centerLng } : null;
+    const data = useMemo(
+        () => casesToFeatureCollection(cases, center, radiusKm),
+        [cases, centerLat, centerLng, radiusKm],
+    );
 
     useEffect(() => {
-        if (!containerRef.current || mapRef.current) return;
+        if (!containerRef.current || mapRef.current) {
+return;
+}
 
         if (TOKEN) {
             mapboxgl.accessToken = TOKEN;
@@ -83,11 +104,15 @@ export default function CaseMap({ cases, centerLat, centerLng }: Props) {
                 source: 'cases',
                 maxzoom: 15,
                 paint: {
-                    'heatmap-weight': 1,
+                    'heatmap-weight': [
+                        'interpolate', ['linear'], ['get', 'relevance'],
+                        0, 0,
+                        10, 1,
+                    ],
                     'heatmap-intensity': [
                         'interpolate', ['linear'], ['zoom'],
-                        0, 1,
-                        15, 3,
+                        0, 0.6,
+                        15, 2.2,
                     ],
                     'heatmap-color': [
                         'interpolate', ['linear'], ['heatmap-density'],
@@ -136,7 +161,11 @@ export default function CaseMap({ cases, centerLat, centerLng }: Props) {
 
             map.on('click', 'cases-points', (e) => {
                 const feature = e.features?.[0];
-                if (!feature) return;
+
+                if (!feature) {
+return;
+}
+
                 const props = feature.properties ?? {};
                 const coords = (feature.geometry as GeoJSON.Point).coordinates.slice() as [number, number];
                 const color = DISEASE_COLORS[props.disease as DiseaseCode] ?? DISEASE_FALLBACK;
@@ -170,14 +199,32 @@ export default function CaseMap({ cases, centerLat, centerLng }: Props) {
 
     useEffect(() => {
         const map = mapRef.current;
-        if (!map) return;
+
+        if (!map) {
+return;
+}
+
         const apply = () => {
             const src = map.getSource('cases') as mapboxgl.GeoJSONSource | undefined;
             src?.setData(data);
         };
-        if (map.isStyleLoaded()) apply();
-        else map.once('load', apply);
+
+        if (map.isStyleLoaded()) {
+apply();
+} else {
+map.once('load', apply);
+}
     }, [data]);
+
+    useEffect(() => {
+        const map = mapRef.current;
+
+        if (!map || centerLat == null || centerLng == null) {
+return;
+}
+
+        map.flyTo({ center: [centerLng, centerLat], zoom: 9, duration: 800 });
+    }, [centerLat, centerLng]);
 
     if (!TOKEN) {
         return (

@@ -178,14 +178,14 @@ def test_default_config_resolves_data_dir_from_repo_root(monkeypatch, tmp_path):
     assert data_dir.parent.parent == config.project_root
 
 
-def test_cli_parser_uses_config_defaults():
+def test_cli_parser_leaves_request_defaults_for_selected_source_resolution():
     config = load_config()
     parser = build_parser(config)
     args = parser.parse_args(["fetch", "gefluegelnews"])
 
-    assert args.timeout_seconds == config.sources["gefluegelnews"].timeout_seconds
-    assert args.delay_seconds == config.sources["gefluegelnews"].delay_seconds
-    assert args.limit == config.sources["gefluegelnews"].limit
+    assert args.timeout_seconds is None
+    assert args.delay_seconds is None
+    assert args.limit is None
 
 
 def test_fetch_stage_reports_limited_progress(monkeypatch, tmp_path, capsys):

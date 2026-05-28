@@ -21,5 +21,10 @@ sources:
   gefluegelnews:
     output_dir: gefluegelnews
     timeout_seconds: 20.0
-    delay_seconds: 1.0
+    delay_seconds: 0.5
+    limit:
+  padi_web:
+    output_dir: padi_web
+    timeout_seconds: 20.0
+    delay_seconds: 0.5
     limit:

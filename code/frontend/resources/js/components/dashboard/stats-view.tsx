@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
 
+import { DISEASE_COLORS, DISEASE_FALLBACK  } from '@/components/map/disease-colors';
+import type {DiseaseCode} from '@/components/map/disease-colors';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DISEASE_COLORS, DISEASE_FALLBACK, type DiseaseCode } from '@/components/map/disease-colors';
+import { relevance as relevanceFn } from '@/lib/case-relevance';
 
 type Population = 'wild' | 'poultry' | 'captive';
 
@@ -13,10 +15,22 @@ type Case = {
     canton?: string;
     species?: string;
     subtype?: string;
+    weight?: number;
+    lat: number;
+    lng: number;
     reportedAt: string;
 };
 
-type Props = { cases: Case[] };
+type Props = {
+    cases: Case[];
+    centerLat: number;
+    centerLng: number;
+    radiusKm: number;
+};
+
+function fmt(v: number): string {
+    return v.toFixed(1);
+}
 
 const POP_LABELS: Record<Population, string> = {
     wild: 'Wild',
@@ -40,6 +54,7 @@ function dayKey(iso: string): string {
 
 function formatDayShort(key: string): string {
     const [, m, d] = key.split('-');
+
     return `${d}.${m}`;
 }
 
@@ -47,11 +62,12 @@ type Counted<T extends string> = { key: T; label: string; count: number; color: 
 
 function BarRow({ label, count, max, color }: { label: string; count: number; max: number; color: string }) {
     const pct = max > 0 ? (count / max) * 100 : 0;
+
     return (
         <div className="space-y-1">
             <div className="flex items-center justify-between text-xs">
                 <span className="truncate">{label}</span>
-                <span className="tabular-nums text-muted-foreground">{count}</span>
+                <span className="tabular-nums text-muted-foreground">{fmt(count)}</span>
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
                 <div
@@ -87,8 +103,10 @@ function Donut({ data, total }: { data: Counted<string>[]; total: number }) {
             />
         );
         offset += len;
+
         return seg;
     });
+
     return (
         <div className="flex items-center gap-4">
             <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden>
@@ -110,7 +128,7 @@ function Donut({ data, total }: { data: Counted<string>[]; total: number }) {
                     className="fill-foreground"
                     style={{ fontSize: 24, fontWeight: 600 }}
                 >
-                    {total}
+                    {fmt(total)}
                 </text>
             </svg>
             <ul className="space-y-1 text-xs">
@@ -119,7 +137,7 @@ function Donut({ data, total }: { data: Counted<string>[]; total: number }) {
                         <span className="inline-block size-2.5 rounded-sm" style={{ backgroundColor: d.color }} />
                         <span className="min-w-16">{d.label}</span>
                         <span className="tabular-nums text-muted-foreground">
-                            {d.count} ({total > 0 ? Math.round((d.count / total) * 100) : 0}%)
+                            {fmt(d.count)} ({total > 0 ? Math.round((d.count / total) * 100) : 0}%)
                         </span>
                     </li>
                 ))}
@@ -143,7 +161,7 @@ function TimeSeries({ buckets }: { buckets: { key: string; count: number }[] }) 
     const step = innerW / n;
 
     const ticks = 4;
-    const tickVals = Array.from({ length: ticks + 1 }, (_, i) => Math.round((max * i) / ticks));
+    const tickVals = Array.from({ length: ticks + 1 }, (_, i) => (max * i) / ticks);
 
     const labelEvery = Math.max(1, Math.ceil(n / 8));
 
@@ -151,6 +169,7 @@ function TimeSeries({ buckets }: { buckets: { key: string; count: number }[] }) 
         <svg viewBox={`0 0 ${w} ${h}`} className="w-full" preserveAspectRatio="none" role="img">
             {tickVals.map((v) => {
                 const y = padT + innerH - (v / max) * innerH;
+
                 return (
                     <g key={v}>
                         <line
@@ -169,7 +188,7 @@ function TimeSeries({ buckets }: { buckets: { key: string; count: number }[] }) 
                             fontSize={9}
                             className="fill-muted-foreground"
                         >
-                            {v}
+                            {v.toFixed(1)}
                         </text>
                     </g>
                 );
@@ -178,6 +197,7 @@ function TimeSeries({ buckets }: { buckets: { key: string; count: number }[] }) 
                 const barH = (b.count / max) * innerH;
                 const x = padL + i * step + (step - barW) / 2;
                 const y = padT + innerH - barH;
+
                 return (
                     <g key={b.key}>
                         <rect x={x} y={y} width={barW} height={barH} rx={1.5} className="fill-primary" />
@@ -199,78 +219,112 @@ function TimeSeries({ buckets }: { buckets: { key: string; count: number }[] }) 
     );
 }
 
-export default function StatsView({ cases }: Props) {
-    const total = cases.length;
+export default function StatsView({ cases, centerLat, centerLng, radiusKm }: Props) {
+    const scored = useMemo(() => {
+        const center = { lat: centerLat, lng: centerLng };
+
+        return cases.map((c) => ({ c, r: relevanceFn(c, center, radiusKm) }));
+    }, [cases, centerLat, centerLng, radiusKm]);
+
+    const total = scored.reduce((s, x) => s + x.r, 0);
 
     const byDisease = useMemo<Counted<string>[]>(() => {
         const map = new Map<string, number>();
-        for (const c of cases) map.set(c.disease, (map.get(c.disease) ?? 0) + 1);
+
+        for (const { c, r } of scored) {
+map.set(c.disease, (map.get(c.disease) ?? 0) + r);
+}
+
         return [...map.entries()]
             .map(([key, count]) => ({ key, label: key, count, color: diseaseColor(key) }))
             .sort((a, b) => b.count - a.count);
-    }, [cases]);
+    }, [scored]);
 
     const byPopulation = useMemo<Counted<Population>[]>(() => {
         const pops: Population[] = ['wild', 'poultry', 'captive'];
+        const sums: Record<Population, number> = { wild: 0, poultry: 0, captive: 0 };
+
+        for (const { c, r } of scored) {
+            if (c.population) {
+sums[c.population] += r;
+}
+        }
+
         return pops
-            .map((p) => ({
-                key: p,
-                label: POP_LABELS[p],
-                count: cases.filter((c) => c.population === p).length,
-                color: POP_COLORS[p],
-            }))
+            .map((p) => ({ key: p, label: POP_LABELS[p], count: sums[p], color: POP_COLORS[p] }))
             .filter((d) => d.count > 0);
-    }, [cases]);
+    }, [scored]);
 
     const byCanton = useMemo(() => {
         const map = new Map<string, number>();
-        for (const c of cases) {
+
+        for (const { c, r } of scored) {
             const k = c.canton ?? '—';
-            map.set(k, (map.get(k) ?? 0) + 1);
+            map.set(k, (map.get(k) ?? 0) + r);
         }
+
         return [...map.entries()]
             .map(([label, count]) => ({ label, count }))
             .sort((a, b) => b.count - a.count)
             .slice(0, 8);
-    }, [cases]);
+    }, [scored]);
 
     const bySubtype = useMemo(() => {
         const map = new Map<string, number>();
-        for (const c of cases) {
-            if (!c.subtype) continue;
-            map.set(c.subtype, (map.get(c.subtype) ?? 0) + 1);
+
+        for (const { c, r } of scored) {
+            if (!c.subtype) {
+continue;
+}
+
+            map.set(c.subtype, (map.get(c.subtype) ?? 0) + r);
         }
+
         return [...map.entries()]
             .map(([label, count]) => ({ label, count }))
             .sort((a, b) => b.count - a.count);
-    }, [cases]);
+    }, [scored]);
 
     const timeBuckets = useMemo(() => {
-        if (cases.length === 0) return [];
+        if (scored.length === 0) {
+return [];
+}
+
         const map = new Map<string, number>();
-        let min = dayKey(cases[0].reportedAt);
+        let min = dayKey(scored[0].c.reportedAt);
         let max = min;
-        for (const c of cases) {
+
+        for (const { c, r } of scored) {
             const k = dayKey(c.reportedAt);
-            if (k < min) min = k;
-            if (k > max) max = k;
-            map.set(k, (map.get(k) ?? 0) + 1);
+
+            if (k < min) {
+min = k;
+}
+
+            if (k > max) {
+max = k;
+}
+
+            map.set(k, (map.get(k) ?? 0) + r);
         }
+
         const out: { key: string; count: number }[] = [];
         const start = new Date(min);
         const end = new Date(max);
+
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
             const k = d.toISOString().slice(0, 10);
             out.push({ key: k, count: map.get(k) ?? 0 });
         }
+
         return out;
-    }, [cases]);
+    }, [scored]);
 
     const diseaseMax = Math.max(1, ...byDisease.map((d) => d.count));
     const cantonMax = Math.max(1, ...byCanton.map((d) => d.count));
     const subtypeMax = Math.max(1, ...bySubtype.map((d) => d.count));
 
-    if (total === 0) {
+    if (cases.length === 0) {
         return (
             <div className="flex h-full items-center justify-center rounded-md border bg-card text-sm text-muted-foreground">
                 Keine Daten für die aktuellen Filter.
@@ -282,7 +336,7 @@ export default function StatsView({ cases }: Props) {
         <div className="grid h-full auto-rows-min grid-cols-1 gap-3 overflow-auto rounded-md md:grid-cols-2 xl:grid-cols-3">
             <Card className="md:col-span-2 xl:col-span-3">
                 <CardHeader>
-                    <CardTitle className="text-sm">Meldungen pro Tag</CardTitle>
+                    <CardTitle className="text-sm">Relevanz-Index pro Tag</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <TimeSeries buckets={timeBuckets} />

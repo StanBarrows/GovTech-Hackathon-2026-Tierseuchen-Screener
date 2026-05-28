@@ -17,6 +17,7 @@ export default function Imprint() {
     const [species, setSpecies] = useState('');
     const [subtype, setSubtype] = useState('H5N1');
     const [center, setCenter] = useState('Bern');
+    const [radiusKm, setRadiusKm] = useState(50);
 
     const togglePopulation = (p: Population) => {
         setPopulation((prev) =>
@@ -38,10 +39,13 @@ export default function Imprint() {
                     onDateToChange={setDateTo}
                     species={species}
                     onSpeciesChange={setSpecies}
+                    speciesOptions={[]}
                     subtype={subtype}
                     onSubtypeChange={setSubtype}
                     center={center}
                     onCenterChange={setCenter}
+                    radiusKm={radiusKm}
+                    onRadiusChange={setRadiusKm}
                 />
                 <div className="flex flex-1 flex-col overflow-hidden">
                     <div className="relative flex-1 overflow-y-auto rounded-md border bg-card p-8">

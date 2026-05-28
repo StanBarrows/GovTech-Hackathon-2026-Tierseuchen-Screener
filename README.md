@@ -88,7 +88,15 @@ uv run ts filter-disease gefluegelnews
 uv run ts extract-reports gefluegelnews
 ```
 
-Raw HTML and generated JSONL files are local artifacts under
+```bash
+uv run ts discover padi_web
+uv run ts fetch padi_web --limit 100 --delay-seconds 0.5
+uv run ts parse padi_web
+uv run ts filter-disease padi_web
+uv run ts extract-reports padi_web
+```
+
+Raw HTML, raw JSON, and generated JSONL files are local artifacts under
 `data/unstructured/<source_id>/` and are ignored by git by default. Parsed
 articles keep the original `source_link`, cached `raw_html_path`, and Markdown
 `fulltext`; extracted `DiseaseReport` records carry those fields forward for

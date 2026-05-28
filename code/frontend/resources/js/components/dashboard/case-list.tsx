@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
 import { ArrowUpDown, ChevronLeft, ChevronRight, FileText, Search, Sparkles, X } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 
 import CaseDetailDialog from '@/components/dashboard/case-detail-dialog';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { haversineKm, relevance as relevanceFn } from '@/lib/case-relevance';
 
 type Population = 'wild' | 'poultry' | 'captive';
 
@@ -24,6 +25,7 @@ type Case = {
     species?: string;
     subtype?: string;
     source?: string;
+    weight?: number;
     lat: number;
     lng: number;
     reportedAt: string;
@@ -38,9 +40,10 @@ type Props = {
     cases: Case[];
     centerLat: number;
     centerLng: number;
+    radiusKm: number;
 };
 
-type SortKey = 'priority' | 'reportedAt' | 'distance';
+type SortKey = 'relevance' | 'priority' | 'reportedAt' | 'distance';
 
 const PRIORITY_LABEL: Record<'high' | 'medium' | 'low', string> = {
     high: 'Hoch',
@@ -74,6 +77,7 @@ function PopulationIcon({ p }: { p?: Population }) {
             </svg>
         );
     }
+
     if (p === 'poultry') {
         return (
             <svg viewBox="0 0 12 12" className="size-3" aria-hidden>
@@ -81,6 +85,7 @@ function PopulationIcon({ p }: { p?: Population }) {
             </svg>
         );
     }
+
     if (p === 'captive') {
         return (
             <svg viewBox="0 0 12 12" className="size-3" aria-hidden>
@@ -88,29 +93,19 @@ function PopulationIcon({ p }: { p?: Population }) {
             </svg>
         );
     }
-    return null;
-}
 
-function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
-    const R = 6371;
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLng = ((lng2 - lng1) * Math.PI) / 180;
-    const a =
-        Math.sin(dLat / 2) ** 2 +
-        Math.cos((lat1 * Math.PI) / 180) *
-            Math.cos((lat2 * Math.PI) / 180) *
-            Math.sin(dLng / 2) ** 2;
-    return 2 * R * Math.asin(Math.sqrt(a));
+    return null;
 }
 
 function formatDate(iso: string) {
     const datePart = iso.split('T')[0];
     const [y, m, d] = datePart.split('-');
     const timePart = iso.includes('T') ? ` · ${iso.split('T')[1].slice(0, 5)}` : '';
+
     return `${d}.${m}.${y.slice(2)}${timePart}`;
 }
 
-type DetailRow = Case & { distance: number; priority: 'high' | 'medium' | 'low' };
+type DetailRow = Case & { distance: number; relevance: number; priority: 'high' | 'medium' | 'low' };
 
 function escapeHtml(s: string): string {
     return s
@@ -122,19 +117,33 @@ function escapeHtml(s: string): string {
 
 function openReportWindow(rows: DetailRow[]) {
     const win = window.open('', '_blank');
-    if (!win) return;
+
+    if (!win) {
+return;
+}
 
     const total = rows.length;
     const byPriority = { high: 0, medium: 0, low: 0 };
     const byPop: Record<string, number> = {};
     const bySource: Record<string, number> = {};
     const byCanton: Record<string, number> = {};
+
     for (const r of rows) {
         byPriority[r.priority]++;
-        if (r.population) byPop[r.population] = (byPop[r.population] ?? 0) + 1;
-        if (r.source) bySource[r.source] = (bySource[r.source] ?? 0) + 1;
-        if (r.canton) byCanton[r.canton] = (byCanton[r.canton] ?? 0) + 1;
+
+        if (r.population) {
+byPop[r.population] = (byPop[r.population] ?? 0) + 1;
+}
+
+        if (r.source) {
+bySource[r.source] = (bySource[r.source] ?? 0) + 1;
+}
+
+        if (r.canton) {
+byCanton[r.canton] = (byCanton[r.canton] ?? 0) + 1;
+}
     }
+
     const topCantons = Object.entries(byCanton)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5);
@@ -238,9 +247,9 @@ ${Object.entries(bySource)
     setTimeout(() => win.print(), 400);
 }
 
-export default function CaseList({ cases, centerLat, centerLng }: Props) {
-    const [sortKey, setSortKey] = useState<SortKey>('priority');
-    const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+export default function CaseList({ cases, centerLat, centerLng, radiusKm }: Props) {
+    const [sortKey, setSortKey] = useState<SortKey>('relevance');
+    const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
     const [detail, setDetail] = useState<DetailRow | null>(null);
     const [query, setQuery] = useState('');
     const [priorityFilter, setPriorityFilter] = useState<Priority[]>([]);
@@ -249,20 +258,34 @@ export default function CaseList({ cases, centerLat, centerLng }: Props) {
     const [generatingReport, setGeneratingReport] = useState(false);
 
     const rows = useMemo(() => {
+        const center = { lat: centerLat, lng: centerLng };
+
         return cases.map((c) => {
-            const distance = haversineKm(centerLat, centerLng, c.lat, c.lng);
+            const distance = haversineKm({ lat: c.lat, lng: c.lng }, center);
+            const r = relevanceFn(c, center, radiusKm);
             const priority: 'high' | 'medium' | 'low' =
-                distance < 50 ? 'high' : distance < 150 ? 'medium' : 'low';
-            return { ...c, distance, priority };
+                r >= 3 ? 'high' : r >= 1 ? 'medium' : 'low';
+
+            return { ...c, distance, relevance: r, priority };
         });
-    }, [cases, centerLat, centerLng]);
+    }, [cases, centerLat, centerLng, radiusKm]);
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
+
         return rows.filter((c) => {
-            if (priorityFilter.length > 0 && !priorityFilter.includes(c.priority)) return false;
-            if (sourceFilter.length > 0 && (!c.source || !sourceFilter.includes(c.source))) return false;
-            if (!q) return true;
+            if (priorityFilter.length > 0 && !priorityFilter.includes(c.priority)) {
+return false;
+}
+
+            if (sourceFilter.length > 0 && (!c.source || !sourceFilter.includes(c.source))) {
+return false;
+}
+
+            if (!q) {
+return true;
+}
+
             const hay = [
                 c.disease,
                 c.location,
@@ -277,17 +300,27 @@ export default function CaseList({ cases, centerLat, centerLng }: Props) {
                 .filter(Boolean)
                 .join(' ')
                 .toLowerCase();
+
             return hay.includes(q);
         });
     }, [rows, query, priorityFilter, sourceFilter]);
 
     const sorted = useMemo(() => {
         const dir = sortDir === 'asc' ? 1 : -1;
+
         return [...filtered].sort((a, b) => {
+            if (sortKey === 'relevance') {
+return dir * (a.relevance - b.relevance);
+}
+
             if (sortKey === 'priority') {
                 return dir * (PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
             }
-            if (sortKey === 'distance') return dir * (a.distance - b.distance);
+
+            if (sortKey === 'distance') {
+return dir * (a.distance - b.distance);
+}
+
             return dir * (a.reportedAt < b.reportedAt ? -1 : a.reportedAt > b.reportedAt ? 1 : 0);
         });
     }, [filtered, sortKey, sortDir]);
@@ -299,7 +332,9 @@ export default function CaseList({ cases, centerLat, centerLng }: Props) {
     }, [query, priorityFilter, sourceFilter, sortKey, sortDir]);
 
     useEffect(() => {
-        if (page > totalPages) setPage(totalPages);
+        if (page > totalPages) {
+setPage(totalPages);
+}
     }, [page, totalPages]);
 
     const pageRows = useMemo(
@@ -331,7 +366,7 @@ export default function CaseList({ cases, centerLat, centerLng }: Props) {
             setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
         } else {
             setSortKey(key);
-            setSortDir(key === 'reportedAt' ? 'desc' : 'asc');
+            setSortDir(key === 'reportedAt' || key === 'relevance' ? 'desc' : 'asc');
         }
     };
 
@@ -391,6 +426,7 @@ export default function CaseList({ cases, centerLat, centerLng }: Props) {
                     </span>
                     {(['high', 'medium', 'low'] as Priority[]).map((p) => {
                         const active = priorityFilter.includes(p);
+
                         return (
                             <button
                                 key={p}
@@ -414,6 +450,7 @@ export default function CaseList({ cases, centerLat, centerLng }: Props) {
                     </span>
                     {SOURCE_OPTIONS.map((s) => {
                         const active = sourceFilter.includes(s);
+
                         return (
                             <button
                                 key={s}
@@ -447,6 +484,16 @@ export default function CaseList({ cases, centerLat, centerLng }: Props) {
             <Table>
                 <TableHeader className="sticky top-0 bg-card">
                     <TableRow>
+                        <TableHead>
+                            <button
+                                type="button"
+                                onClick={() => toggleSort('relevance')}
+                                className="inline-flex items-center gap-1 text-xs font-semibold tracking-wider uppercase"
+                            >
+                                Relevanz-Index <ArrowUpDown className="size-3" />
+                                {sortIndicator('relevance')}
+                            </button>
+                        </TableHead>
                         <TableHead>
                             <button
                                 type="button"
@@ -498,6 +545,9 @@ export default function CaseList({ cases, centerLat, centerLng }: Props) {
                 <TableBody>
                     {pageRows.map((c) => (
                         <TableRow key={c.id}>
+                            <TableCell className="tabular-nums font-medium">
+                                {c.relevance.toFixed(2)}
+                            </TableCell>
                             <TableCell>
                                 <span className="inline-flex items-center gap-2">
                                     <span

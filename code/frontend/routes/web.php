@@ -40,6 +40,25 @@ Route::get('/dashboard/map', function () {
     $subtypes = ['H5N1', 'H5N1', 'H5N1', 'H5N1', 'H5N1', 'H5N8', 'H5N5'];
     $sources = ['BLV', 'Kantonstierarzt', 'Labor', 'Tierarzt', 'Bürger-Meldung'];
 
+    $populationWeights = [
+        'poultry' => 5.0,
+        'captive' => 2.0,
+        'wild' => 1.0,
+    ];
+    $subtypeWeights = [
+        'H5N1' => 1.5,
+        'H5N8' => 1.2,
+        'H5N5' => 1.0,
+    ];
+    $speciesWeights = [
+        'Stockente' => 1.3,
+        'Reiherente' => 1.3,
+        'Graugans' => 1.3,
+        'Höckerschwan' => 1.1,
+        'Lachmöwe' => 1.1,
+        'Kormoran' => 1.1,
+    ];
+
     $cantonByName = [
         'Bern' => 'BE', 'Zürich' => 'ZH', 'Bodensee' => 'TG', 'Genfersee' => 'VD',
         'Sempachersee' => 'LU', 'Neuenburgersee' => 'NE', 'Thunersee' => 'BE',
@@ -72,6 +91,15 @@ Route::get('/dashboard/map', function () {
         }
 
         $pop = $populations[array_rand($populations)];
+        $species = $speciesByPop[$pop][array_rand($speciesByPop[$pop])];
+        $subtype = $subtypes[array_rand($subtypes)];
+
+        $weight = round(
+            ($populationWeights[$pop] ?? 1.0)
+            * ($subtypeWeights[$subtype] ?? 1.0)
+            * ($speciesWeights[$species] ?? 1.0),
+            3,
+        );
 
         $cases[] = [
             'id' => $i,
@@ -79,8 +107,9 @@ Route::get('/dashboard/map', function () {
             'population' => $pop,
             'location' => $hotspot['name'],
             'canton' => $cantonByName[$hotspot['name']] ?? '',
-            'species' => $speciesByPop[$pop][array_rand($speciesByPop[$pop])],
-            'subtype' => $subtypes[array_rand($subtypes)],
+            'species' => $species,
+            'subtype' => $subtype,
+            'weight' => $weight,
             'lat' => round($hotspot['lat'] + $gauss() * $hotspot['spread'], 4),
             'lng' => round($hotspot['lng'] + $gauss() * $hotspot['spread'], 4),
             'reportedAt' => date('Y-m-d\TH:i', $start + mt_rand(0, $span)),

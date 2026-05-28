@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any, Callable
 
 from rich.console import Console
 from rich.logging import RichHandler
@@ -22,20 +24,15 @@ LOGGER = logging.getLogger(__name__)
 
 def build_parser(config: AppConfig | None = None) -> argparse.ArgumentParser:
     config = config or load_config()
-    default_source = next(iter(config.sources.values()))
     parser = argparse.ArgumentParser(prog="ts")
     subparsers = parser.add_subparsers(dest="command", required=True)
     for command in config.scraper.commands:
         subparser = subparsers.add_parser(command)
         subparser.add_argument("source", choices=sorted(config.sources))
         subparser.add_argument("--data-dir", default=None)
-        subparser.add_argument(
-            "--timeout-seconds", type=float, default=default_source.timeout_seconds
-        )
-        subparser.add_argument(
-            "--delay-seconds", type=float, default=default_source.delay_seconds
-        )
-        subparser.add_argument("--limit", type=int, default=default_source.limit)
+        subparser.add_argument("--timeout-seconds", type=float, default=None)
+        subparser.add_argument("--delay-seconds", type=float, default=None)
+        subparser.add_argument("--limit", type=int, default=None)
         if command == "export-rdf":
             subparser.add_argument("--rdf-dir", default=None)
     return parser
@@ -47,21 +44,33 @@ def main(argv: list[str] | None = None) -> int:
     _configure_logging(console, config)
     parser = build_parser(config)
     args = parser.parse_args(argv)
+    source_config = config.sources[args.source]
+    timeout_seconds = (
+        args.timeout_seconds
+        if args.timeout_seconds is not None
+        else source_config.timeout_seconds
+    )
+    delay_seconds = (
+        args.delay_seconds
+        if args.delay_seconds is not None
+        else source_config.delay_seconds
+    )
+    limit = args.limit if args.limit is not None else source_config.limit
     data_dir = resolve_data_dir(args.data_dir, config)
     if args.command == "discover":
-        return _discover(data_dir, args.source, args.timeout_seconds, console, config)
+        return _discover(data_dir, args.source, timeout_seconds, limit, console, config)
     if args.command == "fetch":
         return _fetch(
             data_dir,
             args.source,
-            args.timeout_seconds,
-            args.delay_seconds,
-            args.limit,
+            timeout_seconds,
+            delay_seconds,
+            limit,
             console,
             config,
         )
     if args.command == "parse":
-        return _parse(data_dir, args.source, args.limit, console, config)
+        return _parse(data_dir, args.source, limit, console, config)
     if args.command == "filter-disease":
         return _filter_disease(data_dir, args.source, console, config)
     if args.command == "extract-reports":
@@ -93,28 +102,96 @@ def _configure_logging(console: Console, config: AppConfig) -> None:
     )
 
 
+def _fetcher_for_source(source: str) -> Callable[..., Any]:
+    if source == "gefluegelnews":
+        from govtech_tierseuchen.gefluegelnews import fetch_and_cache_article
+
+        return fetch_and_cache_article
+    if source == "padi_web":
+        from govtech_tierseuchen.padi_web import fetch_and_cache_article
+
+        return fetch_and_cache_article
+    raise ValueError(f"Unsupported source: {source}")
+
+
+def _parse_row_for_source(source: str, row: dict, raw_path: Path) -> Any:
+    retrieved_at = datetime.fromisoformat(
+        row.get("fetched_at", datetime.now(UTC).isoformat())
+    )
+    if source == "gefluegelnews":
+        from govtech_tierseuchen.gefluegelnews import parse_article_html
+
+        html = raw_path.read_text(encoding="utf-8")
+        return parse_article_html(
+            html=html,
+            source_link=row["source_link"],
+            raw_html_path=raw_path,
+            content_hash=row.get("content_hash", ""),
+            retrieved_at=retrieved_at,
+        )
+    if source == "padi_web":
+        from govtech_tierseuchen.padi_web import parse_article_payload
+
+        payload = json.loads(raw_path.read_text(encoding="utf-8"))
+        return parse_article_payload(
+            payload=payload,
+            source_link=row["source_link"],
+            raw_json_path=raw_path,
+            content_hash=row.get("content_hash", ""),
+            retrieved_at=retrieved_at,
+        )
+    raise ValueError(f"Unsupported source: {source}")
+
+
 def _discover(
     data_dir: Path,
     source: str,
     timeout_seconds: float,
+    limit: int | None,
     console: Console,
     config: AppConfig,
 ) -> int:
-    from govtech_tierseuchen.gefluegelnews import (
-        SITEMAP_URL,
-        fetch_url,
-        parse_sitemap_articles,
-    )
     from govtech_tierseuchen.jsonl import write_jsonl
 
-    _, xml = fetch_url(SITEMAP_URL, timeout_seconds=timeout_seconds)
-    articles = parse_sitemap_articles(
-        xml.encode("utf-8"), discovered_at=datetime.now(UTC)
-    )
+    if source == "gefluegelnews":
+        from govtech_tierseuchen.gefluegelnews import (
+            SITEMAP_URL,
+            fetch_url,
+            parse_sitemap_articles,
+        )
+
+        _, xml = fetch_url(SITEMAP_URL, timeout_seconds=timeout_seconds)
+        articles = parse_sitemap_articles(
+            xml.encode("utf-8"), discovered_at=datetime.now(UTC)
+        )
+    elif source == "padi_web":
+        from govtech_tierseuchen.padi_web import (
+            build_articles_api_url,
+            fetch_json,
+            parse_article_page,
+        )
+
+        articles = []
+        next_url: str | None = build_articles_api_url()
+        seen_page_urls: set[str] = set()
+        while next_url:
+            if next_url in seen_page_urls:
+                LOGGER.warning("Stopping repeated PADI pagination URL: %s", next_url)
+                break
+            seen_page_urls.add(next_url)
+            _, payload = fetch_json(next_url, timeout_seconds=timeout_seconds)
+            page_articles, next_url = parse_article_page(
+                payload, discovered_at=datetime.now(UTC)
+            )
+            articles.extend(page_articles)
+            if limit is not None and len(articles) >= limit:
+                articles = articles[:limit]
+                break
+    else:
+        raise ValueError(f"Unsupported source: {source}")
+
     write_jsonl(config.output_path(data_dir, source, "manifest"), articles)
-    console.print(
-        f"[green]Discovered {len(articles)} Gefluegelnews article URLs[/green]"
-    )
+    console.print(f"[green]Discovered {len(articles)} {source} article URLs[/green]")
     return 0
 
 
@@ -127,9 +204,9 @@ def _fetch(
     console: Console,
     config: AppConfig,
 ) -> int:
-    from govtech_tierseuchen.gefluegelnews import fetch_and_cache_article
     from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
 
+    fetch_and_cache_article = _fetcher_for_source(source)
     manifest_path = config.output_path(data_dir, source, "manifest")
     rows = read_jsonl(manifest_path)
     selected_rows = rows if limit is None else rows[:limit]
@@ -192,7 +269,6 @@ def _parse(
     console: Console,
     config: AppConfig,
 ) -> int:
-    from govtech_tierseuchen.gefluegelnews import parse_article_html
     from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
     from govtech_tierseuchen.models import ParseError
 
@@ -207,19 +283,8 @@ def _parse(
         raw_html_path = Path(raw_path_value)
         if not raw_html_path.exists():
             continue
-        html = raw_html_path.read_text(encoding="utf-8")
         try:
-            parsed.append(
-                parse_article_html(
-                    html=html,
-                    source_link=row["source_link"],
-                    raw_html_path=raw_html_path,
-                    content_hash=row.get("content_hash", ""),
-                    retrieved_at=datetime.fromisoformat(
-                        row.get("fetched_at", datetime.now(UTC).isoformat())
-                    ),
-                )
-            )
+            parsed.append(_parse_row_for_source(source, row, raw_html_path))
         except (KeyError, ValueError) as exc:
             parse_errors.append(
                 ParseError(

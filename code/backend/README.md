@@ -1,7 +1,7 @@
 # Backend Scraper
 
 Prototype news-ingestion pipeline for animal disease screening. The current
-source adapter is `gefluegelnews`.
+source adapters are `gefluegelnews` and `padi_web`.
 
 ## Run
 
@@ -12,6 +12,15 @@ uv run ts parse gefluegelnews
 uv run ts filter-disease gefluegelnews
 uv run ts extract-reports gefluegelnews
 uv run ts export-rdf gefluegelnews
+```
+
+```bash
+uv run ts discover padi_web
+uv run ts fetch padi_web --limit 100 --delay-seconds 0.5
+uv run ts parse padi_web
+uv run ts filter-disease padi_web
+uv run ts extract-reports padi_web
+uv run ts export-rdf padi_web
 ```
 
 Use `--data-dir <path>` to override the default `data/unstructured`.
@@ -27,20 +36,23 @@ file resolve from the repository root, so the default output directory is always
 
 ## Outputs
 
-Generated files live under `data/unstructured/gefluegelnews/`:
+Generated files live under `data/unstructured/<source>/`:
 
 - `manifest.jsonl`: discovered and fetched article metadata
-- `raw_html/`: cached article HTML
+- `raw_html/`: cached article HTML for Gefluegelnews
+- `raw_json/`: cached API detail payloads for PADI-web
 - `articles.jsonl`: parsed articles with Markdown `fulltext`
 - `parse_errors.jsonl`: parser failures that did not stop the batch
 - `disease_articles.jsonl`: disease-relevant articles with evidence
 - `disease_reports.jsonl`: candidate `DiseaseReport` records
 
-These local scraper artifacts are ignored by git.
+PADI-web additionally caches API detail payloads under `raw_json/`. These local
+scraper artifacts are ignored by git.
 
-Finalized RDF export files are written under `lindas/data/rdf/gefluegelnews/`:
+Finalized RDF export files are written under `lindas/data/rdf/<source>/`, for
+example `lindas/data/rdf/padi_web/padi_web.ttl`:
 
-- `gefluegelnews.ttl`: LiNDAS-ready Turtle for news documents, extraction
+- `<source>.ttl`: LiNDAS-ready Turtle for news documents, extraction
   candidates, evidence snippets, outbreak situations, assessments, consequences,
   prevention measures, and research references
 

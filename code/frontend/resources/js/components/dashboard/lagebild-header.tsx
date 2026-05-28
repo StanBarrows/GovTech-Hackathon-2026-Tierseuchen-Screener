@@ -32,6 +32,7 @@ export default function LagebildHeader({ title, subtitle }: Props) {
                 <NavigationMenuList>
                     {nav.map((item) => {
                         const active = url === item.href;
+
                         return (
                             <NavigationMenuItem key={item.href}>
                                 <NavigationMenuLink
