@@ -24,12 +24,14 @@ function toMs(v: string): number {
 function fromMs(ms: number): string {
     const d = new Date(ms);
     const pad = (n: number) => String(n).padStart(2, '0');
+
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 function formatLabel(v: string): string {
     const d = new Date(v);
     const pad = (n: number) => String(n).padStart(2, '0');
+
     return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${String(d.getFullYear()).slice(2)} · ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
@@ -56,25 +58,35 @@ export default function PlayBar({
     const lastTickRef = useRef<number>(0);
 
     useEffect(() => {
-        if (!playing) return;
+        if (!playing) {
+return;
+}
 
         const step = () => {
             const now = performance.now();
+
             if (now - lastTickRef.current >= tickMs) {
                 lastTickRef.current = now;
                 const next = cursorMsVal + stepHours * 60 * 60 * 1000;
+
                 if (next >= toMsVal) {
                     onCursorChange(fromMs(toMsVal));
                     onTogglePlay();
+
                     return;
                 }
+
                 onCursorChange(fromMs(next));
             }
+
             rafRef.current = requestAnimationFrame(step);
         };
         rafRef.current = requestAnimationFrame(step);
+
         return () => {
-            if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+            if (rafRef.current !== null) {
+cancelAnimationFrame(rafRef.current);
+}
         };
     }, [playing, cursorMsVal, toMsVal, stepHours, tickMs, onCursorChange, onTogglePlay]);
 

@@ -62,6 +62,7 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
 function formatTimestamp(iso: string) {
     const [date, time] = iso.split('T');
     const [y, m, d] = date.split('-');
+
     return `${d}.${m}.${y} · ${time?.slice(0, 5) ?? ''} Uhr`;
 }
 

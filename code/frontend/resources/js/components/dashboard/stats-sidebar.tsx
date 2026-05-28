@@ -20,7 +20,10 @@ const POP_LABELS: Record<NonNullable<Case['population']>, string> = {
 export default function StatsSidebar({ cases }: Props) {
     const total = cases.length;
     const byPop = cases.reduce<Record<string, number>>((acc, c) => {
-        if (c.population) acc[c.population] = (acc[c.population] ?? 0) + 1;
+        if (c.population) {
+acc[c.population] = (acc[c.population] ?? 0) + 1;
+}
+
         return acc;
     }, {});
     const recent = [...cases]
