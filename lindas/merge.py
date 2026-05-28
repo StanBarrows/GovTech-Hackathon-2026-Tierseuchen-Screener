@@ -2,7 +2,7 @@ from pathlib import Path
 from rdflib import Graph
 
 # Basisordner mit den TTL-Dateien
-base_path = Path("RDFPoC/graphdb-poc/load")
+base_path = Path("lindas/RDFPoC/graphdb-poc/load")
 
 # Ziel-Datei
 output_file = base_path / "merged.ttl"
