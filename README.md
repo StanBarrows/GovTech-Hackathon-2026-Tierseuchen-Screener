@@ -74,3 +74,22 @@ Der Nutzen wäre unter anderem:
 ## Nachhaltigkeit
 
 Nach dem Hackathon können erfolgreiche Ideen und Prototypen in bestehende Arbeiten und Projekte des Bundesamts BLV zur Erneuerung des Radarbulletin-Prozesses einfliessen. Ziel ist es, geeignete Ansätze schrittweise weiterzuentwickeln und in bestehende Abläufe zu integrieren.
+
+## News Scraper Prototype
+
+The news scraper is staged so discovery, fetching, parsing, filtering, and report
+extraction can be rerun independently.
+
+```bash
+uv run govtech-tierseuchen discover gefluegelnews
+uv run govtech-tierseuchen fetch gefluegelnews --delay-seconds 1
+uv run govtech-tierseuchen parse gefluegelnews
+uv run govtech-tierseuchen filter-disease gefluegelnews
+uv run govtech-tierseuchen extract-reports gefluegelnews
+```
+
+Raw HTML and generated JSONL files are local artifacts under
+`data/unstructured/<source_id>/` and are ignored by git by default. Parsed
+articles keep the original `source_link`, cached `raw_html_path`, and Markdown
+`fulltext`; extracted `DiseaseReport` records carry those fields forward for
+traceability.

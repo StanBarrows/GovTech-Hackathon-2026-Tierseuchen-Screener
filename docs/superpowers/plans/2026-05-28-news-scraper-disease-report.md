@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a source-agnostic news ingestion pipeline with Gefluegelnews as the first source, producing cached HTML, normalized articles, disease-filtered articles, and preliminary `DiseaseReport` records.
+**Goal:** Build a source-agnostic news ingestion pipeline with Gefluegelnews as the first source, producing cached HTML, normalized articles, disease-filtered articles, and preliminary LiNDAS-aligned `DiseaseReport` candidate records.
 
 **Architecture:** Add a small Python package under `src/govtech_tierseuchen/` with focused modules for shared models, JSONL I/O, source adapters, disease filtering, rule-based report extraction, and a CLI. The first implementation uses only the Python standard library so no dependency approval is required.
 
@@ -15,7 +15,7 @@
 - Create: `src/govtech_tierseuchen/__init__.py`
   - Package marker and public version string.
 - Create: `src/govtech_tierseuchen/models.py`
-  - Dataclasses: `DiscoveredArticle`, `FetchedArticle`, `NewsArticle`, `DiseaseRelevance`, `DiseaseReport`, `FetchError`, `ParseError`.
+  - Dataclasses: `DiscoveredArticle`, `FetchedArticle`, `NewsArticle`, `EvidenceSnippet`, `DiseaseRelevance`, `DiseaseReport`, `PreventionMeasure`, `ResearchReference`, `FetchError`, `ParseError`.
 - Create: `src/govtech_tierseuchen/jsonl.py`
   - JSONL read/write helpers for dataclasses and dictionaries.
 - Create: `src/govtech_tierseuchen/gefluegelnews.py`
@@ -51,7 +51,7 @@ Add this to `tests/test_disease_pipeline.py`:
 ```python
 from datetime import date, datetime, timezone
 
-from govtech_tierseuchen.models import DiseaseReport, NewsArticle
+from govtech_tierseuchen.models import DiseaseReport, EvidenceSnippet, NewsArticle, PreventionMeasure
 
 
 def test_news_article_keeps_source_link_and_markdown_fulltext():
@@ -86,25 +86,51 @@ def test_disease_report_has_extended_screening_fields():
         report_id="gefluegelnews:example",
         source_id="gefluegelnews",
         source_name="Gefluegelnews",
+        source_document_id="source_document:gefluegelnews:example",
+        source_document_title="Gefluegelpest: Beispiel",
         source_link="https://www.gefluegelnews.de/article/example",
         source_publication_date=date(2026, 5, 20),
         source_retrieved_at=datetime(2026, 5, 28, 12, 0, tzinfo=timezone.utc),
         fulltext="Ein Ausbruch in Polen hat Sperrzonen zur Folge.",
+        raw_html_path="data/unstructured/gefluegelnews/raw_html/example.html",
+        content_hash="abc123",
         extraction_method="rules",
         extraction_version="rules-v1",
-        confidence=0.5,
-        evidence_snippets=["Ausbruch in Polen"],
+        extraction_status="candidate",
+        extraction_confidence="medium",
+        evidence_snippets=[
+            EvidenceSnippet(
+                snippet_id="snippet:example:1",
+                text="Ausbruch in Polen",
+                source_link="https://www.gefluegelnews.de/article/example",
+                locator="p[1]",
+                matched_terms=["Ausbruch", "Polen"],
+            )
+        ],
+        situation_key="hpai|polen|2026-05",
+        situation_month="2026-05",
         country_or_territory="Polen",
+        country_concept_id="country-polen",
         disease_name="HPAI",
+        disease_concept_id="hpai",
         is_in_europe=True,
         has_consequences=True,
         consequences="Sperrzonen wurden eingerichtet.",
+        prevention_measures=[
+            PreventionMeasure(
+                text="Sperrzonen wurden eingerichtet.",
+                prevention_type="restriction-zone",
+                raw_evidence="Sperrzonen wurden eingerichtet.",
+            )
+        ],
     )
 
     assert report.source_link.endswith("/example")
+    assert report.source_document_title == "Gefluegelpest: Beispiel"
     assert report.is_in_europe is True
     assert report.has_consequences is True
     assert report.consequences == "Sperrzonen wurden eingerichtet."
+    assert report.evidence_snippets[0].locator == "p[1]"
 ```
 
 - [ ] **Step 2: Run the test to verify it fails**
@@ -189,8 +215,33 @@ class DiseaseRelevance:
     is_relevant: bool
     score: int
     matched_terms: list[str]
-    evidence_snippets: list[str]
+    evidence_snippets: list[EvidenceSnippet]
     filter_version: str
+
+
+@dataclass(frozen=True)
+class EvidenceSnippet:
+    snippet_id: str
+    text: str
+    source_link: str
+    locator: str | None = None
+    matched_terms: list[str] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class PreventionMeasure:
+    text: str
+    prevention_type: str | None = None
+    raw_evidence: str | None = None
+
+
+@dataclass(frozen=True)
+class ResearchReference:
+    title: str | None = None
+    url: str | None = None
+    citation_text: str | None = None
+    link_type: str | None = None
+    raw_evidence: str | None = None
 
 
 @dataclass(frozen=True)
@@ -198,15 +249,23 @@ class DiseaseReport:
     report_id: str
     source_id: str
     source_name: str
+    source_document_id: str
+    source_document_title: str
     source_link: str
     source_publication_date: date | None
     source_retrieved_at: datetime
     fulltext: str
+    raw_html_path: str
+    content_hash: str
     extraction_method: str
     extraction_version: str
-    confidence: float
-    evidence_snippets: list[str]
+    extraction_status: str
+    extraction_confidence: str
+    evidence_snippets: list[EvidenceSnippet]
+    situation_key: str | None = None
+    situation_month: str | None = None
     country_or_territory: str | None = None
+    country_concept_id: str | None = None
     administrative_division_level_1: str | None = None
     administrative_division_level_2: str | None = None
     administrative_division_level_3: str | None = None
@@ -215,7 +274,9 @@ class DiseaseReport:
     longitude: float | None = None
     approximate_location: bool | None = None
     disease_name: str | None = None
+    disease_concept_id: str | None = None
     disease_type: str | None = None
+    disease_type_concept_id: str | None = None
     species: str | None = None
     production_type: str | None = None
     wildlife_type: str | None = None
@@ -237,9 +298,19 @@ class DiseaseReport:
     result_date: date | None = None
     result_type: str | None = None
     control_measures: list[str] = field(default_factory=list)
+    relevance_level: str | None = None
+    relevance_rationale: str | None = None
+    raw_relevance_evidence: str | None = None
+    severity_level: str | None = None
+    severity_rationale: str | None = None
+    raw_severity_evidence: str | None = None
+    reach_level: str | None = None
+    reach_rationale: str | None = None
     is_in_europe: bool | None = None
     has_consequences: bool | None = None
     consequences: str | None = None
+    prevention_measures: list[PreventionMeasure] = field(default_factory=list)
+    research_references: list[ResearchReference] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -617,6 +688,7 @@ Append this implementation to `src/govtech_tierseuchen/gefluegelnews.py`:
 
 ```python
 import re
+import hashlib
 from dataclasses import dataclass, field
 from html import unescape
 from html.parser import HTMLParser
@@ -879,7 +951,8 @@ def test_assess_disease_relevance_returns_matches_and_snippets():
     assert relevance.score >= 3
     assert "Vogelgrippe" in relevance.matched_terms
     assert "H5N1" in relevance.matched_terms
-    assert any("Hotspot der Vogelgrippe" in snippet for snippet in relevance.evidence_snippets)
+    assert any("Hotspot der Vogelgrippe" in snippet.text for snippet in relevance.evidence_snippets)
+    assert relevance.evidence_snippets[0].source_link == article.source_link
 ```
 
 - [ ] **Step 2: Run the test to verify it fails**
@@ -901,7 +974,7 @@ from __future__ import annotations
 
 import re
 
-from govtech_tierseuchen.models import DiseaseRelevance, NewsArticle
+from govtech_tierseuchen.models import DiseaseRelevance, EvidenceSnippet, NewsArticle
 
 FILTER_VERSION = "rules-v1"
 
@@ -943,8 +1016,8 @@ def assess_disease_relevance(article: NewsArticle) -> DiseaseRelevance:
     for term in DISEASE_TERMS:
         if re.search(re.escape(term), haystack, flags=re.IGNORECASE):
             matched_terms.append(term)
-            snippet = _snippet_for_term(haystack, term)
-            if snippet and snippet not in snippets:
+            snippet = _snippet_for_term(article.source_link, haystack, term)
+            if snippet and all(existing.text != snippet.text for existing in snippets):
                 snippets.append(snippet)
     score = len(matched_terms)
     return DiseaseRelevance(
@@ -957,13 +1030,21 @@ def assess_disease_relevance(article: NewsArticle) -> DiseaseRelevance:
     )
 
 
-def _snippet_for_term(text: str, term: str, radius: int = 90) -> str | None:
+def _snippet_for_term(source_link: str, text: str, term: str, radius: int = 90) -> EvidenceSnippet | None:
     match = re.search(re.escape(term), text, flags=re.IGNORECASE)
     if match is None:
         return None
     start = max(0, match.start() - radius)
     end = min(len(text), match.end() + radius)
-    return re.sub(r"\s+", " ", text[start:end]).strip()
+    snippet_text = re.sub(r"\s+", " ", text[start:end]).strip()
+    snippet_hash = hashlib.sha1(f"{source_link}|{term}|{start}".encode("utf-8")).hexdigest()[:12]
+    return EvidenceSnippet(
+        snippet_id=f"snippet:{snippet_hash}",
+        text=snippet_text,
+        source_link=source_link,
+        locator=f"char[{start}:{end}]",
+        matched_terms=[term],
+    )
 ```
 
 - [ ] **Step 4: Run the disease filter test**
@@ -1021,15 +1102,18 @@ def test_extract_report_rules_populates_europe_and_consequences():
     report = extract_report_rules(article, relevance)
 
     assert report.report_id == "gefluegelnews:polen"
+    assert report.source_document_title == article.title
     assert report.source_link == article.source_link
     assert report.fulltext == article.fulltext
+    assert report.situation_key == "hpai|polen|2026-05"
+    assert report.situation_month == "2026-05"
     assert report.disease_name == "HPAI"
     assert report.disease_type == "H5N1"
     assert report.country_or_territory == "Polen"
     assert report.is_in_europe is True
     assert report.has_consequences is True
     assert "Sperrzonen" in report.consequences
-    assert "Keulung" in report.control_measures
+    assert any(measure.prevention_type == "Keulung" for measure in report.prevention_measures)
 ```
 
 - [ ] **Step 2: Run the test to verify it fails**
@@ -1052,7 +1136,7 @@ from __future__ import annotations
 import re
 from urllib.parse import urlparse
 
-from govtech_tierseuchen.models import DiseaseRelevance, DiseaseReport, NewsArticle
+from govtech_tierseuchen.models import DiseaseRelevance, DiseaseReport, NewsArticle, PreventionMeasure
 
 EXTRACTION_VERSION = "rules-v1"
 EUROPEAN_COUNTRIES = {
@@ -1118,26 +1202,38 @@ def extract_report_rules(article: NewsArticle, relevance: DiseaseRelevance) -> D
     control_measures = _control_measures(text)
     consequences = _consequence_sentence(article.fulltext)
     report_id = f"{article.source_id}:{urlparse(article.source_link).path.rstrip('/').split('/')[-1]}"
-    confidence = min(1.0, 0.25 + (0.1 * relevance.score))
     return DiseaseReport(
         report_id=report_id,
         source_id=article.source_id,
         source_name=article.source_name,
+        source_document_id=f"source_document:{report_id}",
+        source_document_title=article.title,
         source_link=article.source_link,
         source_publication_date=article.publication_date,
         source_retrieved_at=article.retrieved_at,
         fulltext=article.fulltext,
+        raw_html_path=article.raw_html_path,
+        content_hash=article.content_hash,
         extraction_method="rules",
         extraction_version=EXTRACTION_VERSION,
-        confidence=confidence,
+        extraction_status="candidate",
+        extraction_confidence=_confidence_level(relevance.score),
         evidence_snippets=relevance.evidence_snippets,
+        situation_key=_situation_key(disease_name, country, article.publication_date),
+        situation_month=article.publication_date.isoformat()[:7] if article.publication_date else None,
         country_or_territory=country,
+        country_concept_id=f"country-{_slug(country)}" if country else None,
         disease_name=disease_name,
+        disease_concept_id=_slug(disease_name) if disease_name else None,
         disease_type=disease_type,
+        disease_type_concept_id=_slug(disease_type) if disease_type else None,
         control_measures=control_measures,
+        relevance_level="high" if relevance.score >= 3 else "medium",
+        raw_relevance_evidence="; ".join(snippet.text for snippet in relevance.evidence_snippets),
         is_in_europe=country in EUROPEAN_COUNTRIES if country else None,
         has_consequences=bool(consequences) if consequences is not None else None,
         consequences=consequences,
+        prevention_measures=_prevention_measures(text),
     )
 
 
@@ -1173,12 +1269,57 @@ def _control_measures(text: str) -> list[str]:
     return measures
 
 
+def _prevention_measures(text: str) -> list[PreventionMeasure]:
+    measures = []
+    for term, normalized in CONSEQUENCE_TERMS.items():
+        match = re.search(re.escape(term), text, flags=re.IGNORECASE)
+        if match:
+            sentence = _sentence_containing(text, match.start()) or match.group(0)
+            measures.append(PreventionMeasure(text=sentence, prevention_type=normalized, raw_evidence=match.group(0)))
+    return measures
+
+
 def _consequence_sentence(text: str) -> str | None:
     sentences = re.split(r"(?<=[.!?])\s+", text.replace("\n", " "))
     for sentence in sentences:
         if any(re.search(re.escape(term), sentence, flags=re.IGNORECASE) for term in CONSEQUENCE_TERMS):
             return sentence.strip()
     return None
+
+
+def _sentence_containing(text: str, index: int) -> str | None:
+    sentences = re.split(r"(?<=[.!?])\s+", text.replace("\n", " "))
+    cursor = 0
+    for sentence in sentences:
+        end = cursor + len(sentence)
+        if cursor <= index <= end:
+            return sentence.strip()
+        cursor = end + 1
+    return None
+
+
+def _confidence_level(score: int) -> str:
+    if score >= 4:
+        return "high"
+    if score >= 2:
+        return "medium"
+    if score >= 1:
+        return "low"
+    return "unknown"
+
+
+def _situation_key(disease_name: str | None, country: str | None, publication_date) -> str | None:
+    if not disease_name or not country or not publication_date:
+        return None
+    return f"{_slug(disease_name)}|{_slug(country)}|{publication_date.isoformat()[:7]}"
+
+
+def _slug(value: str | None) -> str:
+    if not value:
+        return "unknown"
+    value = value.strip().lower()
+    value = re.sub(r"[^a-z0-9]+", "-", value)
+    return re.sub(r"-+", "-", value).strip("-") or "unknown"
 ```
 
 - [ ] **Step 4: Run the report extraction test**

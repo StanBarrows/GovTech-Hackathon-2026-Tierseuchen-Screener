@@ -11,3 +11,22 @@ dependencies = [
     "pandas>=3.0.3",
     "seaborn>=0.13.2",
 ]
+
+[project.scripts]
+govtech-tierseuchen = "govtech_tierseuchen.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+    "ruff>=0.15.14",
+]
+
+[tool.uv]
+exclude-newer = "7 days"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

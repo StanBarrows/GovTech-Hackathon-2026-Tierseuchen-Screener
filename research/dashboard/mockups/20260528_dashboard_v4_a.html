@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HPAI Dashboard — Wireframe v4 (PoC)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#4a4a4a; --ink2:#8a8a8a; --paper:#fff; --fill:#f2f2f2; --fill2:#e6e6e6;
+  --blue:#2f6fb0; --red:#d2564f; --amber:#e0a300; --green:#5aa84f; --violet:#7d5fb2;
+  --g1:#5e5e5e; --g2:#9a9a9a; --g3:#cfcfcf; --canvas:#d8d8d8;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Balsamiq Sans',cursive;background:var(--canvas);color:var(--ink);padding:26px 18px 56px;-webkit-font-smoothing:antialiased}
+.defs{position:absolute;width:0;height:0}
+.sk{position:relative;background:var(--paper)}
+.sk::before{content:"";position:absolute;inset:0;border:2px solid var(--ink);border-radius:6px;filter:url(#rough);pointer-events:none}
+.sk.thin::before{border-width:1.5px}
+.window{max-width:1240px;margin:0 auto;background:var(--paper);border-radius:8px}
+.window::before{border-width:2.5px}
+
+.titlebar{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:2px solid var(--ink)}
+.dots{display:flex;gap:6px}.dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink)}
+.urlbar{flex:1;display:flex;align-items:center;height:26px;padding:0 12px;color:var(--ink2);font-size:12px;max-width:520px;margin:0 auto}
+.titlebar .lang{font-size:12px;color:var(--ink2)}
+
+.appbar{display:flex;align-items:center;gap:14px;padding:12px 16px 0}
+.appbar .title{font-weight:700;font-size:18px}
+.appbar .title small{font-weight:400;color:var(--ink2);font-size:12px;margin-left:6px}
+.appbar .grow{flex:1}
+.tabs{display:flex;gap:8px;align-items:flex-end}
+.tab{padding:7px 18px 9px;cursor:pointer;background:var(--fill);color:var(--ink2);border-radius:6px 6px 0 0;font-size:14px;position:relative}
+.tab.on{background:var(--paper);color:var(--ink);font-weight:700}
+.btn{cursor:pointer;background:var(--paper);padding:7px 14px;font-size:13px;font-family:inherit;color:var(--ink);display:inline-flex;align-items:center;gap:7px}
+.btn:hover{background:var(--fill)}
+.btn.prim{background:#eaf2fb}
+.btn.ki{background:#f1ecfb}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.main{display:grid;grid-template-columns:236px 1fr;gap:14px;padding:14px 16px 18px;align-items:start}
+.panel{padding:13px}
+.panel h3{margin:0 0 11px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);font-weight:700;display:flex;align-items:center;gap:8px}
+.panel h3 .hint{font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink2);font-size:10px}
+
+.field{margin-bottom:13px}
+.field label{display:block;font-size:13px;margin-bottom:6px}
+.field .opt{color:var(--ink2);font-size:11px}
+.select{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;font-size:13px;cursor:pointer;background:var(--paper)}
+.select .ch{color:var(--ink2)}
+.dates{display:flex;gap:8px}.dates .d{flex:1;padding:7px 9px;font-size:12px;display:flex;align-items:center;gap:6px}
+.dates .d .ic{color:var(--ink2)}
+.meta{font-size:11px;color:var(--ink2);line-height:1.6;margin-top:6px}.meta b{color:var(--ink)}
+hr.sk-hr{border:none;height:2px;background:var(--fill2);margin:14px 0;border-radius:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 11px;font-size:12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;background:#fff;user-select:none}
+.chip.on{background:#eef4fb;font-weight:700}.chip.off{color:var(--ink2)}.chip .shp{font-size:11px}
+
+/* MAP */
+.maparea{position:relative;height:470px;overflow:hidden;border-radius:6px;background:var(--paper);
+  background-image:radial-gradient(var(--g3) 1px,transparent 1.5px);background-size:18px 18px;background-position:6px 6px}
+.geo{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.heat{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.streams-svg{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+#markers{position:absolute;inset:0;z-index:4}
+.marker{position:absolute;transform:translate(-50%,-50%);cursor:pointer;background:none;border:none;padding:0;line-height:0}
+.marker:hover{transform:translate(-50%,-50%) scale(1.25)}
+.origin{position:absolute;transform:translate(-50%,-50%);z-index:13;cursor:grab;text-align:center}
+.origin.drag{cursor:grabbing}.origin.hidden{display:none}
+.origin .lbl{font-size:10px;color:var(--blue);background:rgba(255,255,255,.85);padding:0 4px;border-radius:3px;margin-top:1px;white-space:nowrap}
+.maphead{position:absolute;top:11px;left:12px;z-index:10;font-size:13px;font-weight:700;background:rgba(255,255,255,.85);padding:2px 8px;border-radius:4px}
+.maphint{position:absolute;bottom:11px;right:12px;z-index:10;font-size:10.5px;color:var(--ink2);background:rgba(255,255,255,.8);padding:2px 7px;border-radius:4px}
+.legend{position:absolute;left:12px;bottom:12px;z-index:10;padding:7px 9px;display:flex;flex-direction:column;gap:5px;background:rgba(255,255,255,.93);font-size:11px}
+.legend .grad{height:8px;width:124px;border-radius:5px;background:linear-gradient(90deg,var(--green),var(--amber),var(--red));border:1.5px solid var(--ink)}
+.legend .gl{display:flex;justify-content:space-between;font-size:9.5px;color:var(--ink2)}
+.legend .shapes{display:flex;gap:11px;align-items:center}
+.legend .shapes span{display:inline-flex;align-items:center;gap:4px;color:var(--ink2)}
+.layers{position:absolute;top:11px;right:12px;z-index:11;padding:9px 11px;font-size:12px;min-width:168px;background:rgba(255,255,255,.95)}
+.layers .lh{font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin-bottom:7px}
+.layer{display:flex;align-items:center;gap:8px;padding:3px 0}.layer.disabled{opacity:.4}
+.layer .note{font-size:9.5px;color:var(--ink2);margin-left:auto}
+.toggle{display:inline-flex;align-items:center;gap:7px;cursor:pointer;user-select:none}.toggle input{display:none}
+.tk{width:32px;height:17px;border-radius:12px;background:var(--fill2);position:relative;border:1.5px solid var(--ink);transition:.15s;flex:none}
+.tk::after{content:"";position:absolute;top:1px;left:1.5px;width:11px;height:11px;border-radius:50%;background:var(--ink);transition:.15s}
+.toggle input:checked + .tk{background:#dcecff}.toggle input:checked + .tk::after{left:17px;background:var(--blue)}
+.toggle input:disabled + .tk{opacity:.5}
+.flyleg{position:absolute;top:78px;right:12px;z-index:11;padding:8px 11px;font-size:11px;background:rgba(255,255,255,.95);max-width:212px;display:none}
+.flyleg.on{display:block}
+.flyleg .lh{font-weight:700;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px}
+.flyleg .fl{display:flex;align-items:center;gap:7px;margin:4px 0;line-height:1.2}
+.flyleg .fline{width:16px;height:0;border-top:3px dashed;flex:none}
+.flyleg .fl small{display:block;color:var(--ink2);font-size:9.5px}
+
+.timeline{display:flex;align-items:center;gap:12px;margin-top:12px;padding:9px 12px}
+.play{width:34px;height:34px;border-radius:50%;cursor:pointer;background:var(--paper);display:flex;align-items:center;justify-content:center;flex:none}
+.play:hover{background:var(--fill)}
+.track{flex:1;height:8px;border-radius:6px;background:var(--fill2);position:relative;border:1.5px solid var(--ink)}
+.head{position:absolute;top:-5px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:2px solid var(--ink);left:100%;transform:translateX(-50%);transition:left .05s linear}
+.tdate{font-size:11px;color:var(--ink2);white-space:nowrap}
+
+/* STATS */
+.hist{height:220px;display:flex;align-items:flex-end;gap:8px;padding:6px 4px 0}
+.hcol{flex:1;display:flex;flex-direction:column-reverse;align-items:center}
+.hseg{width:74%;border:1.5px solid var(--ink);border-bottom:none}
+.hseg:first-of-type{border-bottom:1.5px solid var(--ink)}
+.hseg.w{background:var(--g1)} .hseg.p{background:var(--g2)} .hseg.c{background:var(--g3)}
+.hcol .hx{font-size:9.5px;color:var(--ink2);margin-top:6px;white-space:nowrap}
+.hlegend{display:flex;gap:14px;margin-top:13px;font-size:12px;flex-wrap:wrap}
+.hlegend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:13px;height:13px;border:1.5px solid var(--ink)}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+.sumrow{display:flex;justify-content:space-between;font-size:13px;padding:6px 2px;border-bottom:1px dashed var(--fill2)}
+.pdot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--ink);flex:none}
+.pdot.high{background:var(--red)} .pdot.med{background:var(--amber)} .pdot.low{background:var(--green)}
+.prio{display:inline-flex;align-items:center;gap:8px}
+
+/* LIST */
+.ltools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.lsearch{display:flex;align-items:center;gap:7px;padding:6px 10px;background:#fff;flex:1;min-width:200px;max-width:330px}
+.lsearch input{border:none;outline:none;font-family:inherit;font-size:13px;flex:1;background:transparent;color:var(--ink)}
+.lf{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink2)}
+select.flt{font-family:inherit;font-size:12px;background:#fff;border:1.5px solid var(--ink2);border-radius:5px;padding:5px 8px;color:var(--ink);cursor:pointer}
+.selinfo{font-size:12px;color:var(--ink2)}
+.tablewrap{padding:6px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1.5px dashed var(--fill2)}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink2)}
+th.sortable{cursor:pointer}
+th .sort{color:var(--ink2);font-size:10px}
+tbody tr{cursor:pointer}tbody tr:hover{background:var(--fill)}
+.lcheck{width:16px;height:16px;border:2px solid var(--ink);border-radius:3px;display:inline-block;position:relative;cursor:pointer;vertical-align:middle}
+.lcheck.on{background:#eef4fb}
+.lcheck.on::after{content:"✓";position:absolute;inset:-4px 0 0 1px;font-size:14px;font-weight:700;color:var(--blue)}
+.pager{display:flex;align-items:center;gap:12px;padding:11px 6px 4px;font-size:12px;color:var(--ink2)}
+.pager .pbtn{cursor:pointer;padding:4px 11px;background:#fff;user-select:none}
+.pager .pbtn.dis{opacity:.4;cursor:default}
+.pager .grow{flex:1}
+
+/* modals */
+.overlay{position:fixed;inset:0;background:rgba(60,60,60,.45);display:none;align-items:center;justify-content:center;z-index:50}
+.overlay.on{display:flex}
+.modal{width:380px;max-width:92vw;background:var(--paper);padding:18px 20px;position:relative}
+.modal.wide{width:560px}
+.modal h2{margin:0 0 3px;font-size:18px;display:flex;align-items:center;gap:8px}
+.modal .sub{color:var(--ink2);font-size:12px;margin-bottom:12px}
+.kv{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px dashed var(--fill2)}
+.kv .k{color:var(--ink2)}
+.modal .close{position:absolute;top:10px;right:14px;cursor:pointer;font-size:20px;color:var(--ink2)}
+.modal .badge{display:inline-flex;align-items:center;gap:7px;font-size:13px;margin:6px 0 4px}
+.modal .row-btn{display:flex;gap:8px;margin-top:16px}
+.report{font-size:13px;line-height:1.55;max-height:46vh;overflow:auto}
+.report p{margin:0 0 11px}
+.report .tagline{font-size:11px;color:var(--ink2);font-style:italic;border-top:1px dashed var(--fill2);padding-top:9px}
+.loading{display:flex;align-items:center;gap:10px;color:var(--ink2);font-size:13px;padding:18px 0}
+.spin{width:18px;height:18px;border:2.5px solid var(--fill2);border-top-color:var(--violet);border-radius:50%;animation:sp 0.8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:7px;font-size:13px;opacity:0;transition:.25s;z-index:60;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.stream{stroke-width:1.7;fill:none;stroke-dasharray:5 6;animation:dash 1.1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-22}}
+.streams{opacity:0;transition:.25s}.streams.on{opacity:.95}
+</style>
+</head>
+<body>
+<svg class="defs"><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4"/></filter></svg>
+
+<div class="window sk">
+  <div class="titlebar">
+    <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="urlbar sk thin">⌂ &nbsp; esa-platform.local / hpai-dashboard / poc</div>
+    <div class="lang">DE ▾</div>
+  </div>
+
+  <div class="appbar">
+    <div class="title">HPAI Lagebild <small>Proof of Concept · Wireframe</small></div>
+    <div class="grow"></div>
+    <button class="btn prim sk thin" id="exportBtn">⭳ Export CSV</button>
+  </div>
+
+  <div class="appbar" style="padding-top:12px">
+    <div class="tabs">
+      <div class="tab on sk thin" data-view="map">▣ Map</div>
+      <div class="tab sk thin" data-view="stats">▦ Stats</div>
+      <div class="tab sk thin" data-view="list">☰ Liste</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- FILTERS -->
+    <aside class="panel sk">
+      <h3>Filter</h3>
+      <div class="field"><label>Tierseuche</label><div class="select sk thin"><span>HPAI · aviäre Influenza</span><span class="ch">▾</span></div></div>
+      <div class="field"><label>Population <span class="opt">· Mehrfachauswahl</span></label>
+        <div class="chips" id="popChips">
+          <div class="chip on sk thin" data-type="all">Alle</div>
+          <div class="chip on sk thin" data-type="wild"><span class="shp">▲</span>Wild</div>
+          <div class="chip on sk thin" data-type="poultry"><span class="shp">●</span>Poultry</div>
+          <div class="chip on sk thin" data-type="captive"><span class="shp">■</span>Captive</div>
+        </div>
+      </div>
+      <div class="field"><label>Zeitraum <span class="opt">(optional)</span></label>
+        <div class="dates"><div class="d sk thin"><span class="ic">▦</span>01.03.26</div><div class="d sk thin"><span class="ic">▦</span>24.04.26</div></div>
+      </div>
+      <div class="field"><label>Spezies</label><div class="select sk thin"><span>Alle Spezies</span><span class="ch">▾</span></div></div>
+      <div class="field"><label>Subtype</label><div class="select sk thin"><span>H5N1</span><span class="ch">▾</span></div></div>
+      <hr class="sk-hr">
+      <div class="field" style="margin-bottom:4px"><label>⌖ Ausgangsort · Granularität</label>
+        <div class="chips" id="scopeChips">
+          <div class="chip sk thin" data-lvl="offen">Offen</div>
+          <div class="chip sk thin" data-lvl="kontinent">Kontinent</div>
+          <div class="chip sk thin" data-lvl="land">Land</div>
+          <div class="chip on sk thin" data-lvl="stadt">Stadt</div>
+        </div>
+        <div class="select sk thin" id="scopeSel" style="margin-top:8px"><span id="scopeName">Bern</span><span class="ch">▾</span></div>
+        <div class="meta" id="scopeMeta">Stadt: enge Fokuszone · Marker ziehen / Karte klicken</div>
+      </div>
+      <hr class="sk-hr">
+      <div class="meta">Letztes Update<br>ADIS: 2026-05-12 · WAHIS: 2026-05-12</div>
+    </aside>
+
+    <section>
+      <!-- MAP -->
+      <div id="vMap">
+        <div class="maparea sk" id="maparea">
+          <div class="maphead">Relevanz-Heatmap</div>
+          <svg class="geo" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M12 30 Q30 18 52 24 Q74 20 86 36 Q92 54 80 70 Q60 86 40 82 Q18 80 10 60 Q6 44 12 30 Z" fill="#f6f6f6" stroke="var(--ink2)" stroke-width="0.4" vector-effect="non-scaling-stroke" filter="url(#rough)"/>
+            <path d="M22 56 Q34 50 48 54 Q58 58 56 66 Q44 74 32 70 Q22 66 22 56 Z" fill="none" stroke="#cfcfcf" stroke-width="0.5" vector-effect="non-scaling-stroke" filter="url(#rough)"/>
+            <text x="37" y="64" font-size="3.2" fill="#c2c2c2" font-family="'Balsamiq Sans'">CH</text>
+          </svg>
+          <canvas class="heat" id="heat"></canvas>
+          <svg class="streams-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><g class="streams" id="streams"></g></svg>
+          <div id="markers"></div>
+          <div class="origin" id="origin" title="Zentrum verschieben">
+            <svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="7" fill="none" stroke="var(--blue)" stroke-width="2"/><circle cx="13" cy="13" r="1.6" fill="var(--blue)"/><line x1="13" y1="1" x2="13" y2="6" stroke="var(--blue)" stroke-width="2"/><line x1="13" y1="20" x2="13" y2="25" stroke="var(--blue)" stroke-width="2"/><line x1="1" y1="13" x2="6" y2="13" stroke="var(--blue)" stroke-width="2"/><line x1="20" y1="13" x2="25" y2="13" stroke="var(--blue)" stroke-width="2"/></svg>
+            <div class="lbl" id="originLbl">Bern</div>
+          </div>
+          <div class="layers sk thin">
+            <div class="lh">Karten-Layer</div>
+            <div class="layer" id="layerStreams">
+              <label class="toggle"><input type="checkbox" id="predToggle"><span class="tk"></span></label>
+              <span>Vogelströme</span><span class="note" id="streamNote"></span>
+            </div>
+          </div>
+          <div class="flyleg sk thin" id="flyLeg"></div>
+          <div class="legend sk thin">
+            <div style="font-weight:700" id="legTitle">Relevanz</div>
+            <div class="grad"></div>
+            <div class="gl"><span>tief / fern</span><span>hoch / nah</span></div>
+            <div class="shapes"><span>▲ Wild</span><span>● Poultry</span><span>■ Captive</span></div>
+          </div>
+          <div class="maphint" id="mapHint">Heatmap relativ zum Ausgangsort · ▶ Verlauf</div>
+        </div>
+        <div class="timeline sk">
+          <div class="play sk thin" id="playBtn">▶</div><span class="tdate">01.03.26</span>
+          <div class="track"><div class="head" id="tlHead"></div></div><span class="tdate">24.04.26</span>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div id="vStats" hidden>
+        <div class="panel sk" style="padding:18px">
+          <h3>Statistik <span class="hint">berücksichtigt aktive Filter & Zeitraum</span></h3>
+          <div style="font-size:12px;color:var(--ink2);margin-bottom:4px">Events über Zeit · gestapelt nach Typ</div>
+          <div class="hist" id="hist"></div>
+          <div class="hlegend">
+            <span><span class="sw" style="background:var(--g1)"></span>Wild</span>
+            <span><span class="sw" style="background:var(--g2)"></span>Poultry</span>
+            <span><span class="sw" style="background:var(--g3)"></span>Captive</span>
+            <span style="margin-left:auto;color:var(--ink2)" id="histTotal"></span>
+          </div>
+          <hr class="sk-hr">
+          <div class="statgrid">
+            <div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:7px">nach Typ</div>
+              <div class="sumrow"><span>Wild</span><b id="sW">0</b></div>
+              <div class="sumrow"><span>Poultry</span><b id="sP">0</b></div>
+              <div class="sumrow"><span>Captive</span><b id="sC">0</b></div>
+              <div class="sumrow" style="border-bottom:none"><span><b>Total</b></span><b id="sT">0</b></div>
+            </div>
+            <div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:7px">nach Priorität</div>
+              <div class="sumrow"><span class="prio"><span class="pdot high"></span>Hoch</span><b id="pH">0</b></div>
+              <div class="sumrow"><span class="prio"><span class="pdot med"></span>Mittel</span><b id="pM">0</b></div>
+              <div class="sumrow" style="border-bottom:none"><span class="prio"><span class="pdot low"></span>Tief</span><b id="pL">0</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div id="vList" hidden>
+        <div class="ltools">
+          <div class="lsearch sk thin">🔍 <input id="listSearch" placeholder="Suche: Ort, Spezies, Subtyp, Quelle…"></div>
+          <div class="lf">Priorität <select class="flt" id="fPrio"><option value="all">Alle</option><option value="high">Hoch</option><option value="med">Mittel</option><option value="low">Tief</option></select></div>
+          <div class="lf">Quelle <select class="flt" id="fSrc"><option value="all">Alle</option><option>WAHIS</option><option>ADIS</option><option>EFSA</option><option>VSI</option></select></div>
+          <div class="grow"></div>
+          <span class="selinfo" id="selInfo">0 ausgewählt</span>
+          <button class="btn ki sk thin" id="kiBtn">✦ KI-Report</button>
+        </div>
+        <div class="tablewrap sk">
+          <table>
+            <thead><tr>
+              <th style="width:34px"><span class="lcheck" id="selAll"></span></th>
+              <th class="sortable" data-sort="prio">Priorität <span class="sort">▾</span></th>
+              <th class="sortable" data-sort="date">Datum <span class="sort">⇅</span></th>
+              <th>Region / Ort</th><th>Typ</th><th>Spezies</th><th>Subtype</th>
+              <th class="sortable" data-sort="dist">Distanz <span class="sort">⇅</span></th>
+              <th>Quelle</th><th></th>
+            </tr></thead>
+            <tbody id="listBody"></tbody>
+          </table>
+          <div class="pager">
+            <span class="pbtn sk thin" id="prevPg">‹ Zurück</span>
+            <span id="pgInfo">—</span>
+            <span class="pbtn sk thin" id="nextPg">Weiter ›</span>
+            <span class="grow"></span>
+            <span id="rangeInfo">—</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- event modal -->
+<div class="overlay" id="overlay">
+  <div class="modal sk">
+    <span class="close" id="modalClose">✕</span>
+    <h2 id="mTitle">—</h2><div class="sub" id="mSub">—</div><div class="badge" id="mBadge"></div>
+    <div class="kv"><span class="k">Datum</span><span id="mDate"></span></div>
+    <div class="kv"><span class="k">Region / Ort</span><span id="mLoc"></span></div>
+    <div class="kv"><span class="k">Typ</span><span id="mType"></span></div>
+    <div class="kv"><span class="k">Subtype</span><span id="mSubt"></span></div>
+    <div class="kv"><span class="k">Betroffene Fälle</span><span id="mCases"></span></div>
+    <div class="kv"><span class="k">Distanz z. Ausgangsort</span><span id="mDist"></span></div>
+    <div class="kv"><span class="k">Quelle</span><span id="mSource"></span></div>
+    <div class="row-btn"><button class="btn sk thin" id="mClose2">Schliessen</button></div>
+  </div>
+</div>
+
+<!-- KI report modal -->
+<div class="overlay" id="repOverlay">
+  <div class="modal wide sk">
+    <span class="close" id="repClose">✕</span>
+    <h2>✦ KI-Report</h2>
+    <div class="sub" id="repSub">—</div>
+    <div id="repBody"></div>
+    <div class="row-btn"><button class="btn prim sk thin" id="repPdf">⭳ Als PDF</button><button class="btn sk thin" id="repClose2">Schliessen</button></div>
+  </div>
+</div>
+
+<div class="toast sk thin" id="toast"></div>
+
+<script>
+/* ---------- data ---------- */
+const EVRAW=[
+ [33,60,'wild','high','2026-04-21','Bielersee (BE)','Graugans','H5N1',3,'WAHIS'],
+ [52,52,'poultry','high','2026-04-18','Bodensee (TG)','Legehennen-Betrieb','H5N1',5200,'ADIS'],
+ [26,70,'wild','med','2026-04-15','Genfersee (VD)','Höckerschwan','H5N1',2,'WAHIS'],
+ [47,55,'wild','med','2026-04-12','Zürichsee (ZH)','Lachmöwe','H5N1',4,'WAHIS'],
+ [45,40,'poultry','high','2026-04-10','Baden-Württemberg (DE)','Mastpoulet-Betrieb','H5N1',8800,'ADIS'],
+ [62,52,'wild','low','2026-04-05','Vorarlberg (AT)','Stockente','H5N1',1,'WAHIS'],
+ [38,48,'captive','med','2026-03-30','Aargau (AG)','Zoo-Vögel','H5N1',12,'ADIS'],
+ [30,54,'wild','low','2026-03-22','Murtensee (FR)','Reiherente','H5N1',2,'WAHIS'],
+ [55,64,'wild','med','2026-03-15','Luganersee (TI)','Kormoran','H5N5',3,'WAHIS'],
+ [42,34,'captive','low','2026-03-08','Bayern (DE)','Falknerei','H5N1',6,'ADIS'],
+ [36,57,'wild','high','2026-04-19','Neuenburgersee (NE)','Kranich','H5N1',7,'EFSA'],
+ [49,50,'wild','med','2026-04-16','Klingnauer Stausee (AG)','Pfeifente','H5N1',5,'VSI'],
+ [44,62,'poultry','high','2026-04-14','Freiburg (FR)','Trutenmast-Betrieb','H5N1',3100,'ADIS'],
+ [28,64,'wild','low','2026-04-08','Haute-Savoie (FR)','Schellente','H5N1',2,'VSI'],
+ [58,46,'wild','med','2026-04-03','Rheindelta (SG)','Silbermöwe','H5N1',4,'WAHIS'],
+ [40,52,'wild','high','2026-03-28','Sempachersee (LU)','Haubentaucher','H5N5',6,'EFSA'],
+ [51,58,'captive','med','2026-03-25','Tessin (TI)','Ziervögel-Haltung','H5N1',9,'ADIS'],
+ [34,44,'poultry','med','2026-03-20','Basel-Stadt (BS)','Hobby-Geflügelhaltung','H5N1',60,'VSI'],
+ [60,60,'wild','low','2026-03-17','Lombardei (IT)','Stockente','H5N2',1,'WAHIS'],
+ [46,66,'wild','med','2026-03-12','Genfersee (GE)','Lachmöwe','H5N1',3,'EFSA'],
+ [39,38,'wild','high','2026-04-22','Elsass (FR)','Wanderfalke','H5N1',2,'VSI'],
+ [53,42,'poultry','high','2026-04-06','Bodensee-Süd (TG)','Legehennen-Betrieb','H5N1',4400,'ADIS'],
+ [31,58,'wild','low','2026-03-31','Walensee (SG)','Reiherente','H5N1',1,'WAHIS'],
+ [43,56,'wild','med','2026-04-11','Vierwaldstättersee (LU)','Graugans','H5N1',4,'WAHIS'],
+ [48,36,'wild','med','2026-03-26','Bayern-Süd (DE)','Kranich','H5N1',5,'EFSA'],
+ [37,68,'wild','low','2026-03-10','Genf (GE)','Stockente','H5N1',2,'VSI'],
+];
+const EV=EVRAW.map((r,i)=>({id:i+1,x:r[0],y:r[1],type:r[2],prio:r[3],date:r[4],loc:r[5],sp:r[6],sub:r[7],cases:r[8],src:r[9]}));
+
+/* researched flyways (African-Eurasian; autumn migration NE/N -> SW/S) */
+const FLYWAYS=[
+ {id:'eaf',name:'East Atlantic Flyway',color:'#2f6fb0',sp:'Wildgänse, Enten',d:'M58 5 Q40 28 30 50 Q22 68 14 82'},
+ {id:'cec',name:'Mitteleuropa-Korridor',color:'#e07a3a',sp:'Kraniche (NE→SW)',d:'M82 7 Q55 40 38 58 Q26 72 18 84'},
+ {id:'bsm',name:'Schwarzmeer / Mittelmeer',color:'#2a9d8f',sp:'Enten, Watvögel',d:'M88 13 Q70 45 60 66 Q54 80 52 90'},
+ {id:'wea',name:'Westasien / Ostafrika',color:'#7d5fb2',sp:'Watvögel',d:'M93 27 Q86 55 78 78 Q74 86 72 92'},
+];
+const SCOPE={
+ offen:{scale:0,meta:'Offen: Färbung rein nach Priorität (kein Bezugsort)',opts:{}},
+ kontinent:{scale:0.62,meta:'Kontinent: weiter Bezug, sanfter Abfall',opts:{'Europa':[50,42]}},
+ land:{scale:0.27,meta:'Land: mittlere Fokuszone',opts:{'Schweiz':[38,60],'Deutschland':[45,30],'Österreich':[64,50],'Italien':[52,80],'Frankreich':[16,54]}},
+ stadt:{scale:0.13,meta:'Stadt: enge Fokuszone · Marker ziehen / Karte klicken',opts:{'Bern':[33,61],'Zürich':[47,55],'Genève':[25,71],'Lugano':[55,64],'Basel':[40,46]}},
+};
+const PRIOW={high:1.0,med:0.6,low:0.32}, PR={high:1,med:0.5,low:0}, PRANK={high:3,med:2,low:1};
+const RAD={wild:7,poultry:13,captive:9}, TLABEL={wild:'Wild',poultry:'Poultry',captive:'Captive'}, PLAB={high:'Hoch',med:'Mittel',low:'Tief'};
+const DAY=86400000, KMF=9.2;
+const activeTypes=new Set(['wild','poultry','captive']);
+let origin={x:33,y:61,name:'Bern',level:'stadt'}, curReveal=1, curView='map';
+
+(function(){const s=[...EV].sort((a,b)=>a.date.localeCompare(b.date));const mn=Date.parse(s[0].date),mx=Date.parse(s[s.length-1].date);
+  EV.forEach(e=>e.t=(Date.parse(e.date)-mn)/(mx-mn||1));})();
+function fmt(d){const[y,m,da]=d.split('-');return da+'.'+m+'.'+y.slice(2);}
+function distPct(e){return Math.hypot(e.x-origin.x,e.y-origin.y);}
+function km(e){return Math.round(distPct(e)*KMF);}
+function shapeSVG(type,fill,size){const s='var(--ink)';
+  if(type==='wild')return `<svg width="${size}" height="${size}" viewBox="0 0 18 18"><path d="M9 2 L16 15 L2 15 Z" fill="${fill}" stroke="${s}" stroke-width="1.4" filter="url(#rough)"/></svg>`;
+  if(type==='poultry')return `<svg width="${size}" height="${size}" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6.5" fill="${fill}" stroke="${s}" stroke-width="1.4" filter="url(#rough)"/></svg>`;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 18 18"><rect x="3" y="3" width="12" height="12" rx="1.5" fill="${fill}" stroke="${s}" stroke-width="1.4" filter="url(#rough)"/></svg>`;}
+
+/* ---------- heatmap ---------- */
+const mapEl=document.getElementById('maparea'), heatC=document.getElementById('heat'), dctx=heatC.getContext('2d');
+const off=document.createElement('canvas'), offctx=off.getContext('2d');
+let W=600,H=470;
+function ramp(r){const G=[90,168,79],A=[224,163,0],R=[210,86,79];let a,b,t;if(r<0.5){a=G;b=A;t=r/0.5;}else{a=A;b=R;t=(r-0.5)/0.5;}
+  return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];}
+function items(){const S=(W+H)/2,ox=origin.x/100*W,oy=origin.y/100*H,lvl=origin.level,proxS=SCOPE[lvl].scale*S;
+  return EV.filter(e=>activeTypes.has(e.type)&&e.t<=curReveal).map(e=>{const ex=e.x/100*W,ey=e.y/100*H,r=Math.max(8,(RAD[e.type]+(e.cases>1000?3:0))/100*S);
+    let R;if(lvl==='offen')R=PR[e.prio];else{const prox=Math.exp(-Math.hypot(ex-ox,ey-oy)/proxS);R=prox*(0.4+0.6*PR[e.prio]);}
+    return {ex,ey,r2:2*r*r,pw:PRIOW[e.prio],R};});}
+function renderHeat(){if(W<2)return;const its=items(),GW=132,GH=Math.max(20,Math.round(GW*H/W));
+  off.width=GW;off.height=GH;const img=offctx.createImageData(GW,GH),d=img.data;
+  for(let gy=0;gy<GH;gy++){const cy=(gy+0.5)/GH*H;for(let gx=0;gx<GW;gx++){const cx=(gx+0.5)/GW*W;let cov=0,sumK=0,sumR=0;
+    for(const it of its){const dx=cx-it.ex,dy=cy-it.ey;const k=Math.exp(-(dx*dx+dy*dy)/it.r2);if(k<0.012)continue;sumK+=k;sumR+=it.R*k;cov+=it.pw*k;}
+    const i=(gy*GW+gx)*4;if(cov<=0.004){d[i+3]=0;continue;}const col=ramp(Math.min(1,sumR/sumK));d[i]=col[0];d[i+1]=col[1];d[i+2]=col[2];d[i+3]=Math.min(0.72,cov*0.55)*255;}}
+  offctx.putImageData(img,0,0);dctx.clearRect(0,0,heatC.width,heatC.height);dctx.imageSmoothingEnabled=true;dctx.drawImage(off,0,0,GW,GH,0,0,heatC.width,heatC.height);}
+function sizeCanvas(){const r=mapEl.getBoundingClientRect();W=r.width;H=r.height;heatC.width=W;heatC.height=H;renderHeat();}
+
+/* ---------- markers ---------- */
+const markers=document.getElementById('markers');
+function renderMarkers(){markers.innerHTML='';EV.forEach(e=>{if(!activeTypes.has(e.type)||e.t>curReveal)return;
+  const b=document.createElement('button');b.className='marker';b.style.left=e.x+'%';b.style.top=e.y+'%';b.title=e.loc+' · '+e.sp;
+  b.innerHTML=shapeSVG(e.type,'rgba(255,255,255,.9)',e.type==='poultry'?16:13);b.onclick=ev=>{ev.stopPropagation();openModal(e);};markers.appendChild(b);});}
+
+/* ---------- flyways ---------- */
+function renderStreams(){
+  document.getElementById('streams').innerHTML=
+    FLYWAYS.map(f=>`<path class="stream" style="stroke:${f.color}" d="${f.d}" marker-end="url(#ah-${f.id})"/>`).join('')+
+    '<defs>'+FLYWAYS.map(f=>`<marker id="ah-${f.id}" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="${f.color}"/></marker>`).join('')+'</defs>';
+  document.getElementById('flyLeg').innerHTML='<div class="lh">Vogelströme / Flyways</div>'+
+    FLYWAYS.map(f=>`<div class="fl"><span class="fline" style="border-color:${f.color}"></span><span>${f.name}<small>${f.sp}</small></span></div>`).join('');
+}
+
+/* ---------- origin scope ---------- */
+const originEl=document.getElementById('origin');
+function placeOrigin(){originEl.style.left=origin.x+'%';originEl.style.top=origin.y+'%';originLbl.textContent=origin.name;}
+function updateScopeUI(){document.querySelectorAll('#scopeChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.lvl===origin.level));
+  scopeMeta.textContent=SCOPE[origin.level].meta;const offen=origin.level==='offen';
+  scopeSel.style.display=offen?'none':'';originEl.classList.toggle('hidden',offen);
+  legTitle.textContent=offen?'Priorität (rot = hoch)':'Relevanz';
+  mapHint.textContent=offen?'Färbung nach Priorität (kein Bezugsort)':'Heatmap relativ zum Ausgangsort · ▶ Verlauf';}
+function setLevel(lvl){origin.level=lvl;const opts=Object.keys(SCOPE[lvl].opts);
+  if(opts.length){const f=opts[0],c=SCOPE[lvl].opts[f];origin.x=c[0];origin.y=c[1];origin.name=f;scopeName.textContent=f;placeOrigin();}
+  updateScopeUI();renderHeat();renderList();}
+document.querySelectorAll('#scopeChips .chip').forEach(c=>c.onclick=()=>setLevel(c.dataset.lvl));
+scopeSel.onclick=()=>{const opts=Object.keys(SCOPE[origin.level].opts);if(!opts.length)return;
+  const i=(opts.indexOf(origin.name)+1)%opts.length,k=opts[i],c=SCOPE[origin.level].opts[k];
+  origin.x=c[0];origin.y=c[1];origin.name=k;scopeName.textContent=k;placeOrigin();renderHeat();renderList();};
+let dragging=false;
+originEl.addEventListener('pointerdown',e=>{if(origin.level==='offen')return;e.stopPropagation();dragging=true;originEl.classList.add('drag');originEl.setPointerCapture(e.pointerId);});
+originEl.addEventListener('pointermove',e=>{if(dragging)setCustom(e.clientX,e.clientY);});
+originEl.addEventListener('pointerup',()=>{dragging=false;originEl.classList.remove('drag');});
+mapEl.addEventListener('click',e=>{if(origin.level==='offen')return;
+  if(e.target.closest('.marker')||e.target.closest('.origin')||e.target.closest('.layers')||e.target.closest('.legend')||e.target.closest('.flyleg'))return;
+  setCustom(e.clientX,e.clientY);});
+function setCustom(cx,cy){const r=mapEl.getBoundingClientRect();origin.x=Math.max(2,Math.min(98,(cx-r.left)/r.width*100));origin.y=Math.max(2,Math.min(98,(cy-r.top)/r.height*100));
+  origin.name='Eigener Ort';scopeName.textContent='Eigener Ort';placeOrigin();renderHeat();renderList();}
+
+/* ---------- population ---------- */
+const chips=document.getElementById('popChips');
+function syncChips(){chips.querySelectorAll('.chip').forEach(c=>{const t=c.dataset.type;const on=t==='all'?activeTypes.size===3:activeTypes.has(t);c.classList.toggle('on',on);c.classList.toggle('off',!on);});updateLayers();}
+chips.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{const t=c.dataset.type;
+  if(t==='all'){['wild','poultry','captive'].forEach(x=>activeTypes.add(x));}
+  else{if(activeTypes.has(t))activeTypes.delete(t);else activeTypes.add(t);if(activeTypes.size===0)['wild','poultry','captive'].forEach(x=>activeTypes.add(x));}
+  syncChips();renderHeat();renderMarkers();renderList();renderStats();});
+
+/* ---------- layers ---------- */
+function updateLayers(){const wild=activeTypes.has('wild');document.getElementById('layerStreams').classList.toggle('disabled',!wild);
+  predToggle.disabled=!wild;streamNote.textContent=wild?'Wildvögel':'benötigt Wild';if(!wild)predToggle.checked=false;
+  const on=wild&&predToggle.checked;document.getElementById('streams').classList.toggle('on',on);document.getElementById('flyLeg').classList.toggle('on',on);}
+predToggle.onchange=updateLayers;
+
+/* ---------- list: search / filter / sort / select / paginate ---------- */
+let sortKey='prio',sortDir=-1,listPage=0,RPP=8,listSearch='',listPrio='all',listSrc='all';
+const selected=new Set(); let lastFiltered=[];
+function filteredRows(){let r=EV.filter(e=>activeTypes.has(e.type));
+  if(listPrio!=='all')r=r.filter(e=>e.prio===listPrio);
+  if(listSrc!=='all')r=r.filter(e=>e.src===listSrc);
+  if(listSearch)r=r.filter(e=>(e.loc+' '+e.sp+' '+e.sub+' '+e.src).toLowerCase().includes(listSearch));
+  r.sort((a,b)=>{let x=sortKey==='prio'?PRANK[a.prio]-PRANK[b.prio]:sortKey==='dist'?distPct(a)-distPct(b):a.date.localeCompare(b.date);return x*sortDir;});
+  return r;}
+function renderList(){
+  const rows=filteredRows();lastFiltered=rows;
+  const pages=Math.max(1,Math.ceil(rows.length/RPP));if(listPage>=pages)listPage=pages-1;if(listPage<0)listPage=0;
+  const pageRows=rows.slice(listPage*RPP,listPage*RPP+RPP);
+  listBody.innerHTML=pageRows.map(e=>`<tr data-id="${e.id}">
+    <td><span class="lcheck ${selected.has(e.id)?'on':''}" data-chk="${e.id}"></span></td>
+    <td><span class="prio"><span class="pdot ${e.prio}"></span>${PLAB[e.prio]}</span></td>
+    <td>${fmt(e.date)}</td><td>${e.loc}</td><td>${shapeSVG(e.type,'#fff',13)} ${TLABEL[e.type]}</td>
+    <td>${e.sp}</td><td>${e.sub}</td><td>~${km(e)} km</td><td>${e.src}</td>
+    <td style="color:var(--blue)">Details ›</td></tr>`).join('') || `<tr><td colspan="10" style="text-align:center;color:var(--ink2);padding:20px">Keine Treffer für die aktuellen Filter.</td></tr>`;
+  listBody.querySelectorAll('tr[data-id]').forEach(tr=>tr.onclick=()=>openModal(EV.find(x=>x.id==+tr.dataset.id)));
+  listBody.querySelectorAll('.lcheck[data-chk]').forEach(cb=>cb.onclick=ev=>{ev.stopPropagation();const id=+cb.dataset.chk;
+    if(selected.has(id))selected.delete(id);else selected.add(id);renderList();});
+  const allOnPage=pageRows.length&&pageRows.every(e=>selected.has(e.id));
+  document.getElementById('selAll').classList.toggle('on',!!allOnPage);
+  pgInfo.textContent=`Seite ${listPage+1} / ${pages}`;
+  const from=rows.length?listPage*RPP+1:0, to=Math.min(rows.length,listPage*RPP+RPP);
+  rangeInfo.textContent=`${from}–${to} von ${rows.length}`;
+  prevPg.classList.toggle('dis',listPage===0);nextPg.classList.toggle('dis',listPage>=pages-1);
+  selInfo.textContent=`${selected.size} ausgewählt`;
+  kiBtn.textContent= selected.size? `✦ KI-Report (${selected.size})` : '✦ KI-Report';
+}
+document.getElementById('listSearch').oninput=e=>{listSearch=e.target.value.toLowerCase().trim();listPage=0;renderList();};
+fPrio.onchange=e=>{listPrio=e.target.value;listPage=0;renderList();};
+fSrc.onchange=e=>{listSrc=e.target.value;listPage=0;renderList();};
+prevPg.onclick=()=>{if(listPage>0){listPage--;renderList();}};
+nextPg.onclick=()=>{listPage++;renderList();};
+document.getElementById('selAll').onclick=()=>{const rows=filteredRows().slice(listPage*RPP,listPage*RPP+RPP);
+  const all=rows.length&&rows.every(e=>selected.has(e.id));rows.forEach(e=>all?selected.delete(e.id):selected.add(e.id));renderList();};
+document.querySelectorAll('th.sortable').forEach(th=>th.onclick=()=>{const k=th.dataset.sort;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=k==='dist'?1:-1;}
+  document.querySelectorAll('th .sort').forEach(s=>s.textContent='⇅');th.querySelector('.sort').textContent=sortDir<0?'▾':'▴';renderList();});
+
+/* ---------- KI report ---------- */
+const repOv=document.getElementById('repOverlay');
+kiBtn.onclick=()=>{const evs= selected.size? EV.filter(e=>selected.has(e.id)) : lastFiltered;
+  repSub.textContent= selected.size? `${evs.length} ausgewählte Ereignisse` : `${evs.length} Ereignisse (gefilterte Liste)`;
+  repBody.innerHTML=`<div class="loading"><span class="spin"></span>Analysiere Auswahl, erstelle Lagebericht…</div>`;
+  repOv.classList.add('on');
+  setTimeout(()=>{repBody.innerHTML=`<div class="report">${buildReport(evs)}<p class="tagline">Automatisch generierter Entwurf (KI, Demo) · vor Verwendung fachlich prüfen.</p></div>`;},900);};
+function buildReport(evs){if(!evs.length)return '<p>Keine Ereignisse in der Auswahl.</p>';
+  const ds=evs.map(e=>e.date).sort(),bp=p=>evs.filter(e=>e.prio===p).length,bt=t=>evs.filter(e=>e.type===t).length;
+  const subs=[...new Set(evs.map(e=>e.sub))],regions=[...new Set(evs.map(e=>e.loc))],srcs=[...new Set(evs.map(e=>e.src))];
+  const total=evs.reduce((a,e)=>a+e.cases,0),top=[...evs].sort((a,b)=>b.cases-a.cases)[0],hi=bp('high');
+  return `<p><b>${evs.length} HPAI-Ereignisse</b> im Zeitraum <b>${fmt(ds[0])}</b> bis <b>${fmt(ds[ds.length-1])}</b>, gemeldet über ${srcs.join(', ')}.</p>
+  <p>Priorität: <b>${bp('high')}</b> hoch · ${bp('med')} mittel · ${bp('low')} tief. Population: ${bt('wild')} Wild · ${bt('poultry')} Poultry · ${bt('captive')} Captive. Subtypen: ${subs.join(', ')}.</p>
+  <p>Betroffene Regionen (${regions.length}): ${regions.slice(0,6).join(', ')}${regions.length>6?' …':''}. Summe gemeldeter Fälle/Tiere: <b>${total.toLocaleString('de-CH')}</b>; grösster Einzelausbruch: ${top.sp} in ${top.loc} (${top.cases.toLocaleString('de-CH')}).</p>
+  <p><b>Einschätzung:</b> ${hi>=3?'Mehrere hochpriorisierte Nachweise deuten auf erhöhte Aktivität hin — verstärkte Biosicherheit und Früherkennung bei Geflügelbetrieben in der Umgebung empfohlen.':'Lage aktuell überschaubar; Routineüberwachung und Meldung verendeter Wildvögel fortsetzen.'} ${bt('poultry')>0?'Da Hausgeflügel betroffen ist, sind Schutz- und Überwachungszonen relevant.':'Bislang überwiegend Wildvögel betroffen.'}</p>`;}
+document.getElementById('repClose').onclick=()=>repOv.classList.remove('on');
+document.getElementById('repClose2').onclick=()=>repOv.classList.remove('on');
+document.getElementById('repPdf').onclick=()=>toast('Report-Export: HPAI_KI_Report.pdf (Demo)');
+repOv.onclick=e=>{if(e.target===repOv)repOv.classList.remove('on');};
+
+/* ---------- stats ---------- */
+function renderStats(){const evs=EV.filter(e=>activeTypes.has(e.type)&&e.t<=curReveal);
+  const start=Date.parse('2026-03-01'),bin=7*DAY,nb=8;const bins=Array.from({length:nb},()=>({wild:0,poultry:0,captive:0}));
+  evs.forEach(e=>{let i=Math.floor((Date.parse(e.date)-start)/bin);i=Math.max(0,Math.min(nb-1,i));bins[i][e.type]++;});
+  const mx=Math.max(1,...bins.map(b=>b.wild+b.poultry+b.captive)),Hp=180;
+  hist.innerHTML=bins.map((b,i)=>{const seg=(v,cl)=>v?`<div class="hseg ${cl}" style="height:${v/mx*Hp}px"></div>`:'';
+    const lab=new Date(start+i*bin),ll=String(lab.getDate()).padStart(2,'0')+'.'+String(lab.getMonth()+1).padStart(2,'0');
+    return `<div class="hcol"><div class="hx">${ll}</div>${seg(b.wild,'w')}${seg(b.poultry,'p')}${seg(b.captive,'c')}</div>`;}).join('');
+  const cT=t=>evs.filter(e=>e.type===t).length,cP=p=>evs.filter(e=>e.prio===p).length;
+  sW.textContent=cT('wild');sP.textContent=cT('poultry');sC.textContent=cT('captive');sT.textContent=evs.length;
+  pH.textContent=cP('high');pM.textContent=cP('med');pL.textContent=cP('low');histTotal.textContent=evs.length+' Events';}
+
+/* ---------- modal ---------- */
+const ov=document.getElementById('overlay');
+function openModal(e){mTitle.textContent=e.sp;mSub.textContent=e.loc+' · '+e.src;
+  mBadge.innerHTML=`<span class="pdot ${e.prio}"></span> Priorität: ${PLAB[e.prio]}`;
+  mDate.textContent=fmt(e.date);mLoc.textContent=e.loc;mType.textContent=TLABEL[e.type];mSubt.textContent=e.sub;
+  mCases.textContent=e.cases.toLocaleString('de-CH');mDist.textContent='~'+km(e)+' km';mSource.textContent=e.src;ov.classList.add('on');}
+document.getElementById('modalClose').onclick=()=>ov.classList.remove('on');
+document.getElementById('mClose2').onclick=()=>ov.classList.remove('on');
+ov.onclick=e=>{if(e.target===ov)ov.classList.remove('on');};
+
+/* ---------- tabs ---------- */
+function switchView(v){curView=v;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.view===v));
+  vMap.hidden=v!=='map';vStats.hidden=v!=='stats';vList.hidden=v!=='list';
+  if(v==='map')setTimeout(sizeCanvas,30);if(v==='stats')renderStats();if(v==='list')renderList();}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>switchView(t.dataset.view));
+
+/* ---------- timeline ---------- */
+let playing=false,raf=null;
+playBtn.onclick=()=>{if(playing){stopPlay();return;}playing=true;playBtn.textContent='❚❚';const t0=performance.now(),dur=4500;
+  (function step(now){curReveal=Math.min(1,(now-t0)/dur);tlHead.style.left=(curReveal*100)+'%';renderHeat();renderMarkers();if(curReveal<1)raf=requestAnimationFrame(step);else stopPlay();})(t0);};
+function stopPlay(){playing=false;playBtn.textContent='▶';if(raf)cancelAnimationFrame(raf);curReveal=1;tlHead.style.left='100%';renderHeat();renderMarkers();}
+
+/* ---------- export + toast ---------- */
+exportBtn.onclick=()=>toast('Export wird erstellt: HPAI_Events_2026.csv');
+let tt=null;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('on'),2200);}
+
+/* ---------- init ---------- */
+window.addEventListener('resize',()=>{if(curView==='map')sizeCanvas();});
+placeOrigin();updateScopeUI();renderStreams();syncChips();renderMarkers();renderList();renderStats();
+setTimeout(sizeCanvas,60);
+</script>
+</body>
+</html>

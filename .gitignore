@@ -34,3 +34,11 @@ frontend/public/build/
 frontend/public/hot
 frontend/storage/*.key
 frontend/bootstrap/cache/*.php
+
+# Local scraper artifacts
+data/unstructured/*/raw_html/
+data/unstructured/*/manifest.jsonl
+data/unstructured/*/articles.jsonl
+data/unstructured/*/parse_errors.jsonl
+data/unstructured/*/disease_articles.jsonl
+data/unstructured/*/disease_reports.jsonl
