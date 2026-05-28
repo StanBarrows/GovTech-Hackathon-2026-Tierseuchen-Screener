@@ -1,0 +1,384 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ts: <https://data.tierseuchen-screener.example.org/ontology/adis#> .
+@prefix tsd: <https://data.tierseuchen-screener.example.org/data/> .
+@prefix tss: <https://data.tierseuchen-screener.example.org/skos/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+tsd:candidate_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult a ts:ExtractionCandidate ;
+    ts:extractedFromSource tsd:news_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult ;
+    ts:extractionMethod "rules" ;
+    ts:extractionVersion "rules-v1" ;
+    ts:hasConsequence tsd:consequence_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult_1 ;
+    ts:hasEvidenceSnippet tsd:snippet_11fef5367676,
+        tsd:snippet_15867b167c47,
+        tsd:snippet_7b7b6b15aa7c,
+        tsd:snippet_8af4e0b96de4,
+        tsd:snippet_bb4e0cb80ffb ;
+    ts:hasExtractionConfidence tss:confidence-high ;
+    ts:hasExtractionStatus tss:status-candidate ;
+    ts:hasPreventionMeasure tsd:prevention_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult_1,
+        tsd:prevention_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult_2,
+        tsd:prevention_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult_3 ;
+    ts:hasRelevanceAssessment tsd:relevance_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult ;
+    ts:referenceId "gefluegelnews:100000-legehennen-wegen-newcastle-krankheit-gekeult" .
+
+tsd:candidate_gefluegelnews_12_osnabrucker_geflugelsymposium_richtungsweisend a ts:ExtractionCandidate ;
+    ts:candidateDescribesSituation tsd:situation_hpai_deutschland_2025_02 ;
+    ts:extractedFromSource tsd:news_gefluegelnews_12_osnabrucker_geflugelsymposium_richtungsweisend ;
+    ts:extractionMethod "rules" ;
+    ts:extractionVersion "rules-v1" ;
+    ts:hasConsequence tsd:consequence_gefluegelnews_12_osnabrucker_geflugelsymposium_richtungsweisend_1 ;
+    ts:hasEvidenceSnippet tsd:snippet_64ea07b36c16,
+        tsd:snippet_f07eb2eb720b ;
+    ts:hasExtractionConfidence tss:confidence-medium ;
+    ts:hasExtractionStatus tss:status-candidate ;
+    ts:hasPreventionMeasure tsd:prevention_gefluegelnews_12_osnabrucker_geflugelsymposium_richtungsweisend_1 ;
+    ts:hasRelevanceAssessment tsd:relevance_gefluegelnews_12_osnabrucker_geflugelsymposium_richtungsweisend ;
+    ts:referenceId "gefluegelnews:12-osnabrucker-geflugelsymposium-richtungsweisend" .
+
+tsd:candidate_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung a ts:ExtractionCandidate ;
+    ts:candidateDescribesSituation tsd:situation_hpai_deutschland_2026_05 ;
+    ts:extractedFromSource tsd:news_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung ;
+    ts:extractionMethod "rules" ;
+    ts:extractionVersion "rules-v1" ;
+    ts:hasConsequence tsd:consequence_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_1 ;
+    ts:hasEvidenceSnippet tsd:snippet_14d0b11dda3d,
+        tsd:snippet_5ca4d45a2351,
+        tsd:snippet_71b5e79131bd,
+        tsd:snippet_8a0cbcb1bf9b,
+        tsd:snippet_8a8029ea60cf ;
+    ts:hasExtractionConfidence tss:confidence-high ;
+    ts:hasExtractionStatus tss:status-candidate ;
+    ts:hasPreventionMeasure tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_1,
+        tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_2,
+        tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_3,
+        tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_4,
+        tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_5,
+        tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_6 ;
+    ts:hasRelevanceAssessment tsd:relevance_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung ;
+    ts:referenceId "gefluegelnews:13-osnabrucker-geflugelsymposium-diskussionen-um-impfung-und-keulung" .
+
+tsd:candidate_gefluegelnews_145_ausgesetzte_mastkuken_leipziger_polizei_und_tierheim_im_rettungseinsatz a ts:ExtractionCandidate ;
+    ts:extractedFromSource tsd:news_gefluegelnews_145_ausgesetzte_mastkuken_leipziger_polizei_und_tierheim_im_rettungseinsatz ;
+    ts:extractionMethod "rules" ;
+    ts:extractionVersion "rules-v1" ;
+    ts:hasEvidenceSnippet tsd:snippet_2d5c003e1f2e,
+        tsd:snippet_6276fc68e46d ;
+    ts:hasExtractionConfidence tss:confidence-medium ;
+    ts:hasExtractionStatus tss:status-candidate ;
+    ts:hasRelevanceAssessment tsd:relevance_gefluegelnews_145_ausgesetzte_mastkuken_leipziger_polizei_und_tierheim_im_rettungseinsatz ;
+    ts:referenceId "gefluegelnews:145-ausgesetzte-mastkuken-leipziger-polizei-und-tierheim-im-rettungseinsatz" .
+
+tsd:consequence_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult_1 a ts:Consequence ;
+    ts:consequenceText "# 100.000 Legehennen wegen Newcastle-Krankheit gekeult  **Nach dem Nachweis der Newcastle-Krankheit auf einem großen Legehennenbetrieb im Landkreis Erding haben die Behörden 100.000 Legehennen töten lassen." ;
+    ts:rawConsequenceEvidence "# 100.000 Legehennen wegen Newcastle-Krankheit gekeult  **Nach dem Nachweis der Newcastle-Krankheit auf einem großen Legehennenbetrieb im Landkreis Erding haben die Behörden 100.000 Legehennen töten lassen." .
+
+tsd:consequence_gefluegelnews_12_osnabrucker_geflugelsymposium_richtungsweisend_1 a ts:Consequence ;
+    ts:consequenceText "Entwickelt wurde sie von der ZKHL (Zentrale Koordination Handel-Landwirtschaft), zu der Vertreter der Landwirtschaft und des Lebensmitteinzelhandels gehören." ;
+    ts:rawConsequenceEvidence "Entwickelt wurde sie von der ZKHL (Zentrale Koordination Handel-Landwirtschaft), zu der Vertreter der Landwirtschaft und des Lebensmitteinzelhandels gehören." .
+
+tsd:consequence_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_1 a ts:Consequence ;
+    ts:consequenceText "Osnabrücker Geflügelsymposium: Diskussionen um Impfung und Keulung  **Auch in diesem Jahr kam das Osnabrücker Geflügelsymposium nicht darum herum, sich mit dem Thema Tierseuchen zu befassen: Die Geflügelpest hat im Herbst/Winter für massive Schäden gesorgt." ;
+    ts:rawConsequenceEvidence "Osnabrücker Geflügelsymposium: Diskussionen um Impfung und Keulung  **Auch in diesem Jahr kam das Osnabrücker Geflügelsymposium nicht darum herum, sich mit dem Thema Tierseuchen zu befassen: Die Geflügelpest hat im Herbst/Winter für massive Schäden gesorgt." .
+
+tsd:news_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult a ts:NewsReport,
+        ts:SourceDocument ;
+    ts:referenceId "source_document:gefluegelnews:100000-legehennen-wegen-newcastle-krankheit-gekeult" ;
+    ts:sourceContentHash "a27a87f90414db4bec14cdc5374aa05bbe5171b8dca9c0fd117f7d217cecad9e" ;
+    ts:sourceDocumentTitle "100.000 Legehennen wegen Newcastle-Krankheit gekeult" ;
+    ts:sourceFullText """# 100.000 Legehennen wegen Newcastle-Krankheit gekeult
+
+**Nach dem Nachweis der Newcastle-Krankheit auf einem großen Legehennenbetrieb im Landkreis Erding haben die Behörden 100.000 Legehennen töten lassen. Die vorgeschriebenen Maßnahmen greifen weit: Schutz- und Überwachungszonen wurden ausgedehnt, zahlreiche Geflügelhalter stehen nun unter Kontrolle.**
+
+## Virusnachweis auf Großbetrieb
+
+Die ND-Infektion war vergangene Woche auf einer großen Hühnerfarm im Landkreis Erding festgestellt worden. In der Folge ordneten die zuständigen Behörden die Keulung des gesamten Bestands an. Etwa 100.000 Legehennen wurden getötet.
+
+## Schutz- und Überwachungszonen ausgeweitet
+
+Das Landratsamt Erding hatte bereits am Freitag Schutz- und Überwachungszonen eingerichtet. Nun vergrößerte es diese Bereiche deutlich.
+
+In der engeren Schutzzone kontrollieren Veterinäre sämtliche 120 landwirtschaftlichen Betriebe mit Geflügelhaltung. In der erweiterten Überwachungszone prüfen die Behörden weitere Höfe. Der größte Teil des betroffenen Gebiets liegt im Landkreis Erding, kleinere Bereiche betreffen auch die Nachbarlandkreise Landshut und Freising.
+
+Geflügelhalter sollten sich umgehend beim Veterinäramt melden, wenn sie Krankheitssymptome in ihren Beständen beobachten, so der Landkreis.""" ;
+    ts:sourcePublishedDate "2026-03-03"^^xsd:date ;
+    ts:sourcePublisher "Gefluegelnews" ;
+    ts:sourceRetrievedAt "2026-05-28T17:04:39.746362+00:00"^^xsd:dateTime ;
+    ts:sourceURL "https://www.gefluegelnews.de/article/100000-legehennen-wegen-newcastle-krankheit-gekeult"^^xsd:anyURI .
+
+tsd:news_gefluegelnews_12_osnabrucker_geflugelsymposium_richtungsweisend a ts:NewsReport,
+        ts:SourceDocument ;
+    ts:referenceId "source_document:gefluegelnews:12-osnabrucker-geflugelsymposium-richtungsweisend" ;
+    ts:sourceContentHash "b4fcb2a7e746252f99dca3f321d272bf947e538a814a823b3500dc2ef3c51df7" ;
+    ts:sourceDocumentTitle "12. Osnabrücker Geflügelsymposium: Richtungsweisend" ;
+    ts:sourceFullText """# 12. Osnabrücker Geflügelsymposium: Richtungsweisend
+
+**Die Stimmung war gut auf dem Osnabrücker Geflügelsymposium. Die Nachfrage läuft bei Eiern und bei Geflügelfleisch. Die Geflügelpest scheint beherrschbar. Dennoch fehlt vielen Betrieben der Kompass für die Zukunft: Noch mehr Nachhaltigkeit und Tierwohl sind angesagt, aber der Kostendruck steigt, Personal fehlt und die Politik bietet keinen verlässlichen Rahmen. In Osnabrück gab es einige „Wegweiser“.**
+
+Mit über 300 Teilnehmenden hat das 12. Osnabrücker Geflügelsymposium wieder einmal seine Bedeutung als Branchentreff bewiesen. Gleich zu Beginn gab es ein eindeutiges Bekenntnis zur freien Marktwirtschaft. Es kam von Hans-Peter Goldnick, der vor knapp drei Monaten neu zum Präsidenten des Zentralverbandes der Deutschen Geflügelwirtschaft, ZDG, gewählt wurde.
+
+## Hiesige Betriebe würden gern investieren
+
+Für Goldnick steht außer Frage, dass Marktorientierung oberstes Gebot für die Geflügelbetriebe sein muss. Infolge der positiven Nachfrage bescheinigte er der Eierbranche ein „Investitionsklima, das Spaß macht“. Auch in der Hähnchenmast wollten Betriebe investieren, das Geld dafür sei vorhanden.
+
+Leider würde Unternehmertum hierzulande ausgebremst durch nationale Alleingänge bei Haltungsvorgaben etc. Stallumbauten und -neubauten seien kaum möglich. Angesichts der sehr unterschiedlichen Produktionskosten in der EU forderte Goldnick eine Ausweitung der Herkunftskennzeichnung auf den gerade für Geflügelfleisch wichtigen Außer-Haus-Bereich. Für Importe von außerhalb der EU müssten gleiche Standards gelten wie in der EU. Nur so könne die Wettbewerbsfähigkeit hiesiger Betriebe erhalten bleiben.
+
+## Nachhaltigkeit beinhaltet auch Wirtschaftlichkeit
+
+Der neu gewählte ZDG-Chef betonte, dass die hiesige Geflügelproduktion schon heute mit einer sehr guten Ökobilanz punkte. Die allseits geforderte Nachhaltigkeit umfasse aber auch ökonomische und soziale Aspekte, nur ein ganzheitlicher Ansatz habe Zukunft. Hier sah er aktuell einen sich anbahnenden Paradigmenwechsel in der Politik.
+
+Für das Ziel Nachhaltigkeit bewertete Goldnick die „Europäische Masthuhninitiative“ sehr kritisch: „Wir bräuchten 9.700 Ställe mehr für die gleiche Fleischmenge, wir hätten 25 Prozent mehr CO2-Emissionen und einen um 35 Prozent höheren Wasser- und Futterverbrauch pro Kilogramm erzeugtem Fleisch.“ Das könne nicht nachhaltig sein, so sein klares Statement.
+
+Einen wichtigen Beitrag dazu leisten, dass deutsche Geflügelprodukte wettbewerbsfähig sind gegenüber dem Ausland, soll die neue Herkunftskennzeichnung „5xD“ („Gutes aus deutscher Landwirtschaft“). Entwickelt wurde sie von der ZKHL (Zentrale Koordination Handel-Landwirtschaft), zu der Vertreter der Landwirtschaft und des Lebensmitteinzelhandels gehören. Aldi Nord, Aldi Süd, Edeka, Kaufland, Lidl, Netto, Rewe und Penny saßen mit am Tisch und bieten entsprechende Produkte an.
+
+## Die Eierbranche ist zögerlich bei „5xD
+
+In Osnabrück stellte Peter Jürgens von der ZKHL vor, wie es mit der Markteinführung des Herkunftskennzeichens vorangeht. „5xD“ gibt es aktuell für Schweine-, Rind- und Geflügelfleisch, Obst, Gemüse, Kartoffeln, Milch-/Milchprodukte sowie frische Eier. Alles muss dabei vollständig in Deutschland erzeugt worden sein. Entsprechend gelabelte Produkte gibt es seit vergangenem Herbst im Handel. „5xD“ ist ein freiwilliges Kennzeichen.
+
+Während beim Geflügelfleisch die großen Namen der Branche schon dabei sind bei „5xD“, sieht Jürgens bei den Eiern noch Luft nach oben. Bei Eiern beinhaltet „5xD“, dass auch Schlupf/Brüterei und Junghennenaufzucht in Deutschland stattfinden müssen. Hierfür gibt es eine Übergangszeit bis Anfang 2026. Laut Jürgens ist für „5xD“ eine arbeitsteilige Brut, sprich Vorbrut im Ausland und der spätere Schlupf in Deutschland, nicht akzeptabel. Auch die Geschlechtsbestimmung im Brutei muss in Deutschland erfolgen. Es bleibt abzuwarten, wie sich die Nachfrage nach Eiern „5xD“ entwickelt. Aktuell sind Eier eher Mangelware. Legehennenbetriebe, die teilnehmen wollen, müssen ihre nächsten Junghennen in Deutschland kaufen und ggf. ihre bisherigen Lieferbeziehungen über die Grenze hinweg kappen.
+
+## „5xD“ für deutsche Putenbranche existenziell wichtig
+
+Für Heinz Bosse, Geschäftsführer des Putenvermehrers Moorgut Kartzfehn, steht es außer Frage, dass „5xD“ existenziell wichtig ist: „Wir brauchen das Zeichen unbedingt, nicht nur im Handel. Putenfleisch geht zu einem großen Teil in die Gastronomie und an Großverbraucher. Auch dort muss die Herkunft dranstehen. Wir haben deutlich höhere Produktionskosten als etwa in Polen wegen unserer höheren Standards. Und das Mercosur-Fleisch ist sogar 30 Prozent günstiger. Wir müssen die deutsche Herkunft überall ausloben.“
+
+Weitere Themen in Osnabrück waren das jüngst viel diskutierte „Greifen und Verladen“ von Geflügel. Außerdem ging es um die Nutzung von Daten aus dem Betrieb für den Betrieb. Wer braucht was, womit spart man Arbeitszeit, welche Daten unterstützen das Management? Vom FLI gab es ein Update zur Geflügelpest. In zwei Workshops ging es darum, was die Zucht künftig kann oder soll. Zu diesen spannenden Veranstaltungspunkten aus Osnabrück berichten wir in Kürze an dieser Stelle.
+
+Veranstalter des Osnabrücker Geflügelsymposiums sind die Hochschule Osnabrück und WING („Wissenschaft und Innovation für Nachhaltige Geflügelhaltung“) als Forschungseinrichtung der Tierärztlichen Hochschule Hannover.""" ;
+    ts:sourcePublishedDate "2025-02-05"^^xsd:date ;
+    ts:sourcePublisher "Gefluegelnews" ;
+    ts:sourceRetrievedAt "2026-05-28T17:04:45.391585+00:00"^^xsd:dateTime ;
+    ts:sourceURL "https://www.gefluegelnews.de/article/12-osnabrucker-geflugelsymposium-richtungsweisend"^^xsd:anyURI .
+
+tsd:news_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung a ts:NewsReport,
+        ts:SourceDocument ;
+    ts:referenceId "source_document:gefluegelnews:13-osnabrucker-geflugelsymposium-diskussionen-um-impfung-und-keulung" ;
+    ts:sourceContentHash "33025e90522549cca677c7b6ecfc6a2ece65cf32ec7a294071b83de3e8a7fd09" ;
+    ts:sourceDocumentTitle "13. Osnabrücker Geflügelsymposium: Diskussionen um Impfung und Keulung" ;
+    ts:sourceFullText """# 13. Osnabrücker Geflügelsymposium: Diskussionen um Impfung und Keulung
+
+**Auch in diesem Jahr kam das Osnabrücker Geflügelsymposium nicht darum herum, sich mit dem Thema Tierseuchen zu befassen: Die Geflügelpest hat im Herbst/Winter für massive Schäden gesorgt. Aktuell ist die Branche zudem in großer Sorge, weil die Newcastle Disease in Deutschland angekommen ist. Eine zentrale Frage: Wie kann das massenhafte Keulen künftig verhindert werden?**
+
+Auf dem 13. Osnabrücker Geflügelsymposium befassten sich gleich mehrere Vorträge mit dem Thema Tierseuchen. Im Fokus: Die beiden Schreckgespenster der Branche, das ist zum einen die hochpathogene Form der Geflügelpest (HPAI), zum anderen die Newcastle Disease (ND). Seit dem 20. Februar 2026 gab es bereits mehrere Ausbrüche in Brandenburg und in Bayern.
+
+**Wie verheerend die Geflügelpest im Herbst/Winter 2025/26 war, machten die Ausführungen von Dr. Christiane Rüben vom Niedersächsischen Landwirtschaftsministerium deutlich. Niedersachsen war das am stärksten betroffene Bundesland. Seit Oktober 2025 bis heute gab es 112 Ausbrüche in geflügelhaltenden Betrieben. Diesen fielen 1,6 Mio. Tiere zum Opfer, sie verendeten oder wurden gekeult.**
+
+## Biosicherheit wurde optimiert
+
+Dr. Christiane Rüben bescheinigte der Praxis, dass es seit der Geflügelpest-Welle von 2016/17 erhebliche Verbesserungen bei der Biosicherheit gegeben habe: „In keinem Ausbruchsbetrieb (Anm.: 2025/26) wurden Mängel in der Biosicherheit festgestellt“, sagte sie. Mit zur weiteren Optimierung bei trägt das verpflichtende Erstellen von Biosicherheits-Managementplänen.
+
+**Wie wichtig Biosicherheit ist, machte auch Prof. Dr. Pia Münster auf dem Symposium deutlich. Sie hat die neu geschaffene Professur „Tierhaltung und Tiergesundheitsmanagement“ an der Hochschule Osnabrück inne. Von den beiden großen Geflügelseuchen kann durchaus auch die Lebensmittelversorgung betroffen sein. Das hat zum Beispiel der Eiermangel im vergangenen Frühjahr in den USA gezeigt. Und ebenso betroffen sein wegen Mängeln in der Biosicherheit kann natürlich die Lebensmittelsicherheit, Beispiel Salmonellen. Klar machte Prof. Münster, dass es an vielen Stellen „noch Luft nach oben gebe“ und auch noch Forschungsbedarf bestehe.**
+
+## Geflügelpest-Impfung weiter im Fokus
+
+Bei ND und HPAI sind neben der Biosicherheit die schnellstmögliche Diagnose und im Seuchenfall eine schnellstmögliche Bestandsräumung die tragenden Säulen der Bekämpfung. In Deutschland besteht zudem Impfpflicht gegen ND. Hinzugekommen ist jetzt auch die -mögliche- Impfung gegen Geflügelpest als weitere Säule der Bekämpfung. In Frankreich werden aktuell Enten geimpft, in den Niederlanden möchte man Legehennen impfen, in Italien Puten.
+
+**Prof. Dr. Timm Harder vom Friedrich-Loeffler-Institut (FLI) wies in Osnabrück noch einmal auf den sehr hohen finanziellen, personellen, labortechnischen und administrativen Aufwand hin, den eine Geflügelpest-Impfung nach heutiger Rechtslage bedeuten würde. Geimpfte Bestände müssten engmaschig überwacht werden. Eine Impfung bedeutet auch nicht, dass sich eine Herde nicht trotzdem einmal infizieren kann und dann gekeult werden muss. Nach wie vor wären zudem Handelsrestriktionen zu erwarten.**
+
+## Praxisprojekt zur Impfung von Gänsen
+
+Und: Die durch Impfung, Überwachung etc. entstehenden erheblichen Kosten müssten auf die Produkte aufgeschlagen werden: „Wären Verbraucher bereit, das zu zahlen?“ fragte er. Dennoch werde daran gearbeitet, das Thema voranzutreiben. So soll möglichst bald ein Feldversuch mit der Impfung von Gänsen starten.
+
+**Dass eine Impfung kein Allheilmittel ist, zeigen die jüngsten Ausbrüche von ND in Deutschland. Wie bei der Geflügelpest kann es trotz Impfung grundsätzlich Infektionen einer Herde geben – die dann nach bestehendem Recht gekeult werden muss. Dies gilt unabhängig davon, ob oder wie stark eine Herde erkrankt ist. ND verursacht bekanntlich gerade bei geimpften Legehennen nicht unbedingt schwere Krankheitsbilder. Dr. Christian Grund vom FLI wies auf die verschiedenen Einflussfaktoren für einen „Impferfolg“ hin, dazu gehört zum Beispiel die Impfstoffdosis, mögliche physiologisch bedingte Impflücken, Applikationsfehler, mögliche Koinfektionen der Tiere etc.**
+
+## Keulungen auch gesellschaftliche Frage
+
+Nach Auffassung von Dr. Timm Harder steht die Beantwortung wichtiger Fragen hinsichtlich ND und Geflügelpest an: Für HPAI gebe es ein Impfsystem in spe, bei ND impfe man seit 30 Jahren, trotzdem gebe es Ausbrüche, die viel Geld kosten: „Können wir uns die Geflügelpest-Impfung leisten? Müssen wir bei einer Infektion keulen?“ Diese Fragen, so der Wissenschaftler, müssten gesellschaftlich entschieden werden. Und: „Wir als Wissenschaftler wollen das Virus auslöschen, dafür ist die Keulung unverzichtbar. Ansonsten verharrt das Virus im Land, und wir müssen dauerhaft mit erhöhten Verlusten und schlechterer Wirtschaftlichkeit rechnen“, argumentierte er.
+
+Vor diesem Hintergrund war ein Geflügelpest-Fall des vergangenen Winters aus der Grafschaft Bentheim interessant. Dr. Christiane Rüben berichtete hierüber. Betroffen war ein Legehennenbetrieb mit zehn Ställen und 436.000 Tieren. Nach einer Risikobewertung entschieden Landkreis und Ministerium, dass nur drei der zehn Ställe geräumt werden mussten. Die anderen Ställe wurden intensiv überwacht, die Hennen infizierten sich nicht, und die Eier konnten in Eiproduktenwerken verwertet werden. Möglich war dieses Vorgehen, weil die Ställe als getrennte seuchenhygienische Einheiten angesehen werden konnten.
+
+## Massenhafte Keulungen verhindern
+
+**So stellt sich die Frage, ob ein solches Vorgehen auch bei von ND betroffenen Betrieben möglich wäre. Klaus Middendorf ist Geschäftsführer der Heidegold Gruppe. Das Unternehmen war mit einem großen Standort in Brandenburg von ND betroffen. Hier mussten mehrere hunderttausend Legehennen gekeult werden - trotz geringer Verluste und wenig Klinik, so Middendorf. Er meldete sich in Osnabrück zu Wort und forderte seine Berufskollegen eindringlich auf, ihre Tiere bestmöglich zu schützen.**
+
+In den Heidegold-Ställen war das Impfregime vor dem Hintergrund der vielen ND-Fälle in Polen angepasst worden. Dennoch war es zu einer Infektion gekommen. Eindringlich appellierte er deshalb außerdem an Wissenschaft und Politik, einen Weg zu finden, Massenkeulungen wie aktuell vorgeschrieben, zu vermeiden. Dazu wäre es wichtig, so die Antwort von Dr. Grund, dass Biosicherheitsmaßnahmen sowohl den Eintrag als auch den Austrag von Virus unterbinden. Hilfreich wäre die schnelle Erkennung eines Infektionsherdes, bevor es zu einem Flächenbrand kommen kann.
+
+## Immens hohe Kosten bei Tierseuchenkassen
+
+Klaus Middendorf wies auf die hohe emotionale Belastung für alle Mitarbeitenden im Falle einer Keulung hin, außerdem auf die kaum noch zu stemmenden Kosten für die Tierseuchenkasse.""" ;
+    ts:sourcePublishedDate "2026-05-26"^^xsd:date ;
+    ts:sourcePublisher "Gefluegelnews" ;
+    ts:sourceRetrievedAt "2026-05-28T17:04:46.843830+00:00"^^xsd:dateTime ;
+    ts:sourceURL "https://www.gefluegelnews.de/article/13-osnabrucker-geflugelsymposium-diskussionen-um-impfung-und-keulung"^^xsd:anyURI .
+
+tsd:news_gefluegelnews_145_ausgesetzte_mastkuken_leipziger_polizei_und_tierheim_im_rettungseinsatz a ts:NewsReport,
+        ts:SourceDocument ;
+    ts:referenceId "source_document:gefluegelnews:145-ausgesetzte-mastkuken-leipziger-polizei-und-tierheim-im-rettungseinsatz" ;
+    ts:sourceContentHash "299e18ce11dc418425ecadc88c1dac29596d625504629867e9364dd05e40ddc6" ;
+    ts:sourceDocumentTitle "145 ausgesetzte Mastküken: Leipziger Polizei und Tierheim im Rettungseinsatz" ;
+    ts:sourceFullText """# 145 ausgesetzte Mastküken: Leipziger Polizei und Tierheim im Rettungseinsatz
+
+**Die Polizei hat 145 ausgesetzte Mastküken auf einem Feld in Schkeuditz entdeckt – sie wurden gerettet und im Tierheim Leipzig versorgt.**
+
+In Schkeuditz (Landkreis Nordsachsen) sind 145 frisch geschlüpfte Mastküken auf einem Feld ausgesetzt worden. Die Polizei entdeckte die hilflosen Tiere am vergangenen Freitag und übergab sie dem Veterinäramt. Inzwischen werden sie im Tierheim Leipzig versorgt und aufgepäppelt.
+
+## Expertennetzwerk soll die Küken weiter versorgen
+
+Laut Tierheimleiter Michael Sperlich waren die Temperaturen von nur sechs Grad für die wenige Tage alten Küken lebensbedrohlich. Ohne schützendes Federkleid und mit speziellem Futterbedarf könnten Mastküken nur von Fachleuten aufgezogen werden. „Wir stehen in Kontakt mit einem Netzwerk aus Nordrhein-Westfalen, das die Tiere übernimmt. Bis dahin bleiben sie noch einige Tage bei uns“, so Sperlich.
+
+## Halterin ermittelt: Behörden leiten Verfahren ein
+
+Die Polizei konnte die Halterin der Küken ermitteln. Gegen sie wird nun ein Ordnungswidrigkeitsverfahren eingeleitet, da es verboten ist, in Obhut gehaltene Tiere auszusetzen oder sich der Verantwortung für sie zu entziehen.
+
+## Kein Zusammenhang mit Vogelgrippe im Landkreis Leipzig
+
+Ein Zusammenhang mit der aktuellen Geflügelpest im Landkreis Leipzig besteht nach Angaben des Tierheims nicht. Eine Quarantäne oder Untersuchung der Tiere sei daher nicht notwendig.""" ;
+    ts:sourcePublishedDate "2025-03-05"^^xsd:date ;
+    ts:sourcePublisher "Gefluegelnews" ;
+    ts:sourceRetrievedAt "2026-05-28T17:04:48.223098+00:00"^^xsd:dateTime ;
+    ts:sourceURL "https://www.gefluegelnews.de/article/145-ausgesetzte-mastkuken-leipziger-polizei-und-tierheim-im-rettungseinsatz"^^xsd:anyURI .
+
+tsd:prevention_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult_1 a ts:PreventionMeasure ;
+    ts:hasPreventionType tss:prevention-keulung ;
+    ts:preventionMeasureText "100.000 Legehennen wegen Newcastle-Krankheit gekeult Nach dem Ausbruch der Newcastle-Krankheit im Landkreis Erding haben die Behörden 100.000 Legehennen keulen lassen." ;
+    ts:rawPreventionEvidence "keulen" .
+
+tsd:prevention_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult_2 a ts:PreventionMeasure ;
+    ts:hasPreventionType tss:prevention-keulung ;
+    ts:preventionMeasureText "100.000 Legehennen wegen Newcastle-Krankheit gekeult Nach dem Ausbruch der Newcastle-Krankheit im Landkreis Erding haben die Behörden 100.000 Legehennen keulen lassen." ;
+    ts:rawPreventionEvidence "gekeult" .
+
+tsd:prevention_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult_3 a ts:PreventionMeasure ;
+    ts:hasPreventionType tss:prevention-keulung ;
+    ts:preventionMeasureText "In der Folge ordneten die zuständigen Behörden die Keulung des gesamten Bestands an." ;
+    ts:rawPreventionEvidence "Keulung" .
+
+tsd:prevention_gefluegelnews_12_osnabrucker_geflugelsymposium_richtungsweisend_1 a ts:PreventionMeasure ;
+    ts:hasPreventionType tss:prevention-handel ;
+    ts:preventionMeasureText "Entwickelt wurde sie von der ZKHL (Zentrale Koordination Handel-Landwirtschaft), zu der Vertreter der Landwirtschaft und des Lebensmitteinzelhandels gehören." ;
+    ts:rawPreventionEvidence "Handel" .
+
+tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_1 a ts:PreventionMeasure ;
+    ts:hasPreventionType tss:prevention-keulung ;
+    ts:preventionMeasureText "Eine zentrale Frage: Wie kann das massenhafte Keulen künftig verhindert werden?**  Auf dem 13." ;
+    ts:rawPreventionEvidence "Keulen" .
+
+tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_2 a ts:PreventionMeasure ;
+    ts:hasPreventionType tss:prevention-keulung ;
+    ts:preventionMeasureText "Tiere zum Opfer, sie verendeten oder wurden gekeult.**  ## Biosicherheit wurde optimiert  Dr." ;
+    ts:rawPreventionEvidence "gekeult" .
+
+tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_3 a ts:PreventionMeasure ;
+    ts:hasPreventionType tss:prevention-keulung ;
+    ts:preventionMeasureText "Osnabrücker Geflügelsymposium: Diskussionen um Impfung und Keulung Beim Osnabrücker Geflügelsymposium diskutierten Experten über Geflügelpest, Newcastle Disease und die Zukunft der Tierseuchenbekämpfung." ;
+    ts:rawPreventionEvidence "Keulung" .
+
+tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_4 a ts:PreventionMeasure ;
+    ts:hasPreventionType tss:prevention-impfung ;
+    ts:preventionMeasureText "Osnabrücker Geflügelsymposium: Diskussionen um Impfung und Keulung Beim Osnabrücker Geflügelsymposium diskutierten Experten über Geflügelpest, Newcastle Disease und die Zukunft der Tierseuchenbekämpfung." ;
+    ts:rawPreventionEvidence "Impfung" .
+
+tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_5 a ts:PreventionMeasure ;
+    ts:hasPreventionType tss:prevention-biosicherheit ;
+    ts:preventionMeasureText "Im Mittelpunkt standen Impfungen, Biosicherheit und die Frage, ob Massenkeulungen noch zeitgemäß sind." ;
+    ts:rawPreventionEvidence "Biosicherheit" .
+
+tsd:prevention_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung_6 a ts:PreventionMeasure ;
+    ts:hasPreventionType tss:prevention-handel ;
+    ts:preventionMeasureText "Nach wie vor wären zudem Handelsrestriktionen zu erwarten.**  ## Praxisprojekt zur Impfung von Gänsen  Und: Die durch Impfung, Überwachung etc." ;
+    ts:rawPreventionEvidence "Handel" .
+
+tsd:relevance_gefluegelnews_100000_legehennen_wegen_newcastle_krankheit_gekeult a ts:RelevanceAssessment ;
+    ts:hasRelevanceLevel tss:relevance-high ;
+    ts:rawRelevanceEvidence "iebe werden kontrolliert. Newcastle-Krankheit Landkreis Erding 100.000 Legehennen Keulung Geflügelpest APMV-1 Schutzgebiet Überwachungszone Landratsamt Erding Landesamt für Gesundheit und Lebe; 100.000 Legehennen wegen Newcastle-Krankheit gekeult Nach dem Ausbruch der Newcastle-Krankheit im Landkreis Erding haben die; andratsamt Erding Landesamt für Gesundheit und Lebensmittelsicherheit BR24 Geflügelhalter Tierseuche Bayern Landshut Freising Biosicherheit # 100.000 Legehennen wegen Newcastle-Krankheit gek; 100.000 Legehennen wegen Newcastle-Krankheit gekeult Nach dem Ausbruch der Newcastle-Krankheit im Landkreis Erding haben die Behörden 100.000 Legehennen keulen; che Betriebe werden kontrolliert. Newcastle-Krankheit Landkreis Erding 100.000 Legehennen Keulung Geflügelpest APMV-1 Schutzgebiet Überwachungszone Landratsamt Erding Landesamt für Gesund" .
+
+tsd:relevance_gefluegelnews_12_osnabrucker_geflugelsymposium_richtungsweisend a ts:RelevanceAssessment ;
+    ts:hasRelevanceLevel tss:relevance-medium ;
+    ts:rawRelevanceEvidence "lügelsymposium FLI Tierwohl 5xD Eier Geflügelfleisch Tierwohl Geflügelpest Nachhaltigkeit Vogelgrippe ZKHL Aldi Nord Aldi Süd Edeka Kaufland Lidl Netto Rewe Penny Deutschland # 12. Osnabrücke; Osnabrücker Geflügelsymposium. Die Nachfrage läuft bei Eiern und bei Geflügelfleisch. Die Geflügelpest scheint beherrschbar. Dennoch fehlt vielen Betrieben der Kompass für die Zukunft: Noch me" .
+
+tsd:relevance_gefluegelnews_13_osnabrucker_geflugelsymposium_diskussionen_um_impfung_und_keulung a ts:RelevanceAssessment ;
+    ts:hasRelevanceLevel tss:relevance-high ;
+    ts:rawRelevanceEvidence "keulungen noch zeitgemäß sind. Geflügelpest Newcastle Disease Geflügelsymposium Osnabrück HPAI Vogelgrippe Massenkeulung Biosicherheit Geflügelhaltung Friedrich-Loeffler-Institut Impfu; ngen noch zeitgemäß sind. Geflügelpest Newcastle Disease Geflügelsymposium Osnabrück HPAI Vogelgrippe Massenkeulung Biosicherheit Geflügelhaltung Friedrich-Loeffler-Institut Impfungen Tierseu; onen um Impfung und Keulung Beim Osnabrücker Geflügelsymposium diskutierten Experten über Geflügelpest, Newcastle Disease und die Zukunft der Tierseuchenbekämpfung. Im Mittelpunkt standen Impf; g und Keulung Beim Osnabrücker Geflügelsymposium diskutierten Experten über Geflügelpest, Newcastle Disease und die Zukunft der Tierseuchenbekämpfung. Im Mittelpunkt standen Impfungen, Bios; lsymposium diskutierten Experten über Geflügelpest, Newcastle Disease und die Zukunft der Tierseuchenbekämpfung. Im Mittelpunkt standen Impfungen, Biosicherheit und die Frage, ob Massenkeulu" .
+
+tsd:relevance_gefluegelnews_145_ausgesetzte_mastkuken_leipziger_polizei_und_tierheim_im_rettungseinsatz a ts:RelevanceAssessment ;
+    ts:hasRelevanceLevel tss:relevance-medium ;
+    ts:rawRelevanceEvidence "tküken. Leipzig Schkeuditz Tierheim Tierheim Leipzig Polizei Polizei Leipzig Geflügelpest Vogelgrippe Landkreis Leipzig Gesellschaft # 145 ausgesetzte Mastküken: Leipziger Polizei und Tierhei; gt. Küken Mastküken. Leipzig Schkeuditz Tierheim Tierheim Leipzig Polizei Polizei Leipzig Geflügelpest Vogelgrippe Landkreis Leipzig Gesellschaft # 145 ausgesetzte Mastküken: Leipziger Polizei" .
+
+tsd:situation_hpai_deutschland_2025_02 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai|deutschland|2025-02" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease tss:hpai ;
+    ts:situationMonth "2025-02"^^xsd:gYearMonth .
+
+tsd:situation_hpai_deutschland_2026_05 a ts:OutbreakSituation ;
+    ts:hasSituationKey "hpai|deutschland|2026-05" ;
+    ts:situationCountry tsd:country_deutschland ;
+    ts:situationDisease tss:hpai ;
+    ts:situationMonth "2026-05"^^xsd:gYearMonth .
+
+tsd:snippet_11fef5367676 a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Ausbruch" ;
+    ts:snippetText "100.000 Legehennen wegen Newcastle-Krankheit gekeult Nach dem Ausbruch der Newcastle-Krankheit im Landkreis Erding haben die Behörden 100.000 Legehennen keulen" ;
+    ts:sourceTextLocator "char[0:160]" .
+
+tsd:snippet_14d0b11dda3d a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Newcastle" ;
+    ts:snippetText "g und Keulung Beim Osnabrücker Geflügelsymposium diskutierten Experten über Geflügelpest, Newcastle Disease und die Zukunft der Tierseuchenbekämpfung. Im Mittelpunkt standen Impfungen, Bios" ;
+    ts:sourceTextLocator "char[57:246]" .
+
+tsd:snippet_15867b167c47 a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Newcastle" ;
+    ts:snippetText "100.000 Legehennen wegen Newcastle-Krankheit gekeult Nach dem Ausbruch der Newcastle-Krankheit im Landkreis Erding haben die" ;
+    ts:sourceTextLocator "char[0:124]" .
+
+tsd:snippet_2d5c003e1f2e a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Geflügelpest" ;
+    ts:snippetText "gt. Küken Mastküken. Leipzig Schkeuditz Tierheim Tierheim Leipzig Polizei Polizei Leipzig Geflügelpest Vogelgrippe Landkreis Leipzig Gesellschaft # 145 ausgesetzte Mastküken: Leipziger Polizei" ;
+    ts:sourceTextLocator "char[207:399]" .
+
+tsd:snippet_5ca4d45a2351 a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "HPAI" ;
+    ts:snippetText "keulungen noch zeitgemäß sind. Geflügelpest Newcastle Disease Geflügelsymposium Osnabrück HPAI Vogelgrippe Massenkeulung Biosicherheit Geflügelhaltung Friedrich-Loeffler-Institut Impfu" ;
+    ts:sourceTextLocator "char[280:464]" .
+
+tsd:snippet_6276fc68e46d a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Vogelgrippe" ;
+    ts:snippetText "tküken. Leipzig Schkeuditz Tierheim Tierheim Leipzig Polizei Polizei Leipzig Geflügelpest Vogelgrippe Landkreis Leipzig Gesellschaft # 145 ausgesetzte Mastküken: Leipziger Polizei und Tierhei" ;
+    ts:sourceTextLocator "char[220:411]" .
+
+tsd:snippet_64ea07b36c16 a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Vogelgrippe" ;
+    ts:snippetText "lügelsymposium FLI Tierwohl 5xD Eier Geflügelfleisch Tierwohl Geflügelpest Nachhaltigkeit Vogelgrippe ZKHL Aldi Nord Aldi Süd Edeka Kaufland Lidl Netto Rewe Penny Deutschland # 12. Osnabrücke" ;
+    ts:sourceTextLocator "char[468:659]" .
+
+tsd:snippet_71b5e79131bd a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Geflügelpest" ;
+    ts:snippetText "onen um Impfung und Keulung Beim Osnabrücker Geflügelsymposium diskutierten Experten über Geflügelpest, Newcastle Disease und die Zukunft der Tierseuchenbekämpfung. Im Mittelpunkt standen Impf" ;
+    ts:sourceTextLocator "char[43:235]" .
+
+tsd:snippet_7b7b6b15aa7c a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Geflügelpest" ;
+    ts:snippetText "iebe werden kontrolliert. Newcastle-Krankheit Landkreis Erding 100.000 Legehennen Keulung Geflügelpest APMV-1 Schutzgebiet Überwachungszone Landratsamt Erding Landesamt für Gesundheit und Lebe" ;
+    ts:sourceTextLocator "char[233:425]" .
+
+tsd:snippet_8a0cbcb1bf9b a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Tierseuche" ;
+    ts:snippetText "lsymposium diskutierten Experten über Geflügelpest, Newcastle Disease und die Zukunft der Tierseuchenbekämpfung. Im Mittelpunkt standen Impfungen, Biosicherheit und die Frage, ob Massenkeulu" ;
+    ts:sourceTextLocator "char[95:285]" .
+
+tsd:snippet_8a8029ea60cf a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Vogelgrippe" ;
+    ts:snippetText "ngen noch zeitgemäß sind. Geflügelpest Newcastle Disease Geflügelsymposium Osnabrück HPAI Vogelgrippe Massenkeulung Biosicherheit Geflügelhaltung Friedrich-Loeffler-Institut Impfungen Tierseu" ;
+    ts:sourceTextLocator "char[285:476]" .
+
+tsd:snippet_8af4e0b96de4 a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Tierseuche" ;
+    ts:snippetText "andratsamt Erding Landesamt für Gesundheit und Lebensmittelsicherheit BR24 Geflügelhalter Tierseuche Bayern Landshut Freising Biosicherheit # 100.000 Legehennen wegen Newcastle-Krankheit gek" ;
+    ts:sourceTextLocator "char[374:564]" .
+
+tsd:snippet_bb4e0cb80ffb a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Keulung" ;
+    ts:snippetText "che Betriebe werden kontrolliert. Newcastle-Krankheit Landkreis Erding 100.000 Legehennen Keulung Geflügelpest APMV-1 Schutzgebiet Überwachungszone Landratsamt Erding Landesamt für Gesund" ;
+    ts:sourceTextLocator "char[225:412]" .
+
+tsd:snippet_f07eb2eb720b a ts:EvidenceSnippet ;
+    ts:rawMatchedTerm "Geflügelpest" ;
+    ts:snippetText "Osnabrücker Geflügelsymposium. Die Nachfrage läuft bei Eiern und bei Geflügelfleisch. Die Geflügelpest scheint beherrschbar. Dennoch fehlt vielen Betrieben der Kompass für die Zukunft: Noch me" ;
+    ts:sourceTextLocator "char[81:273]" .
+
+tsd:country_deutschland a ts:Location ;
+    ts:locationLabel "Deutschland" .
+
+tss:hpai a skos:Concept,
+        ts:Disease ;
+    skos:prefLabel "HPAI" .
+

@@ -10,6 +10,7 @@ dependencies = [
     "ipykernel>=7.2.0",
     "pandas>=3.0.3",
     "pyyaml>=6.0.3",
+    "rdflib>=7.6.0",
     "rich>=15.0.0",
     "seaborn>=0.13.2",
 ]

@@ -15,10 +15,13 @@ type Props = {
     onDateToChange: (v: string) => void;
     species: string;
     onSpeciesChange: (v: string) => void;
+    speciesOptions: string[];
     subtype: string;
     onSubtypeChange: (v: string) => void;
     center: string;
     onCenterChange: (v: string) => void;
+    radiusKm: number;
+    onRadiusChange: (v: number) => void;
 };
 
 const POP_OPTIONS: { value: Population; label: string }[] = [
@@ -36,10 +39,13 @@ export default function FilterPanel({
     onDateToChange,
     species,
     onSpeciesChange,
+    speciesOptions,
     subtype,
     onSubtypeChange,
     center,
     onCenterChange,
+    radiusKm,
+    onRadiusChange,
 }: Props) {
     return (
         <aside className="flex h-full w-72 shrink-0 flex-col gap-5 overflow-y-auto rounded-md border bg-card p-4 text-sm">
@@ -65,6 +71,7 @@ export default function FilterPanel({
                 <div className="flex flex-wrap gap-1.5">
                     {POP_OPTIONS.map((opt) => {
                         const active = population.includes(opt.value);
+
                         return (
                             <Badge
                                 key={opt.value}
@@ -110,9 +117,11 @@ export default function FilterPanel({
                     onChange={(e) => onSpeciesChange(e.target.value)}
                 >
                     <option value="">Alle Spezies</option>
-                    <option value="duck">Ente</option>
-                    <option value="chicken">Huhn</option>
-                    <option value="swan">Schwan</option>
+                    {speciesOptions.map((s) => (
+                        <option key={s} value={s}>
+                            {s}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -144,6 +153,23 @@ export default function FilterPanel({
                     <option value="Genf">Genf</option>
                     <option value="Basel">Basel</option>
                 </select>
+                <div className="space-y-1 pt-2">
+                    <div className="flex items-baseline justify-between">
+                        <label className="text-xs font-medium">Reichweite</label>
+                        <span className="text-[11px] text-muted-foreground tabular-nums">
+                            {radiusKm} km
+                        </span>
+                    </div>
+                    <input
+                        type="range"
+                        min={10}
+                        max={200}
+                        step={5}
+                        value={radiusKm}
+                        onChange={(e) => onRadiusChange(Number(e.target.value))}
+                        className="w-full"
+                    />
+                </div>
             </div>
 
             <div className="mt-auto space-y-2 border-t pt-3 text-[10px] text-muted-foreground">

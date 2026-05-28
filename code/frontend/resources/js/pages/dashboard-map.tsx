@@ -7,8 +7,11 @@ import FilterPanel from '@/components/dashboard/filter-panel';
 import LagebildHeader from '@/components/dashboard/lagebild-header';
 import PlayBar from '@/components/dashboard/play-bar';
 import StatsView from '@/components/dashboard/stats-view';
-import CaseMap, { type Case } from '@/components/map/case-map';
+import CaseMap from '@/components/map/case-map';
+import type {Case} from '@/components/map/case-map';
 import ClientOnly from '@/components/map/client-only';
+import type {DiseaseCode} from '@/components/map/disease-colors';
+import Legend from '@/components/map/legend';
 import DashboardLayout from '@/layouts/dashboard-layout';
 
 type Population = 'wild' | 'poultry' | 'captive';
@@ -36,8 +39,12 @@ const DEFAULT_TO = '2026-05-28T23:59';
 
 export default function DashboardMap({ cases }: Props) {
     const [view, setView] = useState<'map' | 'list' | 'stats'>(() => {
-        if (typeof window === 'undefined') return 'map';
+        if (typeof window === 'undefined') {
+return 'map';
+}
+
         const stored = window.localStorage.getItem('ts-scanner:view');
+
         return stored === 'list' || stored === 'stats' ? stored : 'map';
     });
 
@@ -50,6 +57,7 @@ export default function DashboardMap({ cases }: Props) {
     const [species, setSpecies] = useState('');
     const [subtype, setSubtype] = useState('H5N1');
     const [center, setCenter] = useState('Bern');
+    const [radiusKm, setRadiusKm] = useState(50);
 
     const [playCursor, setPlayCursor] = useState(DEFAULT_TO);
     const [playing, setPlaying] = useState(false);
@@ -65,13 +73,41 @@ export default function DashboardMap({ cases }: Props) {
 
     const filtered = useMemo(() => {
         return cases.filter((c) => {
-            if (c.population && !population.includes(c.population)) return false;
-            if (dateFrom && c.reportedAt < dateFrom) return false;
-            if (effectiveTo && c.reportedAt > effectiveTo) return false;
-            if (subtype && c.subtype !== subtype) return false;
+            if (c.population && !population.includes(c.population)) {
+return false;
+}
+
+            if (dateFrom && c.reportedAt < dateFrom) {
+return false;
+}
+
+            if (effectiveTo && c.reportedAt > effectiveTo) {
+return false;
+}
+
+            if (subtype && c.subtype !== subtype) {
+return false;
+}
+
+            if (species && c.species !== species) {
+return false;
+}
+
             return true;
         });
-    }, [cases, population, dateFrom, effectiveTo, subtype]);
+    }, [cases, population, dateFrom, effectiveTo, subtype, species]);
+
+    const speciesOptions = useMemo(() => {
+        const set = new Set<string>();
+
+        for (const c of cases) {
+            if (c.species) {
+set.add(c.species);
+}
+        }
+
+        return Array.from(set).sort((a, b) => a.localeCompare(b, 'de-CH'));
+    }, [cases]);
 
     const [centerLat, centerLng] = CENTER_COORDS[center] ?? CENTER_COORDS.Bern;
 
@@ -89,10 +125,13 @@ export default function DashboardMap({ cases }: Props) {
                     onDateToChange={setDateTo}
                     species={species}
                     onSpeciesChange={setSpecies}
+                    speciesOptions={speciesOptions}
                     subtype={subtype}
                     onSubtypeChange={setSubtype}
                     center={center}
                     onCenterChange={setCenter}
+                    radiusKm={radiusKm}
+                    onRadiusChange={setRadiusKm}
                 />
                 <div className="flex flex-1 flex-col gap-3 overflow-hidden">
                     <div className="inline-flex w-fit rounded-md border bg-card p-0.5 text-sm">
@@ -142,8 +181,18 @@ export default function DashboardMap({ cases }: Props) {
                                     </div>
                                 }
                             >
-                                <CaseMap cases={filtered} />
+                                <CaseMap
+                                    cases={filtered}
+                                    centerLat={centerLat}
+                                    centerLng={centerLng}
+                                    radiusKm={radiusKm}
+                                />
                             </ClientOnly>
+                            <Legend
+                                diseases={['HPAI' as DiseaseCode]}
+                                center={center}
+                                radiusKm={radiusKm}
+                            />
                         </div>
                     ) : view === 'list' ? (
                         <div className="flex-1 overflow-hidden">
@@ -151,11 +200,17 @@ export default function DashboardMap({ cases }: Props) {
                                 cases={filtered}
                                 centerLat={centerLat}
                                 centerLng={centerLng}
+                                radiusKm={radiusKm}
                             />
                         </div>
                     ) : (
                         <div className="flex-1 overflow-hidden">
-                            <StatsView cases={filtered} />
+                            <StatsView
+                                cases={filtered}
+                                centerLat={centerLat}
+                                centerLng={centerLng}
+                                radiusKm={radiusKm}
+                            />
                         </div>
                     )}
                     <PlayBar
@@ -168,6 +223,7 @@ export default function DashboardMap({ cases }: Props) {
                             if (!playing && (playCursor >= dateTo || playCursor < dateFrom)) {
                                 setPlayCursor(dateFrom);
                             }
+
                             setPlaying((p) => !p);
                         }}
                         onReset={() => {

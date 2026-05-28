@@ -36,6 +36,8 @@ def build_parser(config: AppConfig | None = None) -> argparse.ArgumentParser:
             "--delay-seconds", type=float, default=default_source.delay_seconds
         )
         subparser.add_argument("--limit", type=int, default=default_source.limit)
+        if command == "export-rdf":
+            subparser.add_argument("--rdf-dir", default=None)
     return parser
 
 
@@ -64,12 +66,19 @@ def main(argv: list[str] | None = None) -> int:
         return _filter_disease(data_dir, args.source, console, config)
     if args.command == "extract-reports":
         return _extract_reports(data_dir, args.source, console, config)
+    if args.command == "export-rdf":
+        rdf_dir = resolve_rdf_dir(args.rdf_dir, config)
+        return _export_rdf(data_dir, rdf_dir, args.source, console, config)
     parser.error(f"Unknown command {args.command}")
     return 2
 
 
 def resolve_data_dir(value: str | None, config: AppConfig) -> Path:
     return resolve_config_path(value or config.scraper.data_dir, config)
+
+
+def resolve_rdf_dir(value: str | None, config: AppConfig) -> Path:
+    return resolve_config_path(value or config.scraper.rdf_output_dir, config)
 
 
 def _configure_logging(console: Console, config: AppConfig) -> None:
@@ -273,6 +282,31 @@ def _extract_reports(
     write_jsonl(config.output_path(data_dir, source, "disease_reports"), reports)
     console.print(
         f"[green]Extracted {len(reports)} candidate DiseaseReport records[/green]"
+    )
+    return 0
+
+
+def _export_rdf(
+    data_dir: Path,
+    rdf_dir: Path,
+    source: str,
+    console: Console,
+    config: AppConfig,
+) -> int:
+    from govtech_tierseuchen.jsonl import read_jsonl
+    from govtech_tierseuchen.rdf_export import (
+        disease_report_from_dict,
+        export_disease_reports_to_rdf,
+    )
+
+    rows = read_jsonl(config.output_path(data_dir, source, "disease_reports"))
+    reports = [disease_report_from_dict(row) for row in rows]
+    output_path = rdf_dir / config.sources[source].output_dir / f"{source}.ttl"
+    result = export_disease_reports_to_rdf(reports, output_path)
+    console.print(
+        "[green]Exported "
+        f"{result.report_count} DiseaseReport records as {result.triple_count} RDF triples "
+        f"to {result.output_path}[/green]"
     )
     return 0
 

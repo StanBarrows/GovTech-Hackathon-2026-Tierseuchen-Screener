@@ -19,6 +19,7 @@ class FileConfig:
 @dataclass(frozen=True)
 class ScraperConfig:
     data_dir: str
+    rdf_output_dir: str
     log_level: str
     progress_description: str
     commands: list[str]
@@ -77,6 +78,7 @@ def _parse_config(raw: dict[str, Any], project_root: Path) -> AppConfig:
         project_root=project_root,
         scraper=ScraperConfig(
             data_dir=str(scraper["data_dir"]),
+            rdf_output_dir=str(scraper["rdf_output_dir"]),
             log_level=str(scraper["log_level"]),
             progress_description=str(scraper["progress_description"]),
             commands=list(scraper["commands"]),

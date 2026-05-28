@@ -1,5 +1,6 @@
 scraper:
   data_dir: data/unstructured
+  rdf_output_dir: lindas/data/rdf
   log_level: INFO
   progress_description: Fetching articles
   commands:
@@ -8,6 +9,7 @@ scraper:
     - parse
     - filter-disease
     - extract-reports
+    - export-rdf
   files:
     manifest: manifest.jsonl
     articles: articles.jsonl
