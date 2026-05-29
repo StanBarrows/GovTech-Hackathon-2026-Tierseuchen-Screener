@@ -28,13 +28,15 @@ class EventsSeeder extends Seeder
     private const BERN_LNG = 7.4442526092578625;
 
     /**
-     * Scoring tunables. relevance_score = min(1, proximity + W_DENSITY*density +
-     * W_SEVERITY*severity), clamped to [0, 1]. Proximity to Bern is the base signal
-     * (an event right next to Bern starts near 1.0; a far-off flyway branch in
-     * France, Italy or the Balkans starts near 0), and local density + outbreak
-     * severity are smaller bonuses that can only nudge a nearby event upward — they
-     * can never lift a distant one. The dashboard bins the score into Rot (>= 0.8) /
-     * Orange (>= 0.5) / Grün, and the stored priority enum uses the same thresholds.
+     * Scoring tunables. relevance_score = min(1, proximity * (1 + W_DENSITY*density
+     * + W_SEVERITY*severity)), clamped to [0, 1]. Proximity to Bern is the base
+     * signal (an event right next to Bern starts near 1.0; a far-off flyway branch
+     * in France, Italy or the Balkans starts near 0). Local density and outbreak
+     * severity are *multiplicative* bonuses: they amplify an event that is already
+     * near Bern but, because the whole bonus is scaled by proximity, they can never
+     * lift a distant one out of the green band. The dashboard bins the score into
+     * Rot (>= 0.8) / Orange (>= 0.5) / Grün, and the priority enum uses the same
+     * thresholds.
      */
     private const PROXIMITY_RADIUS_KM = 120.0;   // proximity decay scale
 
@@ -193,8 +195,8 @@ class EventsSeeder extends Seeder
             $occurredAt = $start->copy()->addSeconds($occurredTs)->format('Y-m-d H:i:s');
 
             [$lat, $lng] = $this->interpolate($path, $t);
-            $lat += $this->gauss() * 0.35;
-            $lng += $this->gauss() * 0.50;
+            $lat += $this->gauss() * 0.50;
+            $lng += $this->gauss() * 0.70;
 
             $population = $populations[array_rand($populations)];
 
@@ -270,9 +272,12 @@ class EventsSeeder extends Seeder
             // don't collapse to the extremes.
             $severity = min(1.0, log10($row['cases'] + 1) / log10(self::SEVERITY_REF));
 
-            $score = min(1.0, $proximity
+            // Importance (local density + outbreak severity) only amplifies events
+            // that are already near Bern; scaling the whole bonus by proximity keeps
+            // a distant-but-dense/severe cluster low instead of lifting it to orange.
+            $score = min(1.0, $proximity * (1.0
                 + self::W_DENSITY * $density
-                + self::W_SEVERITY * $severity);
+                + self::W_SEVERITY * $severity));
 
             $priority = match (true) {
                 $score >= self::PRIORITY_HIGH => EventPriority::High,
