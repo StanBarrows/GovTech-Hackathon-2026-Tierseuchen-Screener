@@ -13,6 +13,7 @@ from govtech_tierseuchen.models import (
 _CONFIG = load_config().disease_reports
 EXTRACTION_VERSION = _CONFIG.extraction_version
 CONSEQUENCE_TERMS = _CONFIG.consequence_terms
+CONFIDENCE_THRESHOLDS = _CONFIG.confidence_thresholds
 
 
 def extract_report_rules(
@@ -67,10 +68,10 @@ def _control_measures(text: str) -> list[str]:
 
 
 def _confidence_level(score: int) -> str:
-    if score >= 4:
+    if score >= CONFIDENCE_THRESHOLDS["high"]:
         return "high"
-    if score >= 2:
+    if score >= CONFIDENCE_THRESHOLDS["medium"]:
         return "medium"
-    if score >= 1:
+    if score >= CONFIDENCE_THRESHOLDS["low"]:
         return "low"
     return "unknown"

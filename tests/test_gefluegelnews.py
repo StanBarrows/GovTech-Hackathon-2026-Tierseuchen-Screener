@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from pathlib import Path
 
+from govtech_tierseuchen import cli
 from govtech_tierseuchen.cli import build_parser, main, resolve_data_dir
 from govtech_tierseuchen.config import load_config
 from govtech_tierseuchen.gefluegelnews import (
@@ -190,6 +191,61 @@ def test_cli_parser_accepts_fetch_limit():
     assert args.limit == 5
 
 
+def test_cli_parser_accepts_run_all_source_options():
+    parser = build_parser()
+    args = parser.parse_args(
+        ["run-all", "--source", "gefluegelnews", "--source", "padi_web"]
+    )
+
+    assert args.command == "run-all"
+    assert args.sources == ["gefluegelnews", "padi_web"]
+
+
+def test_run_all_executes_all_pipeline_steps_for_selected_sources(
+    monkeypatch, tmp_path, capsys
+):
+    calls = []
+
+    def record(stage_name, source_index=1):
+        def fake_stage(*args):
+            calls.append((stage_name, args[source_index]))
+            return 0
+
+        return fake_stage
+
+    monkeypatch.setattr(cli, "_discover", record("discover"))
+    monkeypatch.setattr(cli, "_fetch", record("fetch"))
+    monkeypatch.setattr(cli, "_parse", record("parse"))
+    monkeypatch.setattr(cli, "_filter_disease", record("filter-disease"))
+    monkeypatch.setattr(cli, "_extract_reports", record("extract-reports"))
+    monkeypatch.setattr(cli, "_export_rdf", record("export-rdf", source_index=2))
+
+    exit_code = main(
+        [
+            "run-all",
+            "--source",
+            "padi_web",
+            "--data-dir",
+            str(tmp_path),
+            "--delay-seconds",
+            "0",
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert calls == [
+        ("discover", "padi_web"),
+        ("fetch", "padi_web"),
+        ("parse", "padi_web"),
+        ("filter-disease", "padi_web"),
+        ("extract-reports", "padi_web"),
+        ("export-rdf", "padi_web"),
+    ]
+    assert "Running 6 pipeline steps for padi_web" in captured.out
+    assert "Completed 6 pipeline steps for 1 source" in captured.out
+
+
 def test_default_config_resolves_data_dir_from_repo_root(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
 
@@ -210,6 +266,18 @@ def test_cli_parser_leaves_request_defaults_for_selected_source_resolution():
     assert args.timeout_seconds is None
     assert args.delay_seconds is None
     assert args.limit is None
+
+
+def test_config_exposes_source_url_validation_and_confidence_thresholds():
+    config = load_config()
+
+    assert config.sources["gefluegelnews"].article_path_prefix == "/article/"
+    assert config.sources["padi_web"].articles_api_path == "/en/articles/api/"
+    assert config.disease_reports.confidence_thresholds == {
+        "high": 4,
+        "medium": 2,
+        "low": 1,
+    }
 
 
 def test_fetch_stage_reports_limited_progress(monkeypatch, tmp_path, capsys):

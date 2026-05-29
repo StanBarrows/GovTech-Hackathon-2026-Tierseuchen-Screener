@@ -21,16 +21,26 @@ from govtech_tierseuchen.models import (
 
 SOURCE_ID = "padi_web"
 SOURCE_NAME = "PADI-web"
+
+
+def _required_source_value(value: str | None, key: str) -> str:
+    if value is None:
+        raise RuntimeError(f"Missing {SOURCE_ID}.{key} in config.yaml")
+    return value
+
+
 _SOURCE_CONFIG = load_config().sources[SOURCE_ID]
-BASE_URL = _SOURCE_CONFIG.base_url or "https://padi-web.cirad.fr"
-ARTICLES_API_URL = (
-    f"{BASE_URL}{_SOURCE_CONFIG.articles_api_path or '/en/articles/api/'}"
+BASE_URL = _required_source_value(_SOURCE_CONFIG.base_url, "base_url")
+ARTICLES_API_PATH = _required_source_value(
+    _SOURCE_CONFIG.articles_api_path, "articles_api_path"
 )
-DEFAULT_USER_AGENT = _SOURCE_CONFIG.user_agent or (
-    "GovTech-Tierseuchen prototype scraper (+local research; PADI public API)"
+ARTICLES_API_URL = f"{BASE_URL}{ARTICLES_API_PATH}"
+ALLOWED_NETLOC = urlparse(BASE_URL).netloc
+DEFAULT_USER_AGENT = _required_source_value(_SOURCE_CONFIG.user_agent, "user_agent")
+RAW_SUBDIR = _required_source_value(_SOURCE_CONFIG.raw_subdir, "raw_subdir")
+ARTICLE_SERIALIZER = _required_source_value(
+    _SOURCE_CONFIG.article_serializer, "article_serializer"
 )
-RAW_SUBDIR = _SOURCE_CONFIG.raw_subdir or "raw_json"
-ARTICLE_SERIALIZER = _SOURCE_CONFIG.article_serializer or "sentences"
 DISCOVERY = _SOURCE_CONFIG.discovery or {}
 DEFAULT_DISCOVERY_DAYS = int(DISCOVERY["published_after_days"])
 DEFAULT_DISCOVERY_PER_PAGE = int(DISCOVERY["per_page"])
@@ -91,10 +101,13 @@ def parse_article_page(
 
 
 def article_id_from_source_link(source_link: str) -> str:
-    parts = [part for part in urlparse(source_link).path.split("/") if part]
-    if len(parts) != 4 or parts[:3] != ["en", "articles", "api"]:
+    path = urlparse(source_link).path
+    if not path.startswith(ARTICLES_API_PATH):
         return ""
-    return parts[3]
+    suffix = path.removeprefix(ARTICLES_API_PATH).strip("/")
+    if "/" in suffix:
+        return ""
+    return suffix
 
 
 def raw_json_path(base_dir: Path, source_link: str) -> Path:
@@ -224,13 +237,13 @@ def _validate_article_source_link(source_link: str) -> str | None:
     parsed = urlparse(source_link)
     requirement = (
         "PADI-web article API URLs must use https, be hosted on "
-        "padi-web.cirad.fr, and use the /en/articles/api/<id>/ path."
+        f"{ALLOWED_NETLOC}, and use the {ARTICLES_API_PATH}<id>/ path."
     )
     if parsed.scheme != "https":
         return requirement
-    if parsed.netloc != "padi-web.cirad.fr":
+    if parsed.netloc != ALLOWED_NETLOC:
         return requirement
-    if not parsed.path.startswith("/en/articles/api/"):
+    if not parsed.path.startswith(ARTICLES_API_PATH):
         return requirement
     if not article_id_from_source_link(source_link):
         return requirement
@@ -243,9 +256,9 @@ def _validated_page_url(value: str | None) -> str | None:
     parsed = urlparse(value)
     if parsed.scheme != "https":
         return None
-    if parsed.netloc != "padi-web.cirad.fr":
+    if parsed.netloc != ALLOWED_NETLOC:
         return None
-    if parsed.path != "/en/articles/api/":
+    if parsed.path != ARTICLES_API_PATH:
         return None
     return value
 

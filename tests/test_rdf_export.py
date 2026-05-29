@@ -180,5 +180,5 @@ def test_cli_export_rdf_writes_to_lindas_style_source_directory(tmp_path):
     )
 
     assert exit_code == 0
-    output_path = rdf_dir / "gefluegelnews" / "gefluegelnews.ttl"
+    output_path = rdf_dir / "gefluegelnews" / "gefluegelnews.qa.ttl"
     assert output_path.exists()

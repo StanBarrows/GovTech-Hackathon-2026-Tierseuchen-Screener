@@ -34,6 +34,7 @@ class SourceConfig:
     limit: int | None
     base_url: str | None = None
     sitemap_path: str | None = None
+    article_path_prefix: str | None = None
     articles_api_path: str | None = None
     user_agent: str | None = None
     raw_subdir: str | None = None
@@ -53,6 +54,7 @@ class DiseaseFilterConfig:
 @dataclass(frozen=True)
 class DiseaseReportsConfig:
     extraction_version: str
+    confidence_thresholds: dict[str, int]
     european_countries: set[str]
     consequence_terms: dict[str, str]
 
@@ -123,6 +125,7 @@ def _parse_config(raw: dict[str, Any], project_root: Path) -> AppConfig:
                 limit=source["limit"],
                 base_url=_optional_str(source.get("base_url")),
                 sitemap_path=_optional_str(source.get("sitemap_path")),
+                article_path_prefix=_optional_str(source.get("article_path_prefix")),
                 articles_api_path=_optional_str(source.get("articles_api_path")),
                 user_agent=_optional_str(source.get("user_agent")),
                 raw_subdir=_optional_str(source.get("raw_subdir")),
@@ -142,6 +145,12 @@ def _parse_config(raw: dict[str, Any], project_root: Path) -> AppConfig:
         ),
         disease_reports=DiseaseReportsConfig(
             extraction_version=str(raw["disease_reports"]["extraction_version"]),
+            confidence_thresholds={
+                str(level): int(score)
+                for level, score in raw["disease_reports"][
+                    "confidence_thresholds"
+                ].items()
+            },
             european_countries={
                 str(country) for country in raw["disease_reports"]["european_countries"]
             },
