@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Callable
@@ -17,10 +18,23 @@ from rich.progress import (
     TimeElapsedColumn,
 )
 
-from govtech_tierseuchen.config import AppConfig, load_config, resolve_config_path
+from govtech_tierseuchen.config import (
+    AppConfig,
+    SourceConfig,
+    load_config,
+    resolve_config_path,
+)
 from govtech_tierseuchen.models import ParseError
 
 LOGGER = logging.getLogger(__name__)
+PIPELINE_STAGES = (
+    "discover",
+    "fetch",
+    "parse",
+    "filter-disease",
+    "extract-reports",
+    "export-rdf",
+)
 
 
 def build_parser(config: AppConfig | None = None) -> argparse.ArgumentParser:
@@ -30,13 +44,28 @@ def build_parser(config: AppConfig | None = None) -> argparse.ArgumentParser:
     for command in config.scraper.commands:
         subparser = subparsers.add_parser(command)
         subparser.add_argument("source", choices=sorted(config.sources))
-        subparser.add_argument("--data-dir", default=None)
-        subparser.add_argument("--timeout-seconds", type=float, default=None)
-        subparser.add_argument("--delay-seconds", type=float, default=None)
-        subparser.add_argument("--limit", type=int, default=None)
+        _add_common_options(subparser)
         if command == "export-rdf":
             subparser.add_argument("--rdf-dir", default=None)
+    run_all_parser = subparsers.add_parser("run-all")
+    run_all_parser.add_argument(
+        "--source",
+        dest="sources",
+        action="append",
+        choices=sorted(config.sources),
+        default=[],
+        help="Source to run. Repeat to run multiple sources. Defaults to all sources.",
+    )
+    _add_common_options(run_all_parser)
+    run_all_parser.add_argument("--rdf-dir", default=None)
     return parser
+
+
+def _add_common_options(subparser: argparse.ArgumentParser) -> None:
+    subparser.add_argument("--data-dir", default=None)
+    subparser.add_argument("--timeout-seconds", type=float, default=None)
+    subparser.add_argument("--delay-seconds", type=float, default=None)
+    subparser.add_argument("--limit", type=int, default=None)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -45,19 +74,28 @@ def main(argv: list[str] | None = None) -> int:
     _configure_logging(console, config)
     parser = build_parser(config)
     args = parser.parse_args(argv)
-    source_config = config.sources[args.source]
-    timeout_seconds = (
-        args.timeout_seconds
-        if args.timeout_seconds is not None
-        else source_config.timeout_seconds
-    )
-    delay_seconds = (
-        args.delay_seconds
-        if args.delay_seconds is not None
-        else source_config.delay_seconds
-    )
-    limit = args.limit if args.limit is not None else source_config.limit
     data_dir = resolve_data_dir(args.data_dir, config)
+    if args.command == "run-all":
+        sources = args.sources or sorted(config.sources)
+        rdf_dir = resolve_rdf_dir(args.rdf_dir, config)
+        return _run_all(
+            data_dir=data_dir,
+            rdf_dir=rdf_dir,
+            sources=sources,
+            timeout_seconds=args.timeout_seconds,
+            delay_seconds=args.delay_seconds,
+            limit=args.limit,
+            console=console,
+            config=config,
+        )
+
+    source_config = config.sources[args.source]
+    timeout_seconds, delay_seconds, limit = _resolve_source_options(
+        args.timeout_seconds,
+        args.delay_seconds,
+        args.limit,
+        source_config,
+    )
     if args.command == "discover":
         return _discover(data_dir, args.source, timeout_seconds, limit, console, config)
     if args.command == "fetch":
@@ -81,6 +119,24 @@ def main(argv: list[str] | None = None) -> int:
         return _export_rdf(data_dir, rdf_dir, args.source, console, config)
     parser.error(f"Unknown command {args.command}")
     return 2
+
+
+def _resolve_source_options(
+    timeout_seconds: float | None,
+    delay_seconds: float | None,
+    limit: int | None,
+    source_config: SourceConfig,
+) -> tuple[float, float, int | None]:
+    resolved_timeout_seconds = (
+        timeout_seconds
+        if timeout_seconds is not None
+        else source_config.timeout_seconds
+    )
+    resolved_delay_seconds = (
+        delay_seconds if delay_seconds is not None else source_config.delay_seconds
+    )
+    resolved_limit = limit if limit is not None else source_config.limit
+    return resolved_timeout_seconds, resolved_delay_seconds, resolved_limit
 
 
 def resolve_data_dir(value: str | None, config: AppConfig) -> Path:
@@ -201,6 +257,146 @@ def _discover(
         articles = articles[:limit]
     write_jsonl(config.output_path(data_dir, source, "manifest"), articles)
     console.print(f"[green]Discovered {len(articles)} {source} article URLs[/green]")
+    return 0
+
+
+def _run_all(
+    data_dir: Path,
+    rdf_dir: Path,
+    sources: list[str],
+    timeout_seconds: float | None,
+    delay_seconds: float | None,
+    limit: int | None,
+    console: Console,
+    config: AppConfig,
+) -> int:
+    source_options = {
+        source: _resolve_source_options(
+            timeout_seconds,
+            delay_seconds,
+            limit,
+            config.sources[source],
+        )
+        for source in sources
+    }
+    for source in sources:
+        console.print(
+            f"[bold]Running {len(PIPELINE_STAGES)} pipeline steps for {source}[/bold]"
+        )
+
+    if len(sources) > 1:
+        exit_code = _run_parallel_ingest_stages(
+            data_dir=data_dir,
+            sources=sources,
+            source_options=source_options,
+            console=console,
+            config=config,
+        )
+        if exit_code != 0:
+            return exit_code
+        start_index = 3
+        stages = PIPELINE_STAGES[2:]
+    else:
+        start_index = 1
+        stages = PIPELINE_STAGES
+
+    for source in sources:
+        resolved_timeout_seconds, resolved_delay_seconds, resolved_limit = (
+            source_options[source]
+        )
+        for index, stage in enumerate(stages, start=start_index):
+            console.print(
+                f"[cyan]{source}: step {index}/{len(PIPELINE_STAGES)} {stage}[/cyan]"
+            )
+            if stage == "discover":
+                exit_code = _discover(
+                    data_dir,
+                    source,
+                    resolved_timeout_seconds,
+                    resolved_limit,
+                    console,
+                    config,
+                )
+            elif stage == "fetch":
+                exit_code = _fetch(
+                    data_dir,
+                    source,
+                    resolved_timeout_seconds,
+                    resolved_delay_seconds,
+                    resolved_limit,
+                    console,
+                    config,
+                )
+            elif stage == "parse":
+                exit_code = _parse(data_dir, source, resolved_limit, console, config)
+            elif stage == "filter-disease":
+                exit_code = _filter_disease(data_dir, source, console, config)
+            elif stage == "extract-reports":
+                exit_code = _extract_reports(data_dir, source, console, config)
+            elif stage == "export-rdf":
+                exit_code = _export_rdf(data_dir, rdf_dir, source, console, config)
+            else:
+                raise ValueError(f"Unsupported pipeline stage: {stage}")
+            if exit_code != 0:
+                console.print(
+                    f"[red]Stopped at {stage} for {source} with exit code {exit_code}[/red]"
+                )
+                return exit_code
+    source_label = "source" if len(sources) == 1 else "sources"
+    console.print(
+        f"[green]Completed {len(PIPELINE_STAGES)} pipeline steps for {len(sources)} {source_label}[/green]"
+    )
+    return 0
+
+
+def _run_parallel_ingest_stages(
+    data_dir: Path,
+    sources: list[str],
+    source_options: dict[str, tuple[float, float, int | None]],
+    console: Console,
+    config: AppConfig,
+) -> int:
+    for stage in ("discover", "fetch"):
+        console.print(f"[cyan]Running {stage} for {len(sources)} sources[/cyan]")
+        with ThreadPoolExecutor(max_workers=len(sources)) as executor:
+            futures = {}
+            for source in sources:
+                resolved_timeout_seconds, resolved_delay_seconds, resolved_limit = (
+                    source_options[source]
+                )
+                console.print(
+                    f"[cyan]{source}: step {PIPELINE_STAGES.index(stage) + 1}/{len(PIPELINE_STAGES)} {stage}[/cyan]"
+                )
+                if stage == "discover":
+                    future = executor.submit(
+                        _discover,
+                        data_dir,
+                        source,
+                        resolved_timeout_seconds,
+                        resolved_limit,
+                        console,
+                        config,
+                    )
+                else:
+                    future = executor.submit(
+                        _fetch,
+                        data_dir,
+                        source,
+                        resolved_timeout_seconds,
+                        resolved_delay_seconds,
+                        resolved_limit,
+                        console,
+                        config,
+                    )
+                futures[future] = source
+            for future in as_completed(futures):
+                source = futures[future]
+                exit_code = future.result()
+                if exit_code != 0:
+                    console.print(
+                        f"[red]Stopped at {stage} for {source} with exit code {exit_code}[/red]"
+                    )
+                    return exit_code
     return 0
 
 
@@ -424,7 +620,7 @@ def _export_rdf(
 
     rows = read_jsonl(config.output_path(data_dir, source, "disease_reports"))
     reports = [disease_report_from_dict(row) for row in rows]
-    output_path = rdf_dir / config.sources[source].output_dir / f"{source}.ttl"
+    output_path = rdf_dir / config.sources[source].output_dir / f"{source}.qa.ttl"
     result = export_disease_reports_to_rdf(reports, output_path)
     console.print(
         "[green]Exported "

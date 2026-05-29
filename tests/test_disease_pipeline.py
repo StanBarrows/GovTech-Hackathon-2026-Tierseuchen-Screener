@@ -186,7 +186,7 @@ def test_assess_disease_relevance_does_not_match_acronym_inside_word():
     assert "ASP" not in relevance.matched_terms
 
 
-def test_extract_report_rules_populates_europe_and_consequences():
+def test_extract_report_rules_populates_candidate_metadata_and_rule_evidence():
     article = NewsArticle(
         source_id="gefluegelnews",
         source_name="Gefluegelnews",
@@ -219,20 +219,23 @@ def test_extract_report_rules_populates_europe_and_consequences():
     assert report.source_document_title == article.title
     assert report.source_link == article.source_link
     assert report.fulltext == article.fulltext
-    assert report.situation_key == "hpai|polen|2026-05"
     assert report.situation_month == "2026-05"
-    assert report.disease_name == "HPAI"
-    assert report.disease_type == "H5N1"
-    assert report.country_or_territory == "Polen"
-    assert report.is_in_europe is True
-    assert report.has_consequences is True
-    assert "Sperrzonen" in report.consequences
-    assert any(
-        measure.prevention_type == "Keulung" for measure in report.prevention_measures
-    )
+    assert report.rule_relevance_score == relevance.score
+    assert report.rule_matched_terms == relevance.matched_terms
+    assert report.rule_disease_type == "H5N1"
+    assert report.rule_control_measures == ["Sperrzonen", "Keulung"]
+    assert "Hotspot der Vogelgrippe" in report.raw_relevance_evidence
+    assert report.situation_key is None
+    assert report.disease_name is None
+    assert report.disease_type is None
+    assert report.country_or_territory is None
+    assert report.is_in_europe is None
+    assert report.has_consequences is None
+    assert report.consequences is None
+    assert report.prevention_measures == []
 
 
-def test_extract_report_rules_slug_normalizes_accented_country_names():
+def test_extract_report_rules_leaves_country_resolution_to_enrichment():
     article = NewsArticle(
         source_id="gefluegelnews",
         source_name="Gefluegelnews",
@@ -257,9 +260,11 @@ def test_extract_report_rules_slug_normalizes_accented_country_names():
 
     report = extract_report_rules(article, relevance)
 
-    assert report.country_or_territory == "Österreich"
-    assert report.country_concept_id == "country-osterreich"
-    assert report.situation_key == "hpai|osterreich|2026-05"
+    assert report.country_or_territory is None
+    assert report.country_concept_id is None
+    assert report.situation_key is None
+    assert report.situation_month == "2026-05"
+    assert report.rule_disease_type == "H5N1"
 
 
 def test_news_article_from_dict_restores_dates():

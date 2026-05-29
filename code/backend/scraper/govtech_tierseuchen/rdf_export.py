@@ -75,6 +75,10 @@ def disease_report_from_dict(row: dict[str, Any]) -> DiseaseReport:
             )
             for snippet in row.get("evidence_snippets", [])
         ],
+        rule_relevance_score=row.get("rule_relevance_score"),
+        rule_matched_terms=list(row.get("rule_matched_terms") or []),
+        rule_disease_type=row.get("rule_disease_type"),
+        rule_control_measures=list(row.get("rule_control_measures") or []),
         situation_key=row.get("situation_key"),
         situation_month=row.get("situation_month"),
         country_or_territory=row.get("country_or_territory"),

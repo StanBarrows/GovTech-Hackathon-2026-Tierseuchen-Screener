@@ -452,4 +452,4 @@ def test_padi_articles_flow_through_filter_extract_and_export_rdf(tmp_path):
     assert len(disease_articles) == 1
     assert reports[0]["source_id"] == "padi_web"
     assert reports[0]["source_link"] == "https://publisher.example/article"
-    assert (rdf_dir / "padi_web" / "padi_web.ttl").exists()
+    assert (rdf_dir / "padi_web" / "padi_web.qa.ttl").exists()

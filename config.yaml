@@ -21,6 +21,7 @@ sources:
   gefluegelnews:
     base_url: https://www.gefluegelnews.de
     sitemap_path: /sitemap.xml
+    article_path_prefix: /article/
     user_agent: "GovTech-Tierseuchen prototype scraper (+local research; respects robots.txt)"
     output_dir: gefluegelnews
     raw_subdir: raw_html
@@ -76,6 +77,10 @@ disease_filter:
 
 disease_reports:
   extraction_version: rules-v1
+  confidence_thresholds:
+    high: 4
+    medium: 2
+    low: 1
   european_countries:
     - Albanien
     - Andorra

@@ -100,6 +100,10 @@ class DiseaseReport:
     extraction_status: str
     extraction_confidence: str
     evidence_snippets: list[EvidenceSnippet]
+    rule_relevance_score: int | None = None
+    rule_matched_terms: list[str] = field(default_factory=list)
+    rule_disease_type: str | None = None
+    rule_control_measures: list[str] = field(default_factory=list)
     situation_key: str | None = None
     situation_month: str | None = None
     country_or_territory: str | None = None
