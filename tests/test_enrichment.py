@@ -1,7 +1,40 @@
+import json
+from dataclasses import fields
+
 from govtech_tierseuchen.config import load_config
-from govtech_tierseuchen.enrichment import enrich_records, enrich_source
+from govtech_tierseuchen.enrichment import (
+    SEMANTIC_FIELDS,
+    build_extraction_prompt,
+    enrich_records,
+    enrich_source,
+)
 from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
 from govtech_tierseuchen.cli import main
+from govtech_tierseuchen.models import DiseaseReport
+
+
+SCRAPER_OWNED_FIELDS = {
+    "report_id",
+    "source_id",
+    "source_name",
+    "source_document_id",
+    "source_document_title",
+    "source_link",
+    "source_publication_date",
+    "source_retrieved_at",
+    "fulltext",
+    "raw_html_path",
+    "content_hash",
+    "extraction_method",
+    "extraction_version",
+    "extraction_status",
+    "extraction_confidence",
+    "evidence_snippets",
+    "rule_relevance_score",
+    "rule_matched_terms",
+    "rule_disease_type",
+    "rule_control_measures",
+}
 
 
 def _candidate_record():
@@ -31,6 +64,12 @@ def _candidate_record():
     }
 
 
+def test_semantic_fields_match_disease_report_semantic_fields():
+    disease_report_fields = {field.name for field in fields(DiseaseReport)}
+
+    assert SEMANTIC_FIELDS == disease_report_fields - SCRAPER_OWNED_FIELDS
+
+
 def test_enrich_records_preserves_scraper_fields_and_drops_unexpected_keys():
     candidate = _candidate_record()
 
@@ -58,6 +97,46 @@ def test_enrich_records_preserves_scraper_fields_and_drops_unexpected_keys():
     ]
     assert enriched[0]["report_id"] == "gefluegelnews:polen"
     assert "llm_disease_name" not in enriched[0]
+
+
+def test_build_extraction_prompt_sends_only_relevant_context_and_fulltext():
+    candidate = {
+        **_candidate_record(),
+        "source_link": "https://www.gefluegelnews.de/article/polen",
+        "raw_html_path": "raw/secret.html",
+        "evidence_snippets": [
+            {
+                "snippet_id": "snippet:1",
+                "text": "H5N1 bei Gefluegel",
+                "source_link": "https://www.gefluegelnews.de/article/polen",
+                "locator": "p[1]",
+                "matched_terms": ["H5N1"],
+            }
+        ],
+    }
+
+    prompt = build_extraction_prompt(candidate)
+    context_text = prompt.split("\n", 2)[1]
+    context = json.loads(context_text)
+
+    assert context == {
+        "source_document_title": "Gefluegelpest in Polen",
+        "rule_matched_terms": ["H5N1"],
+        "rule_disease_type": "H5N1",
+        "rule_control_measures": ["Sperrzonen"],
+        "evidence_snippets": [
+            {
+                "snippet_id": "snippet:1",
+                "text": "H5N1 bei Gefluegel",
+                "source_link": "https://www.gefluegelnews.de/article/polen",
+                "locator": "p[1]",
+                "matched_terms": ["H5N1"],
+            }
+        ],
+    }
+    assert "Polen meldet H5N1 bei Gefluegel" in prompt
+    assert "raw/secret.html" not in prompt
+    assert "abc123" not in prompt
 
 
 def test_enrich_records_preserves_record_error_and_continues():

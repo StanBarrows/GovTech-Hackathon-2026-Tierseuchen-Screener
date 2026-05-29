@@ -14,6 +14,7 @@ Extractor = Callable[[dict[str, Any]], dict[str, Any]]
 
 SEMANTIC_FIELDS = {
     "situation_key",
+    "situation_month",
     "country_or_territory",
     "country_concept_id",
     "administrative_division_level_1",
