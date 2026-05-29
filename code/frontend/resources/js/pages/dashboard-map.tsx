@@ -18,19 +18,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DashboardLayout from '@/layouts/dashboard-layout';
 import type { Case, Population, RelevanceContext } from '@/types/case';
 
-type Totals = {
-    outbreakEvents: number;
-    outbreakSituations: number;
-    paffReports: number;
-    paffSituationStatements: number;
-    evidenceSnippets: number;
-};
-
 type Props = {
     cases: Case[];
     relevanceContext?: RelevanceContext | null;
     error?: string | null;
-    totals?: Totals;
     diseaseOptions?: string[];
     speciesOptions?: string[];
     subtypeOptions?: string[];
@@ -39,12 +30,29 @@ type Props = {
 const SWITZERLAND_CENTER: [number, number] = [46.8182, 8.2275];
 const SWITZERLAND_RADIUS_KM = 200;
 
+function formatLocal(d: Date, time: string): string {
+    const pad = (n: number) => String(n).padStart(2, '0');
+
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${time}`;
+}
+
+function defaultDateRange(): { from: string; to: string } {
+    const to = new Date();
+    const from = new Date(to);
+
+    from.setMonth(from.getMonth() - 3);
+
+    return {
+        from: formatLocal(from, '00:00'),
+        to: formatLocal(to, '23:59'),
+    };
+}
+
 
 export default function DashboardMap({
     cases,
     relevanceContext,
     error,
-    totals,
     diseaseOptions: diseaseOptionsProp,
     speciesOptions: speciesOptionsProp,
     subtypeOptions: subtypeOptionsProp,
@@ -63,8 +71,9 @@ return 'map';
         window.localStorage.setItem('ts-scanner:view', view);
     }, [view]);
     const [population, setPopulation] = useState<Population[]>([]);
-    const [dateFrom, setDateFrom] = useState('');
-    const [dateTo, setDateTo] = useState('');
+    const defaultRange = useMemo(() => defaultDateRange(), []);
+    const [dateFrom, setDateFrom] = useState(defaultRange.from);
+    const [dateTo, setDateTo] = useState(defaultRange.to);
     const [disease, setDisease] = useState<string[]>([]);
 
     const toggleDisease = (d: string) => {
@@ -89,7 +98,7 @@ return 'map';
     const center = 'Switzerland';
     const radiusKm = SWITZERLAND_RADIUS_KM;
 
-    const [playCursor, setPlayCursor] = useState('');
+    const [playCursor, setPlayCursor] = useState(defaultRange.to);
     const [playing, setPlaying] = useState(false);
     const [speed, setSpeed] = useState(1);
 
@@ -203,14 +212,7 @@ return 'map';
     return (
         <DashboardLayout>
             <Head title="TS-Scanner" />
-            <LagebildHeader
-                title="TS-Scanner"
-                subtitle={
-                    totals
-                        ? `${cases.length.toLocaleString('de-CH')} von ${totals.outbreakEvents.toLocaleString('de-CH')} Ereignissen geladen`
-                        : ''
-                }
-            />
+            <LagebildHeader title="Tierseuchen Scanner - Govtech2026" />
             {error && (
                 <div className="px-4 pt-4">
                     <Alert variant="destructive">
@@ -234,10 +236,10 @@ return 'map';
                     onDateFromChange={setDateFrom}
                     onDateToChange={setDateTo}
                     onResetDate={() => {
-                        setDateFrom('');
-                        setDateTo('');
+                        setDateFrom(defaultRange.from);
+                        setDateTo(defaultRange.to);
                     }}
-                    dateChanged={dateFrom !== '' || dateTo !== ''}
+                    dateChanged={dateFrom !== defaultRange.from || dateTo !== defaultRange.to}
                     species={species}
                     onToggleSpecies={toggleSpecies}
                     onResetSpecies={() => setSpecies([])}
@@ -257,7 +259,7 @@ return 'map';
                         <TabsList>
                             <TabsTrigger value="map">
                                 <MapIcon />
-                                Map / Heatmap
+                                Karte
                             </TabsTrigger>
                             <TabsTrigger value="list">
                                 <ListIcon />

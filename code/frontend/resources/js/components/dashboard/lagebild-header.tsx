@@ -10,7 +10,6 @@ import {
 
 type Props = {
     title: string;
-    subtitle?: string;
 };
 
 const LANGUAGES = [
@@ -20,16 +19,13 @@ const LANGUAGES = [
     { value: 'en', label: 'EN' },
 ];
 
-export default function LagebildHeader({ title, subtitle }: Props) {
+export default function LagebildHeader({ title }: Props) {
     const [language, setLanguage] = useState('de');
 
     return (
         <header className="flex items-center justify-between gap-6 border-b bg-card px-6 py-3">
             <div className="flex items-baseline gap-3">
                 <h1 className="text-lg font-semibold">{title}</h1>
-                {subtitle && (
-                    <span className="text-xs text-muted-foreground">{subtitle}</span>
-                )}
             </div>
 
             <Select value={language} onValueChange={setLanguage}>
@@ -38,7 +34,11 @@ export default function LagebildHeader({ title, subtitle }: Props) {
                 </SelectTrigger>
                 <SelectContent align="end">
                     {LANGUAGES.map((lang) => (
-                        <SelectItem key={lang.value} value={lang.value}>
+                        <SelectItem
+                            key={lang.value}
+                            value={lang.value}
+                            disabled={lang.value !== 'de'}
+                        >
                             {lang.label}
                         </SelectItem>
                     ))}

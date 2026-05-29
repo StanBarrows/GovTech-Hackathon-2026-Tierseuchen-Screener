@@ -48,7 +48,7 @@ export default function Imprint({ seo }: Props) {
     return (
         <DashboardLayout>
             <PageHead seo={seo} />
-            <LagebildHeader title="TS-Scanner" subtitle="Impressum" />
+            <LagebildHeader title="Tierseuchen Scanner - GovTech2026" />
             <div className="flex gap-4 p-4" style={{ height: 'calc(100vh - 3.5rem)' }}>
                 <FilterPanel
                     disease={disease}

@@ -362,7 +362,7 @@ max = k;
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-sm">Top Kantone</CardTitle>
+                    <CardTitle className="text-sm">Top Regionen</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2.5">
                     {byCanton.map((d) => (

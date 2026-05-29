@@ -226,7 +226,7 @@ byCanton[r.canton] = (byCanton[r.canton] ?? 0) + 1;
 <h2>Zusammenfassung</h2>
 <div class="summary"><span class="tag">AI</span>${escapeHtml(summary)}</div>
 
-<h2>Top Kantone</h2>
+<h2>Top Regionen</h2>
 <table><thead><tr><th>Kanton</th><th>Anzahl</th></tr></thead><tbody>
 ${topCantons.map(([c, n]) => `<tr><td>${escapeHtml(c)}</td><td>${n}</td></tr>`).join('')}
 </tbody></table>
