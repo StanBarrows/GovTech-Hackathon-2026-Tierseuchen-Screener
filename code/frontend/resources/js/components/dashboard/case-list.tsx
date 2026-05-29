@@ -94,7 +94,7 @@ function formatDate(iso: string) {
     return `${d}.${m}.${y.slice(2)}${timePart}`;
 }
 
-// Display projection of a Lindas Case used by the list/report/dialog.
+// Display projection of a Case used by the list/report/dialog.
 export type DetailRow = {
     raw: Case;
     id: string;

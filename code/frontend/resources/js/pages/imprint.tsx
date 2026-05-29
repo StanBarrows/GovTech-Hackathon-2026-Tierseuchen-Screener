@@ -18,6 +18,13 @@ export default function Imprint({ seo }: Props) {
     const [population, setPopulation] = useState<Population[]>([]);
     const [dateFrom, setDateFrom] = useState('2026-03-01T00:00');
     const [dateTo, setDateTo] = useState('2026-05-28T23:59');
+    const [disease, setDisease] = useState<string[]>([]);
+
+    const toggleDisease = (d: string) => {
+        setDisease((prev) =>
+            prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d],
+        );
+    };
     const [species, setSpecies] = useState<string[]>([]);
 
     const toggleSpecies = (s: string) => {
@@ -44,6 +51,10 @@ export default function Imprint({ seo }: Props) {
             <LagebildHeader title="TS-Scanner" subtitle="Impressum" />
             <div className="flex gap-4 p-4" style={{ height: 'calc(100vh - 3.5rem)' }}>
                 <FilterPanel
+                    disease={disease}
+                    onToggleDisease={toggleDisease}
+                    onResetDisease={() => setDisease([])}
+                    diseaseOptions={[]}
                     population={population}
                     onTogglePopulation={togglePopulation}
                     onResetPopulation={() => setPopulation([])}

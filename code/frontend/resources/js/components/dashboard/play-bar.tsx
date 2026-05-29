@@ -13,9 +13,13 @@ type Props = {
     onTogglePlay: () => void;
     onReset: () => void;
     onSkipToEnd: () => void;
+    speed: number;
+    onSpeedChange: (v: number) => void;
     stepHours?: number;
     tickMs?: number;
 };
+
+const SPEEDS = [0.5, 1, 2, 4] as const;
 
 function toMs(v: string): number {
     return new Date(v).getTime();
@@ -44,6 +48,8 @@ export default function PlayBar({
     onTogglePlay,
     onReset,
     onSkipToEnd,
+    speed,
+    onSpeedChange,
     stepHours = 6,
     tickMs = 120,
 }: Props) {
@@ -67,7 +73,7 @@ return;
 
             if (now - lastTickRef.current >= tickMs) {
                 lastTickRef.current = now;
-                const next = cursorMsVal + stepHours * 60 * 60 * 1000;
+                const next = cursorMsVal + stepHours * speed * 60 * 60 * 1000;
 
                 if (next >= toMsVal) {
                     onCursorChange(fromMs(toMsVal));
@@ -88,7 +94,7 @@ return;
 cancelAnimationFrame(rafRef.current);
 }
         };
-    }, [playing, cursorMsVal, toMsVal, stepHours, tickMs, onCursorChange, onTogglePlay]);
+    }, [playing, cursorMsVal, toMsVal, stepHours, speed, tickMs, onCursorChange, onTogglePlay]);
 
     const handleSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
         const pct = Number(e.target.value) / 1000;
@@ -126,6 +132,22 @@ cancelAnimationFrame(rafRef.current);
             >
                 <FastForward className="size-4" />
             </Button>
+
+            <div className="flex items-center gap-1">
+                {SPEEDS.map((s) => (
+                    <Button
+                        key={s}
+                        type="button"
+                        size="xs"
+                        variant={speed === s ? 'default' : 'outline'}
+                        onClick={() => onSpeedChange(s)}
+                        aria-label={`Geschwindigkeit ${s}×`}
+                        title={`Geschwindigkeit ${s}×`}
+                    >
+                        {s}×
+                    </Button>
+                ))}
+            </div>
 
             <div className="flex flex-1 flex-col gap-1">
                 <input

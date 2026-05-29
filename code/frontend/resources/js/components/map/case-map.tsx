@@ -23,6 +23,7 @@ const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
 const CH_CENTER: [number, number] = [8.23, 46.82];
 const CH_ZOOM = 7;
+const INITIAL_ZOOM = 4;
 
 const MAP_STYLE = 'mapbox://styles/mapbox/dark-v11';
 
@@ -83,7 +84,7 @@ return;
             container: containerRef.current,
             style: MAP_STYLE,
             center: CH_CENTER,
-            zoom: CH_ZOOM,
+            zoom: INITIAL_ZOOM,
             attributionControl: true,
         });
         mapRef.current = map;
