@@ -15,13 +15,6 @@ import {
 } from '@/components/ui/command';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
 // "YYYY-MM-DDTHH:mm" <-> Date
@@ -109,6 +102,10 @@ onChange(formatDateTimeLocal(date, e.target.value));
 type Population = 'wild' | 'poultry' | 'captive';
 
 type Props = {
+    disease: string[];
+    onToggleDisease: (v: string) => void;
+    onResetDisease: () => void;
+    diseaseOptions: string[];
     population: Population[];
     onTogglePopulation: (p: Population) => void;
     onResetPopulation: () => void;
@@ -136,6 +133,10 @@ const POP_LABELS: Record<Population, string> = {
 const POP_FALLBACK: Population[] = ['wild', 'poultry', 'captive'];
 
 export default function FilterPanel({
+    disease,
+    onToggleDisease,
+    onResetDisease,
+    diseaseOptions,
     population,
     onTogglePopulation,
     onResetPopulation,
@@ -153,6 +154,7 @@ export default function FilterPanel({
     onResetSubtype,
     subtypeOptions,
 }: Props) {
+    const [diseaseOpen, setDiseaseOpen] = useState(false);
     const [speciesOpen, setSpeciesOpen] = useState(false);
     const [subtypeOpen, setSubtypeOpen] = useState(false);
     const popOptions = populationOptions.length > 0 ? populationOptions : POP_FALLBACK;
@@ -164,15 +166,76 @@ export default function FilterPanel({
             </div>
 
             <div className="space-y-1.5">
-                <label className="text-xs font-medium">Tierseuche</label>
-                <Select value="HPAI" disabled>
-                    <SelectTrigger className="w-full">
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="HPAI">HPAI · aviäre Influenza</SelectItem>
-                    </SelectContent>
-                </Select>
+                <div className="flex items-baseline justify-between">
+                    <label className="text-xs font-medium">Tierseuche</label>
+                    {disease.length > 0 && (
+                        <button
+                            type="button"
+                            onClick={onResetDisease}
+                            className="text-[11px] text-primary hover:underline"
+                        >
+                            Zurücksetzen
+                        </button>
+                    )}
+                </div>
+                <Popover open={diseaseOpen} onOpenChange={setDiseaseOpen}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={diseaseOpen}
+                            className="w-full justify-between px-2 font-normal"
+                        >
+                            <span className="flex flex-1 flex-wrap gap-1 text-left">
+                                {disease.length === 0 ? (
+                                    <span className="text-muted-foreground">
+                                        Alle Tierseuchen
+                                    </span>
+                                ) : (
+                                    disease.map((d) => (
+                                        <Badge
+                                            key={d}
+                                            variant="secondary"
+                                            className="px-1.5 py-0 text-[10px]"
+                                        >
+                                            {d}
+                                        </Badge>
+                                    ))
+                                )}
+                            </span>
+                            <ChevronsUpDownIcon className="ml-1 size-3.5 shrink-0 opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
+                        <Command>
+                            <CommandInput placeholder="Tierseuche suchen…" />
+                            <CommandList>
+                                <CommandEmpty>Keine Treffer.</CommandEmpty>
+                                <CommandGroup>
+                                    {diseaseOptions.map((d) => {
+                                        const active = disease.includes(d);
+
+                                        return (
+                                            <CommandItem
+                                                key={d}
+                                                value={d}
+                                                onSelect={() => onToggleDisease(d)}
+                                            >
+                                                <CheckIcon
+                                                    className={cn(
+                                                        'size-4',
+                                                        active ? 'opacity-100' : 'opacity-0',
+                                                    )}
+                                                />
+                                                {d}
+                                            </CommandItem>
+                                        );
+                                    })}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
             </div>
 
             <div className="space-y-1.5">
