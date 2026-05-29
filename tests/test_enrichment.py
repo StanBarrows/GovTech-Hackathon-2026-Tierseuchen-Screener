@@ -1,13 +1,16 @@
 import importlib.util
 import json
 import logging
+import threading
+from dataclasses import fields, replace
 from types import SimpleNamespace
-from dataclasses import fields
 
 from govtech_tierseuchen.config import load_config
+from govtech_tierseuchen import enrichment
 from govtech_tierseuchen.enrichment import (
     SEMANTIC_FIELDS,
     build_extraction_prompt,
+    build_live_extractor,
     enrich_records,
     enrich_source,
 )
@@ -158,6 +161,28 @@ def test_enrich_records_preserves_record_error_and_continues():
     assert enriched[1]["disease_name"] == "Avian influenza"
 
 
+def test_enrich_records_runs_extractor_calls_in_parallel_and_preserves_order():
+    first = _candidate_record()
+    second = {**_candidate_record(), "report_id": "gefluegelnews:second"}
+    second_started = threading.Event()
+
+    def fake_extract(record):
+        if record["report_id"] == "gefluegelnews:polen":
+            if not second_started.wait(timeout=1.0):
+                raise TimeoutError("second extraction did not start in parallel")
+            return {"disease_name": "First"}
+        second_started.set()
+        return {"disease_name": "Second"}
+
+    enriched = enrich_records([first, second], extractor=fake_extract, workers=2)
+
+    assert [record["report_id"] for record in enriched] == [
+        "gefluegelnews:polen",
+        "gefluegelnews:second",
+    ]
+    assert [record["disease_name"] for record in enriched] == ["First", "Second"]
+
+
 def test_enrich_source_writes_enriched_jsonl_with_fake_extractor(tmp_path):
     config = load_config()
     source_dir = tmp_path / "gefluegelnews"
@@ -201,15 +226,77 @@ def test_enrich_source_logs_progress_at_requested_interval(tmp_path, caplog):
 def test_enrich_command_returns_nonzero_when_llm_env_is_missing(
     monkeypatch, tmp_path, capsys
 ):
+    monkeypatch.setattr(enrichment, "load_dotenv", lambda *args, **kwargs: None)
     monkeypatch.delenv("TS_SCREENER_LLM_BASE_URL", raising=False)
-    monkeypatch.delenv("TS_SCREENER_LLM_API_KEY", raising=False)
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
 
     exit_code = main(["enrich", "gefluegelnews", "--data-dir", str(tmp_path)])
 
     captured = capsys.readouterr()
     assert exit_code == 1
     assert "Missing required environment variable:" in captured.out
-    assert "TS_SCREENER_LLM_BASE_URL" in captured.out
+    assert "OPENROUTER_API_KEY" in captured.out
+
+
+def test_build_live_extractor_loads_backend_env_and_uses_openai_sdk(
+    monkeypatch, tmp_path
+):
+    config = load_config()
+    prompt_path = tmp_path / "system.md"
+    prompt_path.write_text("Return JSON.", encoding="utf-8")
+    interpreter = replace(
+        config.interpreter,
+        api_key_env="OPENROUTER_API_KEY",
+        base_url_env="TS_SCREENER_LLM_BASE_URL",
+    )
+    config = replace(config, interpreter=interpreter)
+    calls = {}
+
+    def fake_load_dotenv(path, override=False):
+        calls["dotenv_path"] = path
+        calls["dotenv_override"] = override
+        monkeypatch.setenv("OPENROUTER_API_KEY", "test-openrouter-key")
+
+    class FakeCompletions:
+        def create(self, **kwargs):
+            calls["completion_kwargs"] = kwargs
+            return SimpleNamespace(
+                choices=[
+                    SimpleNamespace(
+                        message=SimpleNamespace(
+                            content='{"disease_name": "Avian influenza"}'
+                        )
+                    )
+                ]
+            )
+
+    class FakeOpenAI:
+        def __init__(self, **kwargs):
+            calls["client_kwargs"] = kwargs
+            self.chat = SimpleNamespace(completions=FakeCompletions())
+
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    monkeypatch.delenv("TS_SCREENER_LLM_BASE_URL", raising=False)
+    monkeypatch.setattr(enrichment, "load_dotenv", fake_load_dotenv, raising=False)
+    monkeypatch.setattr(enrichment, "OpenAI", FakeOpenAI, raising=False)
+
+    extractor = build_live_extractor(
+        source="gefluegelnews",
+        config=config,
+        prompt_path=prompt_path,
+    )
+    labels = extractor(_candidate_record())
+
+    assert calls["dotenv_path"] == config.project_root / "code/backend/.env"
+    assert calls["dotenv_override"] is False
+    assert calls["client_kwargs"] == {
+        "api_key": "test-openrouter-key",
+        "base_url": "https://openrouter.ai/api/v1",
+        "timeout": config.interpreter.timeout_seconds,
+    }
+    assert calls["completion_kwargs"]["model"] == config.interpreter.model
+    assert calls["completion_kwargs"]["temperature"] == 0
+    assert labels == {"disease_name": "Avian influenza"}
 
 
 def test_legacy_interpreter_resolves_relative_prompt_and_output_from_project_root(

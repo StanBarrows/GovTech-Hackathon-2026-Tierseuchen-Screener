@@ -144,17 +144,18 @@ prevention measures, and research references. Unsupported fields should remain
 
 ## Enrichment
 
-Configure live enrichment with the environment variable names from `config.yaml`
-(defaults shown):
+Configure live enrichment with the OpenRouter API key in `code/backend/.env`:
 
 ```bash
-export TS_SCREENER_LLM_BASE_URL="https://example-llm-endpoint/v1"
-export TS_SCREENER_LLM_API_KEY="..."
+OPENROUTER_API_KEY="..."
 ```
 
 `ts-screener enrich` sends candidate context, evidence snippets, rule hints, and
-`fulltext` to `/chat/completions`. It records per-record extraction failures in
-`_error` and continues the batch. The legacy
+`fulltext` through the OpenAI SDK against OpenRouter's OpenAI-compatible
+endpoint. Set `TS_SCREENER_LLM_BASE_URL` only when overriding the default
+`https://openrouter.ai/api/v1` endpoint. LLM calls run in parallel using
+`interpreter.workers` from `config.yaml` (default: `20`). It records per-record
+extraction failures in `_error` and continues the batch. The legacy
 `code/backend/interpreter/interpreter.py` script is a wrapper around the
 packaged enrichment module.
 

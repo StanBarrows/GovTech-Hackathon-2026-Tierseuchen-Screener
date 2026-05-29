@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -68,6 +69,7 @@ class InterpreterConfig:
     api_key_env: str
     timeout_seconds: float
     progress_every: int
+    workers: int
     prompts: dict[str, str]
 
 
@@ -138,6 +140,7 @@ def _parse_config(raw: dict[str, Any], project_root: Path) -> AppConfig:
             api_key_env=str(raw["interpreter"]["api_key_env"]),
             timeout_seconds=float(raw["interpreter"]["timeout_seconds"]),
             progress_every=int(raw["interpreter"]["progress_every"]),
+            workers=_positive_int(raw["interpreter"], "workers", default=20),
             prompts={
                 str(source): str(path)
                 for source, path in raw["interpreter"]["prompts"].items()
@@ -192,3 +195,10 @@ def _parse_config(raw: dict[str, Any], project_root: Path) -> AppConfig:
 
 def _optional_str(value: object | None) -> str | None:
     return str(value) if value is not None else None
+
+
+def _positive_int(raw: Mapping[str, Any], key: str, *, default: int) -> int:
+    value = int(raw.get(key, default))
+    if value <= 0:
+        raise ValueError(f"{key} must be greater than 0")
+    return value

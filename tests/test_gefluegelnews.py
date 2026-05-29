@@ -405,6 +405,7 @@ def test_limit_zero_overrides_source_default_to_unbounded():
 def test_config_exposes_source_url_validation_and_confidence_thresholds():
     config = load_config()
 
+    assert config.interpreter.workers == 20
     assert config.sources["gefluegelnews"].article_path_prefix == "/article/"
     assert config.sources["gefluegelnews"].limit == 300
     assert config.sources["padi_web"].articles_api_path == "/en/articles/api/"
