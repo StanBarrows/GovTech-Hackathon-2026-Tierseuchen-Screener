@@ -1,23 +1,27 @@
-import { Link, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
 import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-} from '@/components/ui/navigation-menu';
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
 type Props = {
     title: string;
     subtitle?: string;
 };
 
-const nav = [
-    { href: '/dashboard/map', label: 'Karte' },
+const LANGUAGES = [
+    { value: 'de', label: 'DE' },
+    { value: 'fr', label: 'FR' },
+    { value: 'it', label: 'IT' },
+    { value: 'en', label: 'EN' },
 ];
 
 export default function LagebildHeader({ title, subtitle }: Props) {
-    const { url } = usePage();
+    const [language, setLanguage] = useState('de');
 
     return (
         <header className="flex items-center justify-between gap-6 border-b bg-card px-6 py-3">
@@ -28,25 +32,18 @@ export default function LagebildHeader({ title, subtitle }: Props) {
                 )}
             </div>
 
-            <NavigationMenu>
-                <NavigationMenuList>
-                    {nav.map((item) => {
-                        const active = url === item.href;
-
-                        return (
-                            <NavigationMenuItem key={item.href}>
-                                <NavigationMenuLink
-                                    asChild
-                                    active={active}
-                                    className="px-3 py-1.5 text-sm"
-                                >
-                                    <Link href={item.href}>{item.label}</Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                        );
-                    })}
-                </NavigationMenuList>
-            </NavigationMenu>
+            <Select value={language} onValueChange={setLanguage}>
+                <SelectTrigger size="sm" className="w-20" aria-label="Sprache wählen">
+                    <SelectValue />
+                </SelectTrigger>
+                <SelectContent align="end">
+                    {LANGUAGES.map((lang) => (
+                        <SelectItem key={lang.value} value={lang.value}>
+                            {lang.label}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
         </header>
     );
 }

@@ -1,0 +1,33 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Report;
+use App\Models\Source;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<Report>
+ */
+class ReportFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'source_id' => Source::query()->inRandomOrder()->value('id') ?? Source::factory(),
+            'title' => fake()->sentence(6),
+            'summary' => fake()->optional()->paragraph(),
+            'report_date' => fake()->dateTimeBetween('-1 year')->format('Y-m-d'),
+            'admin_level_1' => fake()->randomElement(['BE', 'ZH', 'TG', 'VD', 'GE', 'SG']),
+            'admin_level_2' => fake()->optional()->city(),
+            'admin_level_3' => null,
+            'relevance_score' => fake()->optional()->randomFloat(2, 0, 100),
+            'distance_km' => fake()->optional()->randomFloat(2, 0, 300),
+        ];
+    }
+}

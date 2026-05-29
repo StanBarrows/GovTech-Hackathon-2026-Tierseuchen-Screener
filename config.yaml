@@ -1,6 +1,7 @@
 scraper:
   data_dir: data/unstructured
-  rdf_output_dir: lindas/data/rdf
+  final_rdf_output: lindas/data/rdf/tierseuchen-screener.ttl
+  final_csv_output: lindas/data/csv/disease_reports.csv
   log_level: INFO
   progress_description: Fetching articles
   commands:
@@ -9,13 +10,23 @@ scraper:
     - parse
     - filter-disease
     - extract-reports
-    - export-rdf
   files:
     manifest: manifest.jsonl
     articles: articles.jsonl
     parse_errors: parse_errors.jsonl
     disease_articles: disease_articles.jsonl
     disease_reports: disease_reports.jsonl
+    enriched_disease_reports: disease_reports.enriched.jsonl
+
+interpreter:
+  model: qwen2.5:32b-instruct-q4_K_M
+  base_url_env: TS_SCREENER_LLM_BASE_URL
+  api_key_env: TS_SCREENER_LLM_API_KEY
+  timeout_seconds: 120.0
+  progress_every: 10
+  prompts:
+    gefluegelnews: code/backend/interpreter/SystemPromptGN.md
+    padi_web: code/backend/interpreter/SystemPromptGN.md
 
 sources:
   gefluegelnews:

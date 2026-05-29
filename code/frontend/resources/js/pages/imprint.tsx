@@ -1,17 +1,30 @@
-import { Head, Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
 import FilterPanel from '@/components/dashboard/filter-panel';
 import LagebildHeader from '@/components/dashboard/lagebild-header';
+import { PageHead } from '@/components/seo/page-head';
 import DashboardLayout from '@/layouts/dashboard-layout';
+import type { SeoMeta } from '@/types/seo';
 
 type Population = 'wild' | 'poultry' | 'captive';
 
-export default function Imprint() {
+type Props = {
+    seo: SeoMeta;
+};
+
+export default function Imprint({ seo }: Props) {
     const [population, setPopulation] = useState<Population[]>([]);
     const [dateFrom, setDateFrom] = useState('2026-03-01T00:00');
     const [dateTo, setDateTo] = useState('2026-05-28T23:59');
+    const [disease, setDisease] = useState<string[]>([]);
+
+    const toggleDisease = (d: string) => {
+        setDisease((prev) =>
+            prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d],
+        );
+    };
     const [species, setSpecies] = useState<string[]>([]);
 
     const toggleSpecies = (s: string) => {
@@ -26,9 +39,6 @@ export default function Imprint() {
             prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
         );
     };
-    const [center, setCenter] = useState('Bern');
-    const [radiusKm, setRadiusKm] = useState(50);
-
     const togglePopulation = (p: Population) => {
         setPopulation((prev) =>
             prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p],
@@ -37,10 +47,14 @@ export default function Imprint() {
 
     return (
         <DashboardLayout>
-            <Head title="Impressum · TS-Scanner" />
+            <PageHead seo={seo} />
             <LagebildHeader title="TS-Scanner" subtitle="Impressum" />
             <div className="flex gap-4 p-4" style={{ height: 'calc(100vh - 3.5rem)' }}>
                 <FilterPanel
+                    disease={disease}
+                    onToggleDisease={toggleDisease}
+                    onResetDisease={() => setDisease([])}
+                    diseaseOptions={[]}
                     population={population}
                     onTogglePopulation={togglePopulation}
                     onResetPopulation={() => setPopulation([])}
@@ -57,10 +71,6 @@ export default function Imprint() {
                     onResetSubtype={() => setSubtype([])}
                     subtypeOptions={[]}
                     populationOptions={[]}
-                    center={center}
-                    onCenterChange={setCenter}
-                    radiusKm={radiusKm}
-                    onRadiusChange={setRadiusKm}
                 />
                 <div className="flex flex-1 flex-col overflow-hidden">
                     <div className="relative flex-1 overflow-y-auto rounded-md border bg-card p-8">
@@ -77,7 +87,7 @@ export default function Imprint() {
                             <section className="space-y-2">
                                 <h2 className="text-base font-semibold">Information Prototype + MVP</h2>
                                 <p className="text-muted-foreground">
-                                    Im Rahmen des GovTech Hackathon 2026 entwickeltes Projekt. Es handelt sich um einen Prototypen, der nicht für den produktiven Einsatz bestimmt ist. Alle Daten und Inhalte sind fiktiv und dienen ausschließlich Demonstrationszwecken.
+                                    Im Rahmen des GovTech Hackathon 2026 entwickeltes Projekt. Es handelt sich um einen Prototypen, der nicht für den produktiven Einsatz bestimmt ist. Alle Daten und Inhalte wurden redaktionell überarbeitet und entsprechend anonymisiert.
                                 </p>
                             </section>
                             
@@ -89,21 +99,25 @@ export default function Imprint() {
                             </section>
 
                             <section className="space-y-2">
+                                <h2 className="text-base font-semibold">Team</h2>
+                                <p className="text-muted-foreground">
+                                    Aurélie Tschopp, Tobias Blatter, Martin Hertach, Roman Riesen, David Gerner, Patrick Arnecke, Sebastian Bürgin, Christian Huber
+                                </p>
+                            </section>
+
+                            <section className="space-y-2">
                                 <h2 className="text-base font-semibold">Kontakt</h2>
                                 <p className="text-muted-foreground">
                                     Bundesamt für Lebensmittelsicherheit und Veterinärwesen (BLV)
                                     <br />
                                     Schwarzenburgstrasse 155, 3003 Bern
-                                    <br />
-                                    <br />
-                                    <a href="mailto:info@ts-scanner.ch" className="text-muted-foreground hover:underline">info@ts-scanner.ch</a>
                                 </p>
                             </section>
 
                             <section className="space-y-2">
                                 <h2 className="text-base font-semibold">Haftungsausschluss</h2>
                                 <p className="text-muted-foreground">
-                                    Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.
+                                    Der entwickelte Prototyp dient ausschliesslich Demonstrationszwecken im Rahmen des GovTech Hackathon 2026. Es wird keine Haftung für die Inhalte übernommen.
                                 </p>
                             </section>
 
@@ -128,16 +142,6 @@ export default function Imprint() {
                                             className="text-primary hover:underline"
                                         >
                                             Bundesamt für Lebensmittelsicherheit und Veterinärwesen (BLV)
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a
-                                            href="https://www.woah.org"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-primary hover:underline"
-                                        >
-                                            World Organisation for Animal Health (WOAH)
                                         </a>
                                     </li>
                                 </ul>

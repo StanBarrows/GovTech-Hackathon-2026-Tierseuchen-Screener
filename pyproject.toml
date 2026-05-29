@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
-ts = "govtech_tierseuchen.cli:main"
+ts-screener = "govtech_tierseuchen.cli:main"
 
 [build-system]
 requires = ["hatchling"]

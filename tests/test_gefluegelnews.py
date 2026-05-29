@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 from pathlib import Path
+from types import SimpleNamespace
 import time
+import tomllib
 
 from govtech_tierseuchen import cli
 from govtech_tierseuchen.cli import build_parser, main, resolve_data_dir
@@ -180,7 +182,31 @@ def test_cli_parser_accepts_pipeline_stage_and_source():
     assert args.command == "discover"
     assert args.source == "gefluegelnews"
     assert args.data_dir == "data/unstructured"
-    assert parser.prog == "ts"
+    assert parser.prog == "ts-screener"
+
+
+def test_package_exposes_ts_screener_console_script_only():
+    pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+
+    assert pyproject["project"]["scripts"] == {
+        "ts-screener": "govtech_tierseuchen.cli:main"
+    }
+
+
+def test_cli_parser_accepts_enrich_and_export_final_commands():
+    parser = build_parser()
+    enrich_args = parser.parse_args(
+        ["enrich", "gefluegelnews", "--data-dir", "data/unstructured"]
+    )
+    export_args = parser.parse_args(
+        ["export-final", "--source", "gefluegelnews", "--source", "padi_web"]
+    )
+
+    assert enrich_args.command == "enrich"
+    assert enrich_args.source == "gefluegelnews"
+    assert enrich_args.data_dir == "data/unstructured"
+    assert export_args.command == "export-final"
+    assert export_args.sources == ["gefluegelnews", "padi_web"]
 
 
 def test_cli_parser_accepts_fetch_limit():
@@ -219,7 +245,13 @@ def test_run_all_executes_all_pipeline_steps_for_selected_sources(
     monkeypatch.setattr(cli, "_parse", record("parse"))
     monkeypatch.setattr(cli, "_filter_disease", record("filter-disease"))
     monkeypatch.setattr(cli, "_extract_reports", record("extract-reports"))
-    monkeypatch.setattr(cli, "_export_rdf", record("export-rdf", source_index=2))
+    monkeypatch.setattr(cli, "_enrich", record("enrich"))
+
+    def fake_export_final(*args):
+        calls.append(("export-final", tuple(args[2])))
+        return 0
+
+    monkeypatch.setattr(cli, "_export_final", fake_export_final)
 
     exit_code = main(
         [
@@ -241,10 +273,11 @@ def test_run_all_executes_all_pipeline_steps_for_selected_sources(
         ("parse", "padi_web"),
         ("filter-disease", "padi_web"),
         ("extract-reports", "padi_web"),
-        ("export-rdf", "padi_web"),
+        ("enrich", "padi_web"),
+        ("export-final", ("padi_web",)),
     ]
-    assert "Running 6 pipeline steps for padi_web" in captured.out
-    assert "Completed 6 pipeline steps for 1 source" in captured.out
+    assert "Running 7 pipeline steps for padi_web" in captured.out
+    assert "Completed 7 pipeline steps for 1 source" in captured.out
 
 
 def test_run_all_runs_discover_and_fetch_in_parallel_for_multiple_sources(
@@ -267,7 +300,8 @@ def test_run_all_runs_discover_and_fetch_in_parallel_for_multiple_sources(
     monkeypatch.setattr(cli, "_parse", lambda *args: 0)
     monkeypatch.setattr(cli, "_filter_disease", lambda *args: 0)
     monkeypatch.setattr(cli, "_extract_reports", lambda *args: 0)
-    monkeypatch.setattr(cli, "_export_rdf", lambda *args: 0)
+    monkeypatch.setattr(cli, "_enrich", lambda *args: 0)
+    monkeypatch.setattr(cli, "_export_final", lambda *args: 0)
 
     exit_code = main(
         [
@@ -301,6 +335,36 @@ def test_run_all_runs_discover_and_fetch_in_parallel_for_multiple_sources(
     assert len(fetch_start_positions) == 2
     assert max(discover_start_positions) < min(discover_end_positions)
     assert max(fetch_start_positions) < min(fetch_end_positions)
+
+
+def test_run_all_returns_nonzero_when_parallel_ingest_worker_raises(
+    monkeypatch, tmp_path, capsys
+):
+    def fake_discover(*args):
+        if args[1] == "padi_web":
+            raise RuntimeError("discovery exploded")
+        return 0
+
+    monkeypatch.setattr(cli, "_discover", fake_discover)
+
+    exit_code = main(
+        [
+            "run-all",
+            "--source",
+            "gefluegelnews",
+            "--source",
+            "padi_web",
+            "--data-dir",
+            str(tmp_path),
+            "--delay-seconds",
+            "0",
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert "discover failed for padi_web" in captured.out
+    assert "discovery exploded" in captured.out
 
 
 def test_default_config_resolves_data_dir_from_repo_root(monkeypatch, tmp_path):
@@ -396,6 +460,65 @@ def test_fetch_stage_reports_limited_progress(monkeypatch, tmp_path, capsys):
     assert "Fetched 2 of 3 manifest entries" in captured.out
 
 
+def test_enrich_cli_resolves_relative_prompt_and_output_from_project_root(
+    monkeypatch, tmp_path
+):
+    config = load_config()
+    seen = {}
+
+    def fake_enrich_source(**kwargs):
+        seen.update(kwargs)
+        return SimpleNamespace(
+            record_count=0,
+            output_path=kwargs["output_path"],
+            error_count=0,
+        )
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(
+        "govtech_tierseuchen.enrichment.enrich_source", fake_enrich_source
+    )
+
+    exit_code = main(
+        [
+            "enrich",
+            "gefluegelnews",
+            "--data-dir",
+            str(tmp_path),
+            "--prompt",
+            "code/backend/interpreter/SystemPromptGN.md",
+            "--output",
+            "data/unstructured/gefluegelnews/custom.enriched.jsonl",
+        ]
+    )
+
+    assert exit_code == 0
+    assert (
+        seen["prompt_path"]
+        == config.project_root / "code/backend/interpreter/SystemPromptGN.md"
+    )
+    assert (
+        seen["output_path"]
+        == config.project_root / "data/unstructured/gefluegelnews/custom.enriched.jsonl"
+    )
+
+
+def test_discover_stage_returns_nonzero_on_network_failure(
+    monkeypatch, tmp_path, capsys
+):
+    def fail_fetch_url(source_link, timeout_seconds):
+        raise OSError("network down")
+
+    monkeypatch.setattr("govtech_tierseuchen.gefluegelnews.fetch_url", fail_fetch_url)
+
+    exit_code = main(["discover", "gefluegelnews", "--data-dir", str(tmp_path)])
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert "Discovery failed for gefluegelnews" in captured.out
+    assert "network down" in captured.out
+
+
 def test_parse_stage_skips_bad_html_and_writes_parse_error(tmp_path):
     good = cache_html(
         base_dir=tmp_path,
@@ -468,6 +591,42 @@ def test_parse_stage_records_missing_raw_path_and_missing_file(tmp_path):
         "MissingRawPath",
         "MissingRawFile",
     ]
+
+
+def test_parse_stage_records_type_error_from_malformed_manifest_row(tmp_path):
+    fetched = cache_html(
+        base_dir=tmp_path,
+        source_link="https://www.gefluegelnews.de/article/malformed",
+        html="""
+        <section id="detailpage">
+          <div id="main">
+            <h1>Malformed metadata</h1>
+            <div class="text"><p>Vogelgrippe in Polen.</p></div>
+          </div>
+        </section>
+        """,
+        status_code=200,
+        fetched_at=datetime(2026, 5, 28, 12, 0, tzinfo=timezone.utc),
+    )
+    write_jsonl(
+        tmp_path / "gefluegelnews" / "manifest.jsonl",
+        [
+            {
+                "source_link": fetched.source_link,
+                "raw_html_path": fetched.raw_html_path,
+                "content_hash": fetched.content_hash,
+                "fetched_at": None,
+            }
+        ],
+    )
+
+    exit_code = main(["parse", "gefluegelnews", "--data-dir", str(tmp_path)])
+
+    articles = read_jsonl(tmp_path / "gefluegelnews" / "articles.jsonl")
+    parse_errors = read_jsonl(tmp_path / "gefluegelnews" / "parse_errors.jsonl")
+    assert exit_code == 0
+    assert articles == []
+    assert parse_errors[0]["error_type"] == "TypeError"
 
 
 def test_parse_stage_rejects_raw_paths_outside_source_directory(tmp_path):

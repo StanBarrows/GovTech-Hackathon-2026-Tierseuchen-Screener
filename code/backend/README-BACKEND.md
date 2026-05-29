@@ -1,231 +1,161 @@
 # Backend Data Pipeline
 
-Prototype news-ingestion and enrichment pipeline for animal disease screening.
-The current source adapters are `gefluegelnews` and `padi_web`.
+Prototype ingestion, screening, enrichment, and export pipeline for animal
+disease reports. The packaged CLI is `ts-screener`; the configured sources are
+`gefluegelnews` and `padi_web`.
 
-## Install `uv`
+## Setup
 
-The scraper CLI is run through [`uv`](https://docs.astral.sh/uv/), which manages
-the Python environment and installed project dependencies.
-
-Install `uv` once on your machine:
-
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-Then open a new shell or follow the installer instructions to add `uv` to your
-`PATH`. From the repository root, install the dependencies declared by the
-project:
+From the repository root:
 
 ```bash
 uv sync
 ```
 
-Run commands with `uv run ...`. `uv run` uses the managed project environment,
-so the `ts` CLI does not need to be installed globally.
+Run backend commands through `uv run ...`; the project exposes the CLI from
+`govtech_tierseuchen.cli`.
 
-## Pipeline Overview
-
-The backend has two layers with separate responsibilities:
-
-1. Scraper / `ts` CLI: deterministic ingestion, parsing, candidate selection,
-   provenance, stable IDs, and rule evidence.
-2. Interpreter: LLM-based semantic enrichment of existing `DiseaseReport`
-   fields, using candidate records as input.
-
-The intended data flow is:
+## Pipeline
 
 ```text
 manifest.jsonl
   -> raw_html/ or raw_json/
   -> articles.jsonl
   -> disease_articles.jsonl
-  -> disease_reports.jsonl          # candidate/provenance layer
-  -> disease_reports.enriched.jsonl # interpreter semantic layer
-  -> disease_reports.jsonl          # promoted enriched records for RDF export
-  -> lindas/data/rdf/<source>/<source>.ttl
+  -> disease_reports.jsonl
+  -> disease_reports.enriched.jsonl
+  -> lindas/data/rdf/tierseuchen-screener.ttl
+  -> lindas/data/csv/disease_reports.csv
 ```
 
-Keep the Turtle/RDF schema stable for now. The interpreter should fill existing
-`DiseaseReport` fields instead of creating parallel fields that later need to be
-merged or removed.
+The deterministic scraper owns discovery, fetching, parsing, relevance rules,
+candidate IDs, provenance, and rule evidence. Enrichment calls the configured
+OpenAI-compatible chat endpoint and fills semantic fields on the same
+`DiseaseReport` schema. Keep the Turtle/RDF schema stable; do not add parallel
+production fields such as `llm_disease_name`, `Disease`, or nested
+`consequence.*` fields.
 
-## Run Scraper
+## Commands
 
-Run the full deterministic scraper pipeline for all configured sources:
+Run the whole configured pipeline:
 
 ```bash
-uv run ts run-all
+uv run ts-screener run-all
 ```
 
-Select one or more sources with repeatable `--source` options:
+By default, stages reuse records whose upstream inputs have not changed. The
+pipeline stores this small incremental state database at
+`data/unstructured/pipeline_state.sqlite`; JSONL outputs remain complete and are
+merged with any newly processed records.
+
+Limit it to selected sources:
 
 ```bash
-uv run ts run-all --source gefluegelnews --source padi_web
+uv run ts-screener run-all --source gefluegelnews --source padi_web
 ```
 
-`run-all` executes discovery, fetching, parsing, disease filtering, report
-extraction, and QA RDF export in order. It prints the current source and stage
-before each step. When multiple sources are selected, discovery runs for those
-sources concurrently, then fetching runs concurrently; the later local
-transformation stages stay ordered per source. `fetch` still shows its article
-download progress bar.
+Run stages manually:
 
 ```bash
-uv run ts discover gefluegelnews
-uv run ts fetch gefluegelnews --limit 25 --delay-seconds 1
-uv run ts parse gefluegelnews
-uv run ts filter-disease gefluegelnews
-uv run ts extract-reports gefluegelnews
+uv run ts-screener discover gefluegelnews
+uv run ts-screener fetch gefluegelnews --limit 25 --delay-seconds 1
+uv run ts-screener parse gefluegelnews
+uv run ts-screener filter-disease gefluegelnews
+uv run ts-screener extract-reports gefluegelnews
+uv run ts-screener enrich gefluegelnews
+uv run ts-screener export-final
 ```
 
-```bash
-uv run ts discover padi_web
-uv run ts fetch padi_web --limit 100 --delay-seconds 0.5
-uv run ts parse padi_web
-uv run ts filter-disease padi_web
-uv run ts extract-reports padi_web
-```
+Use `padi_web` in place of `gefluegelnews` for the PADI source. `run-all`
+executes discovery, fetch, parse, disease filtering, report extraction,
+enrichment, and final RDF/CSV export. With multiple sources, discovery and fetch
+run concurrently; later stages run per source in order.
 
-Use `--data-dir <path>` to override the default `data/unstructured`.
-Use `ts fetch --limit <n>` to fetch only the first `n` manifest entries.
-`ts fetch` shows a progress bar while downloading articles.
-Use `--rdf-dir <path>` with `ts export-rdf` to override the default
-`lindas/data/rdf` output root. The `ts export-rdf` command writes
-`<source>.qa.ttl` for scraper QA only; the production RDF export is expected to
-come from the interpreter-enriched records.
+Useful options:
 
-Defaults live in `config.yaml` at the repository root. Relative paths in that
-file resolve from the repository root, so the default output directory is always
-`data/unstructured` and the default RDF output directory is always
-`lindas/data/rdf`, even when `ts` is run from a subdirectory.
+- `--data-dir <path>` overrides `scraper.data_dir`.
+- `--limit <n>` bounds discovery, fetching, parsing, or `run-all`.
+- `--force` reprocesses records even when the incremental state is current.
+- `--timeout-seconds <n>` and `--delay-seconds <n>` override source defaults.
+- `--rdf-output <path>` and `--csv-output <path>` override final export paths.
+- `enrich --output <path> --prompt <path> --progress-every <n>` overrides
+  enrichment output, prompt, and progress logging.
 
-Operator-tunable scraper settings belong in `config.yaml`: source base URLs,
-source article/API paths, user agents, timeouts, delays, limits, discovery
-query parameters, output filenames, disease filter terms, snippet limits, and
-report confidence thresholds. Keep parser mechanics, schema/RDF namespaces,
-HTML selectors, and stable ID/hash formatting in code.
+Defaults live in repository-root `config.yaml`. Relative paths resolve from the
+repository root, not from the current shell directory.
 
-## Run Interpreter
+## Sources
 
-The interpreter lives in `code/backend/interpreter`. It reads JSONL candidate
-records with `fulltext`, calls the configured LLM, and writes JSONL records with
-the original candidate fields preserved plus semantic fields filled in.
+- `gefluegelnews`: discovers article URLs from the configured sitemap, caches
+  article HTML under `raw_html/`, and parses article metadata/full text.
+- `padi_web`: discovers recent relevant articles from the public PADI API,
+  caches detail payloads under `raw_json/`, and parses sentence payloads into
+  Markdown `fulltext`.
 
-Run it from the interpreter directory so its local credential/config files are
-found:
-
-```bash
-cd code/backend/interpreter
-uv run python interpreter.py \
-  -s SystemPrompt.md \
-  -e disease \
-  -i ../../../data/unstructured/gefluegelnews/disease_reports.jsonl \
-  -o ../../../data/unstructured/gefluegelnews/disease_reports.enriched.jsonl \
-  --progress-every 10
-```
-
-After QA, return to the repository root and promote the enriched file for RDF
-export:
-
-```bash
-cd ../../..
-cp data/unstructured/gefluegelnews/disease_reports.jsonl \
-  data/unstructured/gefluegelnews/disease_reports.candidate.jsonl
-cp data/unstructured/gefluegelnews/disease_reports.enriched.jsonl \
-  data/unstructured/gefluegelnews/disease_reports.jsonl
-uv run ts export-rdf gefluegelnews
-```
-
-Do the same for `padi_web` by replacing the source folder and command argument.
+Both sources store the cached artifact path in the shared `raw_html_path` field
+for the current `NewsArticle` and `DiseaseReport` schema, even when the artifact
+is JSON.
 
 ## Outputs
 
-Generated files live under `data/unstructured/<source>/`:
+Per-source files live under `data/unstructured/<source>/` by default:
 
-- `manifest.jsonl`: discovered and fetched article metadata
-- `raw_html/`: cached article HTML for Gefluegelnews
-- `raw_json/`: cached API detail payloads for PADI-web
-- `articles.jsonl`: parsed articles with Markdown `fulltext`
-- `parse_errors.jsonl`: parser failures that did not stop the batch
-- `disease_articles.jsonl`: disease-relevant articles with evidence
-- `disease_reports.jsonl`: candidate `DiseaseReport` records
-- `disease_reports.enriched.jsonl`: interpreter-enriched `DiseaseReport`
-  records for QA before promotion
-- `disease_reports.candidate.jsonl`: optional backup of the pre-enrichment
-  candidate records
+- `manifest.jsonl`: discovered article metadata, then fetch metadata/errors
+- `raw_html/` or `raw_json/`: cached source artifacts
+- `articles.jsonl`: normalized parsed articles with Markdown `fulltext`
+- `parse_errors.jsonl`: parse failures that did not stop the batch
+- `disease_articles.jsonl`: inspectable disease-relevance hits and snippets
+- `disease_reports.jsonl`: deterministic `DiseaseReport` candidates
+- `disease_reports.enriched.jsonl`: candidates plus semantic fields
 
-### Artifact Flow
+Final combined outputs:
 
-`articles.jsonl` is the parsed article layer: `ts parse` reads fetched metadata
-and cached source content, then writes normalized article records with fields
-such as title, publication date, metadata, and Markdown `fulltext`.
+- `lindas/data/rdf/tierseuchen-screener.ttl`
+- `lindas/data/csv/disease_reports.csv`
 
-`disease_articles.jsonl` is the relevance-inspection layer: `ts filter-disease`
-reads `articles.jsonl`, keeps only articles that match disease terms, and stores
-each article together with matched terms, score, and evidence snippets.
+`extract-reports` reads `articles.jsonl` and re-runs the relevance rules; it
+does not consume `disease_articles.jsonl`. `export-final` reads enriched JSONL
+from the selected sources and writes one combined Turtle file plus one combined
+CSV file.
 
-`disease_reports.jsonl` is the candidate layer: `ts extract-reports` reads
-`articles.jsonl`, re-runs the same relevance filter, and turns relevant articles
-into stable `DiseaseReport` candidates. This layer intentionally keeps source
-provenance, stable IDs, publication/retrieval dates, full text, evidence
-snippets, filter score/terms, exact rule hits such as H5N1 subtype mentions, and
-coarse rule control-measure hints. Semantic enrichment fields such as final
-disease/country resolution, consequence interpretation, prevention
-classification, severity, and reach are left empty for the interpreter/enrichment
-layer. `ts extract-reports` does not currently read `disease_articles.jsonl`;
-that file is an inspectable side artifact for checking why articles were
-considered relevant.
+## Field Contract
 
-PADI-web additionally caches API detail payloads under `raw_json/`. These local
-scraper artifacts are ignored by git.
+Scraper-owned fields are deterministic and must be preserved by enrichment:
 
-### Contract
-
-`ts extract-reports` owns fields that are deterministic and auditable:
-
-- Source/provenance: `source_id`, `source_name`, `source_link`,
+- Provenance: `source_id`, `source_name`, `source_link`,
   `source_document_id`, `source_document_title`, `source_publication_date`,
   `source_retrieved_at`, `raw_html_path`, `content_hash`, `fulltext`
-- Stable candidate metadata: `report_id`, `extraction_method`,
-  `extraction_version`, `extraction_status`, `extraction_confidence`,
-  `situation_month`
+- Candidate metadata: `report_id`, `extraction_method`,
+  `extraction_version`, `extraction_status`, `extraction_confidence`
 - Rule evidence: `evidence_snippets`, `raw_relevance_evidence`,
   `rule_relevance_score`, `rule_matched_terms`, `rule_disease_type`,
-  `rule_control_measures`
+  `rule_control_measures`, `situation_month`
 
-The interpreter owns semantic fields that require reading comprehension:
+Enrichment may update only semantic `DiseaseReport` fields, including disease,
+geography, situation key, species, counts, dates, status, diagnostics,
+relevance/severity/reach assessments, consequences, control measures,
+prevention measures, and research references. Unsupported fields should remain
+`null` or empty lists.
 
-- Disease and geography: `disease_name`, `disease_type`,
-  `country_or_territory`, `is_in_europe`, admin/location fields
-- Event facts when explicitly stated: `species`, `cases`, `dead`, `killed`,
-  `slaughtered`, `vaccinated`, dates, status, diagnostics, etc.
-- Assessments and impacts: `relevance_level`, `relevance_rationale`,
-  `severity_level`, `severity_rationale`, `reach_level`, `reach_rationale`,
-  `has_consequences`, `consequences`, `control_measures`,
-  `prevention_measures`, `research_references`
+## Enrichment
 
-The interpreter must preserve scraper-owned fields unchanged and must not write
-parallel output fields such as `Disease`, `DiseaseSubtype`, `InEurope`,
-`llm_disease_name`, or nested `consequence.*` fields in production JSONL. If a
-field is not explicitly supported by the text, write `null` or an empty list as
-appropriate.
+Configure live enrichment with the environment variable names from `config.yaml`
+(defaults shown):
 
-Scraper QA RDF export files are written under `lindas/data/rdf/<source>/`, for
-example `lindas/data/rdf/padi_web/padi_web.qa.ttl`:
+```bash
+export TS_SCREENER_LLM_BASE_URL="https://example-llm-endpoint/v1"
+export TS_SCREENER_LLM_API_KEY="..."
+```
 
-- `<source>.qa.ttl`: QA Turtle for news documents, extraction
-  candidates, evidence snippets, and any enriched outbreak situations,
-  assessments, consequences, prevention measures, or research references present
-  in the input records
-
-The final LiNDAS-ready `<source>.ttl` export is owned by the interpreter flow,
-after semantic enrichment has been reviewed and promoted.
+`ts-screener enrich` sends candidate context, evidence snippets, rule hints, and
+`fulltext` to `/chat/completions`. It records per-record extraction failures in
+`_error` and continues the batch. The legacy
+`code/backend/interpreter/interpreter.py` script is a wrapper around the
+packaged enrichment module.
 
 ## Verify
 
 ```bash
-uv run pytest tests/test_gefluegelnews.py tests/test_disease_pipeline.py tests/test_rdf_export.py -v
 uv run ruff check code/backend/scraper tests
+uv run pytest tests/test_gefluegelnews.py tests/test_padi_web.py tests/test_disease_pipeline.py tests/test_rdf_export.py tests/test_csv_export.py tests/test_enrichment.py -v
 ```

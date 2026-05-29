@@ -12,11 +12,17 @@ def _to_jsonable(value: Any) -> Any:
         return _to_jsonable(asdict(value))
     if isinstance(value, dict):
         return {key: _to_jsonable(item) for key, item in value.items()}
+    if isinstance(value, set):
+        return sorted((_to_jsonable(item) for item in value), key=repr)
     if isinstance(value, list | tuple):
         return [_to_jsonable(item) for item in value]
     if isinstance(value, datetime | date):
         return value.isoformat()
     return value
+
+
+def to_jsonable(value: Any) -> Any:
+    return _to_jsonable(value)
 
 
 def write_jsonl(path: Path, records: Iterable[Any]) -> None:

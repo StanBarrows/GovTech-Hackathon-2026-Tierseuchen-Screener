@@ -14,12 +14,14 @@ class FileConfig:
     parse_errors: str
     disease_articles: str
     disease_reports: str
+    enriched_disease_reports: str
 
 
 @dataclass(frozen=True)
 class ScraperConfig:
     data_dir: str
-    rdf_output_dir: str
+    final_rdf_output: str
+    final_csv_output: str
     log_level: str
     progress_description: str
     commands: list[str]
@@ -60,9 +62,20 @@ class DiseaseReportsConfig:
 
 
 @dataclass(frozen=True)
+class InterpreterConfig:
+    model: str
+    base_url_env: str
+    api_key_env: str
+    timeout_seconds: float
+    progress_every: int
+    prompts: dict[str, str]
+
+
+@dataclass(frozen=True)
 class AppConfig:
     project_root: Path
     scraper: ScraperConfig
+    interpreter: InterpreterConfig
     sources: dict[str, SourceConfig]
     disease_filter: DiseaseFilterConfig
     disease_reports: DiseaseReportsConfig
@@ -105,7 +118,8 @@ def _parse_config(raw: dict[str, Any], project_root: Path) -> AppConfig:
         project_root=project_root,
         scraper=ScraperConfig(
             data_dir=str(scraper["data_dir"]),
-            rdf_output_dir=str(scraper["rdf_output_dir"]),
+            final_rdf_output=str(scraper["final_rdf_output"]),
+            final_csv_output=str(scraper["final_csv_output"]),
             log_level=str(scraper["log_level"]),
             progress_description=str(scraper["progress_description"]),
             commands=list(scraper["commands"]),
@@ -115,7 +129,19 @@ def _parse_config(raw: dict[str, Any], project_root: Path) -> AppConfig:
                 parse_errors=str(files["parse_errors"]),
                 disease_articles=str(files["disease_articles"]),
                 disease_reports=str(files["disease_reports"]),
+                enriched_disease_reports=str(files["enriched_disease_reports"]),
             ),
+        ),
+        interpreter=InterpreterConfig(
+            model=str(raw["interpreter"]["model"]),
+            base_url_env=str(raw["interpreter"]["base_url_env"]),
+            api_key_env=str(raw["interpreter"]["api_key_env"]),
+            timeout_seconds=float(raw["interpreter"]["timeout_seconds"]),
+            progress_every=int(raw["interpreter"]["progress_every"]),
+            prompts={
+                str(source): str(path)
+                for source, path in raw["interpreter"]["prompts"].items()
+            },
         ),
         sources={
             source_id: SourceConfig(

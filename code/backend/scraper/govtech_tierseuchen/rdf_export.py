@@ -132,7 +132,7 @@ def disease_report_from_dict(row: dict[str, Any]) -> DiseaseReport:
                 prevention_type=measure.get("prevention_type"),
                 raw_evidence=measure.get("raw_evidence"),
             )
-            for measure in row.get("prevention_measures", [])
+            for measure in row.get("prevention_measures") or []
         ],
         research_references=[
             ResearchReference(
@@ -142,7 +142,7 @@ def disease_report_from_dict(row: dict[str, Any]) -> DiseaseReport:
                 link_type=reference.get("link_type"),
                 raw_evidence=reference.get("raw_evidence"),
             )
-            for reference in row.get("research_references", [])
+            for reference in row.get("research_references") or []
         ],
     )
 

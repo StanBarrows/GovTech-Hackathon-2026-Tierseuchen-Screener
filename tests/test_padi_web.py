@@ -402,7 +402,7 @@ def test_padi_parse_stage_reads_cached_json_and_writes_articles(tmp_path):
     assert parse_errors == []
 
 
-def test_padi_articles_flow_through_filter_extract_and_export_rdf(tmp_path):
+def test_padi_articles_flow_through_filter_extract_and_final_export(tmp_path):
     write_jsonl(
         tmp_path / "padi_web" / "articles.jsonl",
         [
@@ -430,18 +430,26 @@ def test_padi_articles_flow_through_filter_extract_and_export_rdf(tmp_path):
     )
 
     data_dir = tmp_path
-    rdf_dir = tmp_path / "lindas" / "data" / "rdf"
+    rdf_output = tmp_path / "lindas" / "data" / "rdf" / "tierseuchen-screener.ttl"
+    csv_output = tmp_path / "lindas" / "data" / "csv" / "disease_reports.csv"
     assert main(["filter-disease", "padi_web", "--data-dir", str(data_dir)]) == 0
     assert main(["extract-reports", "padi_web", "--data-dir", str(data_dir)]) == 0
+    write_jsonl(
+        tmp_path / "padi_web" / "disease_reports.enriched.jsonl",
+        read_jsonl(tmp_path / "padi_web" / "disease_reports.jsonl"),
+    )
     assert (
         main(
             [
-                "export-rdf",
+                "export-final",
+                "--source",
                 "padi_web",
                 "--data-dir",
                 str(data_dir),
-                "--rdf-dir",
-                str(rdf_dir),
+                "--rdf-output",
+                str(rdf_output),
+                "--csv-output",
+                str(csv_output),
             ]
         )
         == 0
@@ -452,4 +460,5 @@ def test_padi_articles_flow_through_filter_extract_and_export_rdf(tmp_path):
     assert len(disease_articles) == 1
     assert reports[0]["source_id"] == "padi_web"
     assert reports[0]["source_link"] == "https://publisher.example/article"
-    assert (rdf_dir / "padi_web" / "padi_web.qa.ttl").exists()
+    assert rdf_output.exists()
+    assert csv_output.exists()
