@@ -26,6 +26,7 @@ manifest.jsonl
   -> disease_reports.enriched.jsonl
   -> lindas/data/rdf/tierseuchen-screener.ttl
   -> lindas/data/csv/disease_reports.csv
+  -> lindas/data/csv/disease_reports_mock_data_.csv
 ```
 
 The deterministic scraper owns discovery, fetching, parsing, relevance rules,
@@ -116,12 +117,14 @@ Per-source files live under `data/unstructured/<source>/` by default:
 Final combined outputs:
 
 - `lindas/data/rdf/tierseuchen-screener.ttl`
-- `lindas/data/csv/disease_reports.csv`
+- `lindas/data/csv/disease_reports.csv` with the backend `DiseaseReport` fields
+- `lindas/data/csv/disease_reports_mock_data_.csv` with the frontend `reports`
+  table schema
 
 `extract-reports` reads `articles.jsonl` and re-runs the relevance rules; it
 does not consume `disease_articles.jsonl`. `export-final` reads enriched JSONL
-from the selected sources and writes one combined Turtle file plus one combined
-CSV file.
+from the selected sources and writes one combined Turtle file plus both combined
+CSV files.
 
 ## Field Contract
 

@@ -1073,7 +1073,10 @@ def _export_final(
     console: Console,
     config: AppConfig,
 ) -> int:
-    from govtech_tierseuchen.csv_export import export_records_to_csv
+    from govtech_tierseuchen.csv_export import (
+        export_records_to_csv,
+        export_records_to_frontend_reports_csv,
+    )
     from govtech_tierseuchen.jsonl import read_jsonl
     from govtech_tierseuchen.rdf_export import (
         disease_report_from_dict,
@@ -1093,11 +1096,14 @@ def _export_final(
     reports = [disease_report_from_dict(row) for row in rows]
     rdf_result = export_disease_reports_to_rdf(reports, rdf_output_path)
     csv_result = export_records_to_csv(rows, csv_output_path)
+    frontend_csv_result = export_records_to_frontend_reports_csv(rows, csv_output_path)
     console.print(
         "[green]Exported final outputs for "
         f"{rdf_result.report_count} DiseaseReport records: "
         f"{rdf_result.triple_count} RDF triples to {rdf_result.output_path}, "
-        f"{csv_result.record_count} CSV rows to {csv_result.output_path}[/green]"
+        f"{csv_result.record_count} CSV rows to {csv_result.output_path}, "
+        f"{frontend_csv_result.record_count} frontend report CSV rows to "
+        f"{frontend_csv_result.output_path}[/green]"
     )
     return 0
 
