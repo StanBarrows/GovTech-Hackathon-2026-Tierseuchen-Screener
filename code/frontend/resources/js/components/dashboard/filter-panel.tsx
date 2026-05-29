@@ -125,10 +125,6 @@ type Props = {
     onToggleSubtype: (v: string) => void;
     onResetSubtype: () => void;
     subtypeOptions: string[];
-    center: string;
-    onCenterChange: (v: string) => void;
-    radiusKm: number;
-    onRadiusChange: (v: number) => void;
 };
 
 const POP_LABELS: Record<Population, string> = {
@@ -156,10 +152,6 @@ export default function FilterPanel({
     onToggleSubtype,
     onResetSubtype,
     subtypeOptions,
-    center,
-    onCenterChange,
-    radiusKm,
-    onRadiusChange,
 }: Props) {
     const [speciesOpen, setSpeciesOpen] = useState(false);
     const [subtypeOpen, setSubtypeOpen] = useState(false);
@@ -415,36 +407,9 @@ export default function FilterPanel({
             <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-xs font-medium">
                     <Crosshair className="size-3.5" />
-                    Ausgangsort (Zentrum)
+                    Ausgangsort
                 </label>
-                <Select value={center} onValueChange={onCenterChange}>
-                    <SelectTrigger className="w-full">
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="Bern">Bern</SelectItem>
-                        <SelectItem value="Zürich">Zürich</SelectItem>
-                        <SelectItem value="Genf">Genf</SelectItem>
-                        <SelectItem value="Basel">Basel</SelectItem>
-                    </SelectContent>
-                </Select>
-                <div className="space-y-1 pt-2">
-                    <div className="flex items-baseline justify-between">
-                        <label className="text-xs font-medium">Reichweite</label>
-                        <span className="text-[11px] text-muted-foreground tabular-nums">
-                            {radiusKm} km
-                        </span>
-                    </div>
-                    <input
-                        type="range"
-                        min={10}
-                        max={200}
-                        step={5}
-                        value={radiusKm}
-                        onChange={(e) => onRadiusChange(Number(e.target.value))}
-                        className="w-full accent-primary"
-                    />
-                </div>
+                <div className="text-sm text-muted-foreground">Bern, Switzerland</div>
             </div>
 
             <div className="mt-auto space-y-2 border-t pt-3 text-[10px] text-muted-foreground">

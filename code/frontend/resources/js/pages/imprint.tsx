@@ -1,14 +1,20 @@
-import { Head, Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
 import FilterPanel from '@/components/dashboard/filter-panel';
 import LagebildHeader from '@/components/dashboard/lagebild-header';
+import { PageHead } from '@/components/seo/page-head';
 import DashboardLayout from '@/layouts/dashboard-layout';
+import type { SeoMeta } from '@/types/seo';
 
 type Population = 'wild' | 'poultry' | 'captive';
 
-export default function Imprint() {
+type Props = {
+    seo: SeoMeta;
+};
+
+export default function Imprint({ seo }: Props) {
     const [population, setPopulation] = useState<Population[]>([]);
     const [dateFrom, setDateFrom] = useState('2026-03-01T00:00');
     const [dateTo, setDateTo] = useState('2026-05-28T23:59');
@@ -26,9 +32,6 @@ export default function Imprint() {
             prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
         );
     };
-    const [center, setCenter] = useState('Bern');
-    const [radiusKm, setRadiusKm] = useState(50);
-
     const togglePopulation = (p: Population) => {
         setPopulation((prev) =>
             prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p],
@@ -37,7 +40,7 @@ export default function Imprint() {
 
     return (
         <DashboardLayout>
-            <Head title="Impressum · TS-Scanner" />
+            <PageHead seo={seo} />
             <LagebildHeader title="TS-Scanner" subtitle="Impressum" />
             <div className="flex gap-4 p-4" style={{ height: 'calc(100vh - 3.5rem)' }}>
                 <FilterPanel
@@ -57,10 +60,6 @@ export default function Imprint() {
                     onResetSubtype={() => setSubtype([])}
                     subtypeOptions={[]}
                     populationOptions={[]}
-                    center={center}
-                    onCenterChange={setCenter}
-                    radiusKm={radiusKm}
-                    onRadiusChange={setRadiusKm}
                 />
                 <div className="flex flex-1 flex-col overflow-hidden">
                     <div className="relative flex-1 overflow-y-auto rounded-md border bg-card p-8">

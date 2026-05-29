@@ -13,6 +13,7 @@ import CaseMap from '@/components/map/case-map';
 import ClientOnly from '@/components/map/client-only';
 import type {DiseaseCode} from '@/components/map/disease-colors';
 import Legend from '@/components/map/legend';
+import { PageHead } from '@/components/seo/page-head';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DashboardLayout from '@/layouts/dashboard-layout';
 import type { Case, Population, RelevanceContext } from '@/types/case';
@@ -32,12 +33,8 @@ type Props = {
     totals?: Totals;
 };
 
-const CENTER_COORDS: Record<string, [number, number]> = {
-    Bern: [46.9480, 7.4474],
-    Zürich: [47.3769, 8.5417],
-    Genf: [46.2044, 6.1432],
-    Basel: [47.5596, 7.5886],
-};
+const SWITZERLAND_CENTER: [number, number] = [46.8182, 8.2275];
+const SWITZERLAND_RADIUS_KM = 200;
 
 const DEFAULT_FROM = '2026-03-01T00:00';
 const DEFAULT_TO = '2026-05-28T23:59';
@@ -73,11 +70,20 @@ return 'map';
             prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
         );
     };
-    const [center, setCenter] = useState('Bern');
-    const [radiusKm, setRadiusKm] = useState(50);
+    const center = 'Switzerland';
+    const radiusKm = SWITZERLAND_RADIUS_KM;
 
     const [playCursor, setPlayCursor] = useState(DEFAULT_TO);
     const [playing, setPlaying] = useState(false);
+
+    // Keep the play cursor in sync with dateTo while not actively playing,
+    // so changes to dateTo (or dateFrom) don't leave a stale cursor that
+    // overrides the filter via effectiveTo.
+    useEffect(() => {
+        if (!playing) {
+            setPlayCursor(dateTo);
+        }
+    }, [dateFrom, dateTo, playing]);
 
     const togglePopulation = (p: Population) => {
         setPopulation((prev) =>
@@ -160,7 +166,7 @@ return 'map';
         return Array.from(set).sort();
     }, [cases]);
 
-    const [centerLat, centerLng] = CENTER_COORDS[center] ?? CENTER_COORDS.Bern;
+    const [centerLat, centerLng] = SWITZERLAND_CENTER;
 
     return (
         <DashboardLayout>
@@ -200,10 +206,6 @@ return 'map';
                     onResetSubtype={() => setSubtype([])}
                     subtypeOptions={subtypeOptions}
                     populationOptions={populationOptions}
-                    center={center}
-                    onCenterChange={setCenter}
-                    radiusKm={radiusKm}
-                    onRadiusChange={setRadiusKm}
                 />
                 <div className="flex min-h-[70vh] flex-1 flex-col gap-3 md:min-h-0 md:overflow-hidden">
                     <Tabs

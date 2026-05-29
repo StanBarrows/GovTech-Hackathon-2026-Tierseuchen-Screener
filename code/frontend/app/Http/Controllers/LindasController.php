@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\Lindas\LindasDataService;
 use App\Services\Lindas\LindasSparqlException;
+use App\Support\SeoMeta;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -49,6 +50,11 @@ class LindasController extends Controller
         return Inertia::render('lindas', [
             'snapshot' => $snapshot,
             'error' => $error,
+            'seo' => SeoMeta::forPage([
+                'title' => 'LINDAS Data Validator',
+                'description' => 'Internes Validierungstool für LINDAS SPARQL-Abfragen.',
+                'robots' => 'noindex, nofollow',
+            ]),
         ]);
     }
 

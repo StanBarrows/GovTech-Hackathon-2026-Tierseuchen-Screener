@@ -221,7 +221,7 @@ map.once('load', apply);
 return;
 }
 
-        map.flyTo({ center: [centerLng, centerLat], zoom: 9, duration: 800 });
+        map.flyTo({ center: [centerLng, centerLat], zoom: CH_ZOOM, duration: 800 });
     }, [centerLat, centerLng]);
 
     if (!TOKEN) {
