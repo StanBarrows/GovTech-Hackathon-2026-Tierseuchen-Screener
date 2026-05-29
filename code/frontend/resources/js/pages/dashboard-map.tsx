@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Deferred, Head } from '@inertiajs/react';
 import { Map as MapIcon, List as ListIcon, BarChart3, AlertCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -12,19 +12,22 @@ import CaseMap from '@/components/map/case-map';
 import ClientOnly from '@/components/map/client-only';
 import type {DiseaseCode} from '@/components/map/disease-colors';
 import Legend from '@/components/map/legend';
-import { PageHead } from '@/components/seo/page-head';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DashboardLayout from '@/layouts/dashboard-layout';
 import type { Case, Population, RelevanceContext } from '@/types/case';
 
 type Props = {
-    cases: Case[];
+    cases?: Case[];
     relevanceContext?: RelevanceContext | null;
     error?: string | null;
     diseaseOptions?: string[];
     speciesOptions?: string[];
     subtypeOptions?: string[];
+};
+
+type BodyProps = Omit<Props, 'cases' | 'error'> & {
+    cases: Case[];
 };
 
 const SWITZERLAND_CENTER: [number, number] = [46.8182, 8.2275];
@@ -48,19 +51,25 @@ function defaultDateRange(): { from: string; to: string } {
     };
 }
 
+function CasesLoadingFallback() {
+    return (
+        <div className="flex min-h-[70vh] flex-1 items-center justify-center bg-muted/30 p-4 text-sm text-muted-foreground">
+            Ereignisse werden geladen…
+        </div>
+    );
+}
 
-export default function DashboardMap({
+function DashboardMapBody({
     cases,
     relevanceContext,
-    error,
     diseaseOptions: diseaseOptionsProp,
     speciesOptions: speciesOptionsProp,
     subtypeOptions: subtypeOptionsProp,
-}: Props) {
+}: BodyProps) {
     const [view, setView] = useState<'map' | 'list' | 'stats'>(() => {
         if (typeof window === 'undefined') {
-return 'map';
-}
+            return 'map';
+        }
 
         const stored = window.localStorage.getItem('ts-scanner:view');
 
@@ -102,9 +111,6 @@ return 'map';
     const [playing, setPlaying] = useState(false);
     const [speed, setSpeed] = useState(1);
 
-    // Keep the play cursor in sync with dateTo while not actively playing,
-    // so changes to dateTo (or dateFrom) don't leave a stale cursor that
-    // overrides the filter via effectiveTo.
     useEffect(() => {
         if (!playing) {
             setPlayCursor(dateTo);
@@ -184,7 +190,6 @@ return 'map';
         return Array.from(set).sort((a, b) => a.localeCompare(b, 'de-CH'));
     }, [cases]);
 
-    // Prefer backend-provided lookup vocab; fall back to values present in the data.
     const diseaseOptions = diseaseOptionsProp ?? [];
     const speciesOptions =
         speciesOptionsProp && speciesOptionsProp.length > 0
@@ -210,6 +215,135 @@ return 'map';
     const [centerLat, centerLng] = SWITZERLAND_CENTER;
 
     return (
+        <div className="flex flex-col gap-4 p-4 md:flex-row md:h-[calc(100vh-3.5rem)]">
+            <FilterPanel
+                disease={disease}
+                onToggleDisease={toggleDisease}
+                onResetDisease={() => setDisease([])}
+                diseaseOptions={diseaseOptions}
+                population={population}
+                onTogglePopulation={togglePopulation}
+                onResetPopulation={() => setPopulation([])}
+                dateFrom={dateFrom}
+                dateTo={dateTo}
+                onDateFromChange={setDateFrom}
+                onDateToChange={setDateTo}
+                onResetDate={() => {
+                    setDateFrom(defaultRange.from);
+                    setDateTo(defaultRange.to);
+                }}
+                dateChanged={dateFrom !== defaultRange.from || dateTo !== defaultRange.to}
+                species={species}
+                onToggleSpecies={toggleSpecies}
+                onResetSpecies={() => setSpecies([])}
+                speciesOptions={speciesOptions}
+                subtype={subtype}
+                onToggleSubtype={toggleSubtype}
+                onResetSubtype={() => setSubtype([])}
+                subtypeOptions={subtypeOptions}
+                populationOptions={populationOptions}
+            />
+            <div className="flex min-h-[70vh] flex-1 flex-col gap-3 md:min-h-0 md:overflow-hidden">
+                <Tabs
+                    value={view}
+                    onValueChange={(v) => setView(v as 'map' | 'list' | 'stats')}
+                    className="flex min-h-0 flex-1 flex-col gap-3"
+                >
+                    <TabsList>
+                        <TabsTrigger value="map">
+                            <MapIcon />
+                            Karte
+                        </TabsTrigger>
+                        <TabsTrigger value="list">
+                            <ListIcon />
+                            Liste
+                        </TabsTrigger>
+                        <TabsTrigger value="stats">
+                            <BarChart3 />
+                            Statistik
+                        </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="map" className="flex min-h-0 flex-col">
+                        <div className="relative min-h-[60vh] flex-1 overflow-hidden rounded-md border md:min-h-0">
+                            <ClientOnly
+                                fallback={
+                                    <div className="flex h-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">
+                                        Karte wird geladen…
+                                    </div>
+                                }
+                            >
+                                <CaseMap
+                                    cases={filtered}
+                                    centerLat={centerLat}
+                                    centerLng={centerLng}
+                                    radiusKm={radiusKm}
+                                    relevanceContext={relevanceContext}
+                                />
+                            </ClientOnly>
+                            <Legend
+                                diseases={['HPAI' as DiseaseCode]}
+                                center={center}
+                                radiusKm={radiusKm}
+                            />
+                        </div>
+                    </TabsContent>
+                    <TabsContent value="list" className="overflow-hidden">
+                        <CaseList
+                            cases={filtered}
+                            centerLat={centerLat}
+                            centerLng={centerLng}
+                            radiusKm={radiusKm}
+                            relevanceContext={relevanceContext}
+                        />
+                    </TabsContent>
+                    <TabsContent value="stats" className="overflow-hidden">
+                        <StatsView
+                            cases={filtered}
+                            centerLat={centerLat}
+                            centerLng={centerLng}
+                            radiusKm={radiusKm}
+                            relevanceContext={relevanceContext}
+                        />
+                    </TabsContent>
+                </Tabs>
+                <PlayBar
+                    from={dateFrom}
+                    to={dateTo}
+                    cursor={playCursor}
+                    onCursorChange={setPlayCursor}
+                    speed={speed}
+                    onSpeedChange={setSpeed}
+                    playing={playing}
+                    onTogglePlay={() => {
+                        if (!playing && (playCursor >= dateTo || playCursor < dateFrom)) {
+                            setPlayCursor(dateFrom);
+                        }
+
+                        setPlaying((p) => !p);
+                    }}
+                    onReset={() => {
+                        setPlaying(false);
+                        setPlayCursor(dateFrom);
+                    }}
+                    onSkipToEnd={() => {
+                        setPlaying(false);
+                        setPlayCursor(dateTo);
+                    }}
+                />
+            </div>
+        </div>
+    );
+}
+
+export default function DashboardMap({
+    cases,
+    relevanceContext,
+    error,
+    diseaseOptions,
+    speciesOptions,
+    subtypeOptions,
+}: Props) {
+    return (
         <DashboardLayout>
             <Head title="TS-Scanner" />
             <LagebildHeader title="Tierseuchen Scanner - Govtech2026" />
@@ -222,123 +356,15 @@ return 'map';
                     </Alert>
                 </div>
             )}
-            <div className="flex flex-col gap-4 p-4 md:flex-row md:h-[calc(100vh-3.5rem)]">
-                <FilterPanel
-                    disease={disease}
-                    onToggleDisease={toggleDisease}
-                    onResetDisease={() => setDisease([])}
+            <Deferred data="cases" fallback={<CasesLoadingFallback />}>
+                <DashboardMapBody
+                    cases={cases!}
+                    relevanceContext={relevanceContext}
                     diseaseOptions={diseaseOptions}
-                    population={population}
-                    onTogglePopulation={togglePopulation}
-                    onResetPopulation={() => setPopulation([])}
-                    dateFrom={dateFrom}
-                    dateTo={dateTo}
-                    onDateFromChange={setDateFrom}
-                    onDateToChange={setDateTo}
-                    onResetDate={() => {
-                        setDateFrom(defaultRange.from);
-                        setDateTo(defaultRange.to);
-                    }}
-                    dateChanged={dateFrom !== defaultRange.from || dateTo !== defaultRange.to}
-                    species={species}
-                    onToggleSpecies={toggleSpecies}
-                    onResetSpecies={() => setSpecies([])}
                     speciesOptions={speciesOptions}
-                    subtype={subtype}
-                    onToggleSubtype={toggleSubtype}
-                    onResetSubtype={() => setSubtype([])}
                     subtypeOptions={subtypeOptions}
-                    populationOptions={populationOptions}
                 />
-                <div className="flex min-h-[70vh] flex-1 flex-col gap-3 md:min-h-0 md:overflow-hidden">
-                    <Tabs
-                        value={view}
-                        onValueChange={(v) => setView(v as 'map' | 'list' | 'stats')}
-                        className="flex min-h-0 flex-1 flex-col gap-3"
-                    >
-                        <TabsList>
-                            <TabsTrigger value="map">
-                                <MapIcon />
-                                Karte
-                            </TabsTrigger>
-                            <TabsTrigger value="list">
-                                <ListIcon />
-                                Liste
-                            </TabsTrigger>
-                            <TabsTrigger value="stats">
-                                <BarChart3 />
-                                Statistik
-                            </TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="map" className="flex min-h-0 flex-col">
-                            <div className="relative min-h-[60vh] flex-1 overflow-hidden rounded-md border md:min-h-0">
-                                <ClientOnly
-                                    fallback={
-                                        <div className="flex h-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">
-                                            Karte wird geladen…
-                                        </div>
-                                    }
-                                >
-                                    <CaseMap
-                                        cases={filtered}
-                                        centerLat={centerLat}
-                                        centerLng={centerLng}
-                                        radiusKm={radiusKm}
-                                        relevanceContext={relevanceContext}
-                                    />
-                                </ClientOnly>
-                                <Legend
-                                    diseases={['HPAI' as DiseaseCode]}
-                                    center={center}
-                                    radiusKm={radiusKm}
-                                />
-                            </div>
-                        </TabsContent>
-                        <TabsContent value="list" className="overflow-hidden">
-                            <CaseList
-                                cases={filtered}
-                                centerLat={centerLat}
-                                centerLng={centerLng}
-                                radiusKm={radiusKm}
-                                relevanceContext={relevanceContext}
-                            />
-                        </TabsContent>
-                        <TabsContent value="stats" className="overflow-hidden">
-                            <StatsView
-                                cases={filtered}
-                                centerLat={centerLat}
-                                centerLng={centerLng}
-                                radiusKm={radiusKm}
-                                relevanceContext={relevanceContext}
-                            />
-                        </TabsContent>
-                    </Tabs>
-                    <PlayBar
-                        from={dateFrom}
-                        to={dateTo}
-                        cursor={playCursor}
-                        onCursorChange={setPlayCursor}
-                        speed={speed}
-                        onSpeedChange={setSpeed}
-                        playing={playing}
-                        onTogglePlay={() => {
-                            if (!playing && (playCursor >= dateTo || playCursor < dateFrom)) {
-                                setPlayCursor(dateFrom);
-                            }
-
-                            setPlaying((p) => !p);
-                        }}
-                        onReset={() => {
-                            setPlaying(false);
-                            setPlayCursor(dateFrom);
-                        }}
-                        onSkipToEnd={() => {
-                            setPlaying(false);
-                            setPlayCursor(dateTo);
-                        }}
-                    />
-                </div>
-            </div>
+            </Deferred>
         </DashboardLayout>
     );
 }

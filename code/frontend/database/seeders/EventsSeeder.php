@@ -59,9 +59,10 @@ class EventsSeeder extends Seeder
      * out west into France/Iberia, east into the Black Sea flyway and south into
      * Italy — mirroring how the virus actually disperses with migrating birds.
      *
-     * Time is correlated with progress along each stream (early March at the
-     * northern start, late May at the destination). Relevance is always measured as
-     * proximity to Bern, so the off-axis branches register as low-priority noise.
+     * Time is correlated with progress along each stream (earliest at the
+     * northern start, latest at the destination), spread over a rolling three-month
+     * window ending at seed time. Relevance is always measured as proximity to Bern,
+     * so the off-axis branches register as low-priority noise.
      */
     public function run(): void
     {
@@ -170,11 +171,11 @@ class EventsSeeder extends Seeder
             ['name' => 'Basel', 'lat' => 47.5596, 'lng' => 7.5886, 'spread' => 0.18, 'canton' => 'BS'],
         ];
 
-        $start = Carbon::parse('2026-03-01 00:00');
-        $end = Carbon::parse('2026-05-28 23:59');
+        $end = Carbon::now();
+        $start = $end->copy()->subMonths(3);
         $span = $end->getTimestamp() - $start->getTimestamp();
 
-        $now = Carbon::now()->format('Y-m-d H:i:s');
+        $now = $end->format('Y-m-d H:i:s');
 
         // Pass 1 — generate rows and tally a coarse density histogram keyed by grid cell.
         $rows = [];

@@ -21,11 +21,10 @@ class DashboardController extends Controller
 
     public function map(): Response
     {
-        $events = Event::query()->get();
-        $cases = EventResource::collection($events)->resolve();
-
         return Inertia::render('dashboard-map', [
-            'cases' => $cases,
+            'cases' => Inertia::defer(fn () => EventResource::collection(
+                Event::query()->get(),
+            )->resolve()),
             'error' => null,
             'relevanceContext' => [
                 'centerLat' => self::DEFAULT_CENTER_LAT,
@@ -36,7 +35,7 @@ class DashboardController extends Controller
             'speciesOptions' => Species::query()->orderBy('name')->pluck('name'),
             'subtypeOptions' => Subtype::query()->orderBy('name')->pluck('name'),
             'totals' => [
-                'outbreakEvents' => $events->count(),
+                'outbreakEvents' => Event::query()->count(),
                 'outbreakSituations' => 0,
                 'paffReports' => 0,
                 'paffSituationStatements' => 0,
