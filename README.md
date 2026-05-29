@@ -118,18 +118,20 @@ uv run ts-screener export-final --source gefluegelnews
 Raw HTML, raw JSON, and generated JSONL files are local artifacts under
 `data/unstructured/<source_id>/` and are ignored by git by default. Parsed
 articles keep the original `source_link`, cached `raw_html_path`, and Markdown
-`fulltext`; extracted `DiseaseReport` records carry those fields forward for
-traceability. Final exports are written as one combined Turtle file at
+`fulltext`; extracted `DiseaseReport` records carry those fields forward for traceability. Final exports are written as one combined Turtle file at
 `lindas/data/rdf/tierseuchen-screener.ttl` and one combined CSV file at
 `lindas/data/csv/disease_reports.csv`.
 
 PAFF data is read from the pdfs and analyzed by an llm to filter out relevant information, these data are then displayed in the dashboard when relevant.
 
 
-## Ontology and LINDAS
+## Ontology und LINDAS
 
+Eine Ontologie (ein Schema) wurde definiert um relevante daten aus ADIS für komplexe Queries aufzubereiten und somit das Dashboard erweiterbar zu halten.
+Desweiteren wurden Schemas für unstrukturierten Daten aus PAFF reports sowie Nachrichten erstellt.
 
 ## Erweiterungen
 
+- Mehr Datenquellen
 - Historische Daten (z.B: Erster Fall in diesem Administration District), Vergleich Vormonat/Vorjahresmonat
 - Human in the Loop zur Korrektur der Einschätzung der Wichtigkeit

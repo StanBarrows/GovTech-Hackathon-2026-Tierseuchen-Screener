@@ -4,7 +4,6 @@ import { DISEASE_COLORS, DISEASE_FALLBACK  } from '@/components/map/disease-colo
 import type {DiseaseCode} from '@/components/map/disease-colors';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { resolveRelevance } from '@/lib/case-relevance';
-import { CHART_PALETTE, paletteColor } from '@/lib/chart-colors';
 import type { Case, Population, RelevanceContext } from '@/types/case';
 
 type Props = {
@@ -25,11 +24,11 @@ const POP_LABELS: Record<Population, string> = {
     captive: 'Captive',
 };
 
-// Coordinated palette slots, fixed per population category (de-collided from disease colors).
+// Primary-aligned shades for population segments.
 const POP_COLORS: Record<Population, string> = {
-    wild: paletteColor(0),
-    poultry: paletteColor(1),
-    captive: paletteColor(2),
+    wild: 'color-mix(in oklab, var(--primary) 100%, transparent)',
+    poultry: 'color-mix(in oklab, var(--primary) 65%, transparent)',
+    captive: 'color-mix(in oklab, var(--primary) 35%, transparent)',
 };
 
 function diseaseColor(d: string): string {
@@ -376,7 +375,7 @@ max = k;
                             label={d.label}
                             count={d.count}
                             max={cantonMax}
-                            color={CHART_PALETTE[1]}
+                            color="var(--primary)"
                         />
                     ))}
                 </CardContent>
@@ -395,7 +394,7 @@ max = k;
                                 label={d.label}
                                 count={d.count}
                                 max={subtypeMax}
-                                color={CHART_PALETTE[2]}
+                                color="var(--primary)"
                             />
                         ))}
                     </CardContent>

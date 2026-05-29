@@ -1,0 +1,38 @@
+flowchart LR
+    S1("High Quality Sources <br> ADIS & PADI")
+    S2("Unstructured Source 1 <br> PAFF")
+    S3("Unstructured Source 2 <br> Geflügelnews.de")
+
+    SCR["Scraper"]
+
+    ANN["Annotator <br> ─────────── <br> Transcribes & Extracts Data"]
+
+    INT["Interpretator <br> ─────────── <br> Anonymization <br> Relevance <br> (fut: Prediction, Trends)"]
+
+   %% CD["Cleaned\nData"]
+
+    FE["Front End<br>Intern"]
+
+    HF{{"Epidemiology User<br>Ranks importance"}}
+    Public{{"Public User"}}
+    LINDAS[("LINDAS<br>Named Graph")]
+
+    S1 --> INT
+    S2 --> SCR
+    S3 --> SCR
+
+    SCR --> ANN
+
+    ANN --> INT
+
+    %%INT -->|379| CD
+    %%CD -->|379| FE
+
+    HF -.-> |Human Feedback| LINDAS
+    INT --> LINDAS
+    
+    LINDAS --> FE
+    LINDAS ---> Public
+    FE -.-> HF
+
+
