@@ -14,6 +14,16 @@ class ReportsSeeder extends Seeder
     private const CHUNK = 500;
 
     /**
+     * Map the English relevance labels from the export onto the German labels
+     * the UI filters on. Anything unrecognised falls through to null.
+     */
+    private const RELEVANCE_LABELS = [
+        'high' => 'Hoch',
+        'medium' => 'Mittel',
+        'low' => 'Tief',
+    ];
+
+    /**
      * Seed the reports table from the exported reports CSV.
      *
      * The CSV columns map 1:1 onto the Report model (it is a dump of the table,
@@ -63,7 +73,7 @@ class ReportsSeeder extends Seeder
                 'admin_level_2' => $get('admin_level_2'),
                 'admin_level_3' => $get('admin_level_3'),
                 'relevance_score' => $get('relevance_score'),
-                'relevance_score_string' => $get('relevance_score_string'),
+                'relevance_score_string' => $this->relevanceLabel($get('relevance_score_string')),
                 'distance_km' => $get('distance_km'),
                 'created_at' => $this->timestamp($get('created_at')),
                 'updated_at' => $this->timestamp($get('updated_at')),
@@ -103,6 +113,18 @@ class ReportsSeeder extends Seeder
         $value = trim($value);
 
         return $value === '' ? null : $value;
+    }
+
+    /**
+     * Translate an English relevance label to German, or null if unknown/empty.
+     */
+    private function relevanceLabel(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return self::RELEVANCE_LABELS[strtolower($value)] ?? null;
     }
 
     /**

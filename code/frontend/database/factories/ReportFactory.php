@@ -28,7 +28,7 @@ class ReportFactory extends Factory
             'admin_level_2' => fake()->optional()->city(),
             'admin_level_3' => null,
             'relevance_score' => fake()->optional()->randomFloat(2, 0, 100),
-            'relevance_score_string' => fake()->optional()->randomElement(['high', 'medium', 'low']),
+            'relevance_score_string' => fake()->optional()->randomElement(['Hoch', 'Mittel', 'Tief']),
             'distance_km' => fake()->optional()->randomFloat(2, 0, 300),
         ];
     }

@@ -2,8 +2,9 @@ import { useMemo } from 'react';
 
 import { DISEASE_COLORS, DISEASE_FALLBACK  } from '@/components/map/disease-colors';
 import type {DiseaseCode} from '@/components/map/disease-colors';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { resolveRelevance } from '@/lib/case-relevance';
+import { CHART_PALETTE, paletteColor } from '@/lib/chart-colors';
 import type { Case, Population, RelevanceContext } from '@/types/case';
 
 type Props = {
@@ -24,10 +25,11 @@ const POP_LABELS: Record<Population, string> = {
     captive: 'Captive',
 };
 
+// Coordinated palette slots, fixed per population category (de-collided from disease colors).
 const POP_COLORS: Record<Population, string> = {
-    wild: '#16a34a',
-    poultry: '#f59e0b',
-    captive: '#0ea5e9',
+    wild: paletteColor(0),
+    poultry: paletteColor(1),
+    captive: paletteColor(2),
 };
 
 function diseaseColor(d: string): string {
@@ -101,9 +103,8 @@ function Donut({ data, total }: { data: Counted<string>[]; total: number }) {
                     cy={size / 2}
                     r={r}
                     fill="none"
-                    stroke="var(--muted)"
+                    stroke="var(--border)"
                     strokeWidth={stroke}
-                    opacity={0.3}
                 />
                 {segments}
                 <text
@@ -120,7 +121,7 @@ function Donut({ data, total }: { data: Counted<string>[]; total: number }) {
             <ul className="space-y-1 text-xs">
                 {data.map((d) => (
                     <li key={d.key} className="flex items-center gap-2">
-                        <span className="inline-block size-2.5 rounded-sm" style={{ backgroundColor: d.color }} />
+                        <span className="inline-block size-2 rounded-full" style={{ backgroundColor: d.color }} />
                         <span className="min-w-16">{d.label}</span>
                         <span className="tabular-nums text-muted-foreground">
                             {fmt(d.count)} ({total > 0 ? Math.round((d.count / total) * 100) : 0}%)
@@ -330,6 +331,7 @@ max = k;
             <Card className="md:col-span-2 xl:col-span-3">
                 <CardHeader>
                     <CardTitle className="text-sm">Relevanz-Index pro Tag</CardTitle>
+                    <CardDescription>Summierter Index pro Tag</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <TimeSeries buckets={timeBuckets} />
@@ -339,6 +341,7 @@ max = k;
             <Card>
                 <CardHeader>
                     <CardTitle className="text-sm">Krankheit</CardTitle>
+                    <CardDescription>Index nach Krankheit</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2.5">
                     {byDisease.map((d) => (
@@ -350,6 +353,7 @@ max = k;
             <Card>
                 <CardHeader>
                     <CardTitle className="text-sm">Population</CardTitle>
+                    <CardDescription>Anteil nach Tierkategorie</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {byPopulation.length === 0 ? (
@@ -363,6 +367,7 @@ max = k;
             <Card>
                 <CardHeader>
                     <CardTitle className="text-sm">Top Regionen</CardTitle>
+                    <CardDescription>Top-Kantone nach Index</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2.5">
                     {byCanton.map((d) => (
@@ -371,7 +376,7 @@ max = k;
                             label={d.label}
                             count={d.count}
                             max={cantonMax}
-                            color="#6366f1"
+                            color={CHART_PALETTE[1]}
                         />
                     ))}
                 </CardContent>
@@ -381,6 +386,7 @@ max = k;
                 <Card className="md:col-span-2 xl:col-span-3">
                     <CardHeader>
                         <CardTitle className="text-sm">Subtypen</CardTitle>
+                        <CardDescription>Index nach Subtyp</CardDescription>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
                         {bySubtype.map((d) => (
@@ -389,7 +395,7 @@ max = k;
                                 label={d.label}
                                 count={d.count}
                                 max={subtypeMax}
-                                color="#ec4899"
+                                color={CHART_PALETTE[2]}
                             />
                         ))}
                     </CardContent>

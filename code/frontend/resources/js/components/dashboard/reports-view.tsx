@@ -1,4 +1,11 @@
-import { ArrowUpDown, ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
+import {
+    ArrowUpDown,
+    ChevronLeft,
+    ChevronRight,
+    ExternalLink,
+    Search,
+    X,
+} from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +18,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Markdown } from '@/components/ui/markdown';
 import {
     Table,
     TableBody,
@@ -29,30 +37,17 @@ type SortKey = 'reportDate' | 'relevance';
 
 const PAGE_SIZE = 100;
 
-const RELEVANCE_LEVELS = ['high', 'medium', 'low'] as const;
+const RELEVANCE_LEVELS = ['Hoch', 'Mittel', 'Tief'] as const;
 type RelevanceLevel = (typeof RELEVANCE_LEVELS)[number];
 
-const RELEVANCE_LABEL: Record<RelevanceLevel, string> = {
-    high: 'Hoch',
-    medium: 'Mittel',
-    low: 'Tief',
-};
-
 const RELEVANCE_COLOR: Record<RelevanceLevel, string> = {
-    high: 'bg-red-500',
-    medium: 'bg-amber-500',
-    low: 'bg-emerald-500',
+    Hoch: 'bg-red-500',
+    Mittel: 'bg-amber-500',
+    Tief: 'bg-emerald-500',
 };
 
-function relevanceVariant(label?: string | null) {
-    switch (label?.toLowerCase()) {
-        case 'high':
-            return 'destructive' as const;
-        case 'medium':
-            return 'secondary' as const;
-        default:
-            return 'outline' as const;
-    }
+function relevanceColor(label?: string | null): string {
+    return RELEVANCE_COLOR[label as RelevanceLevel] ?? 'bg-muted-foreground';
 }
 
 function formatRegion(report: Report): string {
@@ -63,7 +58,9 @@ export default function ReportsView({ reports }: Props) {
     const [activeReport, setActiveReport] = useState<Report | null>(null);
     const [query, setQuery] = useState('');
     const [sourceFilter, setSourceFilter] = useState<string[]>([]);
-    const [relevanceFilter, setRelevanceFilter] = useState<RelevanceLevel[]>([]);
+    const [relevanceFilter, setRelevanceFilter] = useState<RelevanceLevel[]>(
+        [],
+    );
     const [sortKey, setSortKey] = useState<SortKey>('relevance');
     const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
     const [page, setPage] = useState(1);
@@ -84,14 +81,20 @@ export default function ReportsView({ reports }: Props) {
         const q = query.trim().toLowerCase();
 
         return reports.filter((r) => {
-            if (sourceFilter.length > 0 && (!r.source || !sourceFilter.includes(r.source))) {
+            if (
+                sourceFilter.length > 0 &&
+                (!r.source || !sourceFilter.includes(r.source))
+            ) {
                 return false;
             }
 
             if (relevanceFilter.length > 0) {
-                const level = r.relevanceLabel?.toLowerCase();
+                const level = r.relevanceLabel;
 
-                if (!level || !relevanceFilter.includes(level as RelevanceLevel)) {
+                if (
+                    !level ||
+                    !relevanceFilter.includes(level as RelevanceLevel)
+                ) {
                     return false;
                 }
             }
@@ -122,7 +125,9 @@ export default function ReportsView({ reports }: Props) {
 
         return [...filtered].sort((a, b) => {
             if (sortKey === 'relevance') {
-                return dir * ((a.relevanceScore ?? -1) - (b.relevanceScore ?? -1));
+                return (
+                    dir * ((a.relevanceScore ?? -1) - (b.relevanceScore ?? -1))
+                );
             }
 
             const av = a.reportDate ?? '';
@@ -156,7 +161,9 @@ export default function ReportsView({ reports }: Props) {
     };
     const toggleRelevance = (level: RelevanceLevel) => {
         setRelevanceFilter((prev) =>
-            prev.includes(level) ? prev.filter((x) => x !== level) : [...prev, level],
+            prev.includes(level)
+                ? prev.filter((x) => x !== level)
+                : [...prev, level],
         );
     };
 
@@ -209,7 +216,7 @@ export default function ReportsView({ reports }: Props) {
             </div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-3 py-2 text-xs">
                 <div className="flex items-center gap-1.5">
-                    <span className="font-medium text-muted-foreground uppercase tracking-wider">
+                    <span className="font-medium tracking-wider text-muted-foreground uppercase">
                         Relevanz:
                     </span>
                     {RELEVANCE_LEVELS.map((level) => {
@@ -226,15 +233,17 @@ export default function ReportsView({ reports }: Props) {
                                         : 'border-border hover:bg-muted'
                                 }`}
                             >
-                                <span className={`inline-block size-2 rounded-full ${RELEVANCE_COLOR[level]}`} />
-                                {RELEVANCE_LABEL[level]}
+                                <span
+                                    className={`inline-block size-2 rounded-full ${RELEVANCE_COLOR[level]}`}
+                                />
+                                {level}
                             </button>
                         );
                     })}
                 </div>
                 {sourceOptions.length > 0 && (
                     <div className="flex items-center gap-1.5">
-                        <span className="font-medium text-muted-foreground uppercase tracking-wider">
+                        <span className="font-medium tracking-wider text-muted-foreground uppercase">
                             Quelle:
                         </span>
                         {sourceOptions.map((s) => {
@@ -315,13 +324,24 @@ export default function ReportsView({ reports }: Props) {
                                 <TableCell className="text-muted-foreground">
                                     {r.source ?? '–'}
                                 </TableCell>
-                                <TableCell className="max-w-md truncate" title={r.title}>
+                                <TableCell
+                                    className="max-w-md truncate"
+                                    title={r.title}
+                                >
                                     {r.title}
                                 </TableCell>
                                 <TableCell>{formatRegion(r)}</TableCell>
                                 <TableCell>
                                     {r.relevanceLabel ? (
-                                        <Badge variant={relevanceVariant(r.relevanceLabel)}>
+                                        <Badge
+                                            variant="outline"
+                                            className="gap-1.5"
+                                        >
+                                            <span
+                                                className={`inline-block size-2 rounded-full ${relevanceColor(
+                                                    r.relevanceLabel,
+                                                )}`}
+                                            />
                                             {r.relevanceLabel}
                                         </Badge>
                                     ) : (
@@ -343,14 +363,17 @@ export default function ReportsView({ reports }: Props) {
                 </Table>
                 {sorted.length === 0 && (
                     <div className="p-6 text-center text-sm text-muted-foreground">
-                        {query ? `Keine Treffer für „${query}“.` : 'Keine Berichte.'}
+                        {query
+                            ? `Keine Treffer für „${query}“.`
+                            : 'Keine Berichte.'}
                     </div>
                 )}
             </div>
             {sorted.length > 0 && (
                 <div className="flex items-center justify-between gap-3 border-t bg-card px-3 py-2 text-xs">
                     <span className="text-muted-foreground tabular-nums">
-                        {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, sorted.length)} von{' '}
+                        {(page - 1) * PAGE_SIZE + 1}–
+                        {Math.min(page * PAGE_SIZE, sorted.length)} von{' '}
                         {sorted.length}
                     </span>
                     <div className="flex items-center gap-1">
@@ -368,7 +391,9 @@ export default function ReportsView({ reports }: Props) {
                         </span>
                         <button
                             type="button"
-                            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                            onClick={() =>
+                                setPage((p) => Math.min(totalPages, p + 1))
+                            }
                             disabled={page >= totalPages}
                             className="inline-flex size-7 items-center justify-center rounded border hover:bg-muted disabled:opacity-40"
                             aria-label="Nächste Seite"
@@ -393,12 +418,32 @@ export default function ReportsView({ reports }: Props) {
                             <DialogHeader>
                                 <DialogTitle>{activeReport.title}</DialogTitle>
                                 <DialogDescription>
-                                    Berichtsdatum: {activeReport.reportDate ?? '–'}
-                                    {activeReport.source ? ` · Quelle: ${activeReport.source}` : ''}
+                                    Berichtsdatum:{' '}
+                                    {activeReport.reportDate ?? '–'}
+                                    {activeReport.source
+                                        ? ` · Quelle: ${activeReport.source}`
+                                        : ''}
                                     {formatRegion(activeReport) !== '–'
                                         ? ` · Region: ${formatRegion(activeReport)}`
                                         : ''}
                                 </DialogDescription>
+                                {activeReport.url && (
+                                    <Button
+                                        asChild
+                                        variant="outline"
+                                        size="sm"
+                                        className="mt-2 w-fit"
+                                    >
+                                        <a
+                                            href={activeReport.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Quelle öffnen
+                                            <ExternalLink className="size-3.5" />
+                                        </a>
+                                    </Button>
+                                )}
                             </DialogHeader>
 
                             <div className="mt-2 max-h-[70vh] space-y-4 overflow-auto">
@@ -408,19 +453,7 @@ export default function ReportsView({ reports }: Props) {
                                     </p>
                                 )}
                                 {activeReport.body && (
-                                    <p className="text-sm whitespace-pre-wrap text-muted-foreground">
-                                        {activeReport.body}
-                                    </p>
-                                )}
-                                {activeReport.url && (
-                                    <a
-                                        href={activeReport.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
-                                    >
-                                        Quelle öffnen ↗
-                                    </a>
+                                    <Markdown>{activeReport.body}</Markdown>
                                 )}
                             </div>
                         </>
