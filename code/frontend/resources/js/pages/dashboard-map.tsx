@@ -2,7 +2,6 @@ import { Head } from '@inertiajs/react';
 import { Map as MapIcon, List as ListIcon, BarChart3, AlertCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 import CaseList from '@/components/dashboard/case-list';
 import FilterPanel from '@/components/dashboard/filter-panel';
@@ -14,6 +13,7 @@ import ClientOnly from '@/components/map/client-only';
 import type {DiseaseCode} from '@/components/map/disease-colors';
 import Legend from '@/components/map/legend';
 import { PageHead } from '@/components/seo/page-head';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DashboardLayout from '@/layouts/dashboard-layout';
 import type { Case, Population, RelevanceContext } from '@/types/case';
@@ -31,15 +31,24 @@ type Props = {
     relevanceContext?: RelevanceContext | null;
     error?: string | null;
     totals?: Totals;
+    diseaseOptions?: string[];
+    speciesOptions?: string[];
+    subtypeOptions?: string[];
 };
 
 const SWITZERLAND_CENTER: [number, number] = [46.8182, 8.2275];
 const SWITZERLAND_RADIUS_KM = 200;
 
-const DEFAULT_FROM = '2026-03-01T00:00';
-const DEFAULT_TO = '2026-05-28T23:59';
 
-export default function DashboardMap({ cases, relevanceContext, error, totals }: Props) {
+export default function DashboardMap({
+    cases,
+    relevanceContext,
+    error,
+    totals,
+    diseaseOptions: diseaseOptionsProp,
+    speciesOptions: speciesOptionsProp,
+    subtypeOptions: subtypeOptionsProp,
+}: Props) {
     const [view, setView] = useState<'map' | 'list' | 'stats'>(() => {
         if (typeof window === 'undefined') {
 return 'map';
@@ -54,8 +63,15 @@ return 'map';
         window.localStorage.setItem('ts-scanner:view', view);
     }, [view]);
     const [population, setPopulation] = useState<Population[]>([]);
-    const [dateFrom, setDateFrom] = useState(DEFAULT_FROM);
-    const [dateTo, setDateTo] = useState(DEFAULT_TO);
+    const [dateFrom, setDateFrom] = useState('');
+    const [dateTo, setDateTo] = useState('');
+    const [disease, setDisease] = useState<string[]>([]);
+
+    const toggleDisease = (d: string) => {
+        setDisease((prev) =>
+            prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d],
+        );
+    };
     const [species, setSpecies] = useState<string[]>([]);
 
     const toggleSpecies = (s: string) => {
@@ -73,8 +89,9 @@ return 'map';
     const center = 'Switzerland';
     const radiusKm = SWITZERLAND_RADIUS_KM;
 
-    const [playCursor, setPlayCursor] = useState(DEFAULT_TO);
+    const [playCursor, setPlayCursor] = useState('');
     const [playing, setPlaying] = useState(false);
+    const [speed, setSpeed] = useState(1);
 
     // Keep the play cursor in sync with dateTo while not actively playing,
     // so changes to dateTo (or dateFrom) don't leave a stale cursor that
@@ -97,6 +114,10 @@ return 'map';
     const filtered = useMemo(() => {
         return cases.filter((c) => {
             if (population.length > 0 && (!c.population || !population.includes(c.population))) {
+                return false;
+            }
+
+            if (disease.length > 0 && (!c.disease || !disease.includes(c.disease))) {
                 return false;
             }
 
@@ -124,9 +145,9 @@ return 'map';
 
             return true;
         });
-    }, [cases, population, dateFrom, effectiveTo, subtype, species]);
+    }, [cases, population, disease, dateFrom, effectiveTo, subtype, species]);
 
-    const speciesOptions = useMemo(() => {
+    const derivedSpeciesOptions = useMemo(() => {
         const set = new Set<string>();
 
         for (const c of cases) {
@@ -140,7 +161,7 @@ return 'map';
         return Array.from(set).sort((a, b) => a.localeCompare(b, 'de-CH'));
     }, [cases]);
 
-    const subtypeOptions = useMemo(() => {
+    const derivedSubtypeOptions = useMemo(() => {
         const set = new Set<string>();
 
         for (const c of cases) {
@@ -153,6 +174,17 @@ return 'map';
 
         return Array.from(set).sort((a, b) => a.localeCompare(b, 'de-CH'));
     }, [cases]);
+
+    // Prefer backend-provided lookup vocab; fall back to values present in the data.
+    const diseaseOptions = diseaseOptionsProp ?? [];
+    const speciesOptions =
+        speciesOptionsProp && speciesOptionsProp.length > 0
+            ? speciesOptionsProp
+            : derivedSpeciesOptions;
+    const subtypeOptions =
+        subtypeOptionsProp && subtypeOptionsProp.length > 0
+            ? subtypeOptionsProp
+            : derivedSubtypeOptions;
 
     const populationOptions = useMemo(() => {
         const set = new Set<Population>();
@@ -183,13 +215,17 @@ return 'map';
                 <div className="px-4 pt-4">
                     <Alert variant="destructive">
                         <AlertCircle className="size-4" />
-                        <AlertTitle>Lindas-Datenquelle nicht erreichbar</AlertTitle>
+                        <AlertTitle>Datenquelle nicht erreichbar</AlertTitle>
                         <AlertDescription>{error}</AlertDescription>
                     </Alert>
                 </div>
             )}
             <div className="flex flex-col gap-4 p-4 md:flex-row md:h-[calc(100vh-3.5rem)]">
                 <FilterPanel
+                    disease={disease}
+                    onToggleDisease={toggleDisease}
+                    onResetDisease={() => setDisease([])}
+                    diseaseOptions={diseaseOptions}
                     population={population}
                     onTogglePopulation={togglePopulation}
                     onResetPopulation={() => setPopulation([])}
@@ -197,6 +233,11 @@ return 'map';
                     dateTo={dateTo}
                     onDateFromChange={setDateFrom}
                     onDateToChange={setDateTo}
+                    onResetDate={() => {
+                        setDateFrom('');
+                        setDateTo('');
+                    }}
+                    dateChanged={dateFrom !== '' || dateTo !== ''}
                     species={species}
                     onToggleSpecies={toggleSpecies}
                     onResetSpecies={() => setSpecies([])}
@@ -275,6 +316,8 @@ return 'map';
                         to={dateTo}
                         cursor={playCursor}
                         onCursorChange={setPlayCursor}
+                        speed={speed}
+                        onSpeedChange={setSpeed}
                         playing={playing}
                         onTogglePlay={() => {
                             if (!playing && (playCursor >= dateTo || playCursor < dateFrom)) {

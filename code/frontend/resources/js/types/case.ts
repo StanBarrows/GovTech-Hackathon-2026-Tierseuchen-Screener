@@ -1,7 +1,7 @@
 export type Population = 'wild' | 'poultry' | 'captive';
 
-// Shape mirrors App\EventDto\EventDto::toArray().
-// Field names follow Lindas OutbreakEvent.
+// Shape mirrors App\Http\Resources\EventResource::toArray().
+// Field names follow the outbreak event shape.
 export type Case = {
     iri: string;
     referenceId?: string | null;

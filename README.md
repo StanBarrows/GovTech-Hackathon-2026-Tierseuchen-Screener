@@ -83,32 +83,44 @@ Nach dem Hackathon können erfolgreiche Ideen und Prototypen in bestehende Arbei
 [Prototype-Link](https://app.ts-scanner.ch/dashboard/map)
 
 
-## News Scraper Prototype
+## Backend Pipeline
 
-The news scraper is staged so discovery, fetching, parsing, filtering, and report
-extraction can be rerun independently.
+The backend pipeline is staged so discovery, fetching, parsing, filtering,
+rule extraction, LLM enrichment, and final exports can be rerun independently.
+Run the full end-to-end pipeline with:
 
 ```bash
-uv run ts discover gefluegelnews
-uv run ts fetch gefluegelnews --limit 25 --delay-seconds 1
-uv run ts parse gefluegelnews
-uv run ts filter-disease gefluegelnews
-uv run ts extract-reports gefluegelnews
+uv run ts-screener run-all
 ```
 
+Select sources with repeatable `--source` options:
+
 ```bash
-uv run ts discover padi_web
-uv run ts fetch padi_web --limit 100 --delay-seconds 0.5
-uv run ts parse padi_web
-uv run ts filter-disease padi_web
-uv run ts extract-reports padi_web
+uv run ts-screener run-all --source gefluegelnews --source padi_web
+```
+
+The Gefluegelnews source is capped by default in `config.yaml` so normal
+`run-all` runs do not backfill the full historical sitemap. Use `--limit 0` for
+an explicit full backfill, or pass a larger `--limit <n>`.
+
+Individual stages remain available:
+
+```bash
+uv run ts-screener discover gefluegelnews
+uv run ts-screener fetch gefluegelnews --limit 25 --delay-seconds 1
+uv run ts-screener parse gefluegelnews
+uv run ts-screener filter-disease gefluegelnews
+uv run ts-screener extract-reports gefluegelnews
+uv run ts-screener enrich gefluegelnews
+uv run ts-screener export-final --source gefluegelnews
 ```
 
 Raw HTML, raw JSON, and generated JSONL files are local artifacts under
 `data/unstructured/<source_id>/` and are ignored by git by default. Parsed
 articles keep the original `source_link`, cached `raw_html_path`, and Markdown
-`fulltext`; extracted `DiseaseReport` records carry those fields forward for
-traceability.
+`fulltext`; extracted `DiseaseReport` records carry those fields forward for traceability. Final exports are written as one combined Turtle file at
+`lindas/data/rdf/tierseuchen-screener.ttl` and one combined CSV file at
+`lindas/data/csv/disease_reports.csv`.
 
 PAFF data is read from the pdfs and analyzed by an llm to filter out relevant information, these data are then displayed in the dashboard when relevant.
 

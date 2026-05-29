@@ -3,9 +3,13 @@ from datetime import date, datetime, timezone
 from rdflib import Graph, Literal, Namespace, RDF, XSD
 
 from govtech_tierseuchen.cli import main
+from govtech_tierseuchen.enrichment import enrich_records
 from govtech_tierseuchen.jsonl import write_jsonl
 from govtech_tierseuchen.models import DiseaseReport, EvidenceSnippet, PreventionMeasure
-from govtech_tierseuchen.rdf_export import export_disease_reports_to_rdf
+from govtech_tierseuchen.rdf_export import (
+    disease_report_from_dict,
+    export_disease_reports_to_rdf,
+)
 
 TS = Namespace("https://data.tierseuchen-screener.example.org/ontology/adis#")
 TSD = Namespace("https://data.tierseuchen-screener.example.org/data/")
@@ -139,11 +143,12 @@ def test_export_disease_reports_skips_incomplete_situations(tmp_path):
     assert not list(graph.objects(candidate, TS.candidateDescribesSituation))
 
 
-def test_cli_export_rdf_writes_to_lindas_style_source_directory(tmp_path):
+def test_cli_export_final_writes_combined_rdf_and_no_qa_ttl(tmp_path):
     data_dir = tmp_path / "data" / "unstructured"
-    rdf_dir = tmp_path / "lindas" / "data" / "rdf"
+    rdf_output = tmp_path / "lindas" / "data" / "rdf" / "tierseuchen-screener.ttl"
+    csv_output = tmp_path / "lindas" / "data" / "csv" / "disease_reports.csv"
     write_jsonl(
-        data_dir / "gefluegelnews" / "disease_reports.jsonl",
+        data_dir / "gefluegelnews" / "disease_reports.enriched.jsonl",
         [
             {
                 "report_id": "gefluegelnews:polen",
@@ -170,15 +175,68 @@ def test_cli_export_rdf_writes_to_lindas_style_source_directory(tmp_path):
 
     exit_code = main(
         [
-            "export-rdf",
+            "export-final",
+            "--source",
             "gefluegelnews",
             "--data-dir",
             str(data_dir),
-            "--rdf-dir",
-            str(rdf_dir),
+            "--rdf-output",
+            str(rdf_output),
+            "--csv-output",
+            str(csv_output),
         ]
     )
 
     assert exit_code == 0
-    output_path = rdf_dir / "gefluegelnews" / "gefluegelnews.qa.ttl"
-    assert output_path.exists()
+    assert rdf_output.exists()
+    assert csv_output.exists()
+    assert not (rdf_output.parent / "gefluegelnews" / "gefluegelnews.qa.ttl").exists()
+
+
+def test_enriched_record_with_null_collection_fields_exports_to_rdf(tmp_path):
+    candidate = {
+        "report_id": "gefluegelnews:polen",
+        "source_id": "gefluegelnews",
+        "source_name": "Gefluegelnews",
+        "source_document_id": "source_document:gefluegelnews:polen",
+        "source_document_title": "Gefluegelpest in Polen",
+        "source_link": "https://www.gefluegelnews.de/article/polen",
+        "source_publication_date": "2026-05-20",
+        "source_retrieved_at": "2026-05-28T12:00:00+00:00",
+        "fulltext": "Ein Ausbruch in Polen hat Sperrzonen zur Folge.",
+        "raw_html_path": "raw.html",
+        "content_hash": "abc123",
+        "extraction_method": "rules",
+        "extraction_version": "rules-v1",
+        "extraction_status": "candidate",
+        "extraction_confidence": "medium",
+        "evidence_snippets": [],
+        "rule_relevance_score": 4,
+        "rule_matched_terms": ["H5N1"],
+        "rule_disease_type": "H5N1",
+        "rule_control_measures": ["Sperrzonen"],
+        "prevention_measures": [],
+        "research_references": [],
+    }
+    enriched = enrich_records(
+        [candidate],
+        extractor=lambda _record: {
+            "disease_name": "Avian influenza",
+            "relevance_level": "high",
+            "relevance_rationale": "H5N1 outbreak in poultry.",
+            "prevention_measures": None,
+            "research_references": None,
+        },
+    )
+    report = disease_report_from_dict(enriched[0])
+    output_path = tmp_path / "enriched.ttl"
+
+    export_disease_reports_to_rdf([report], output_path)
+
+    graph = Graph()
+    graph.parse(output_path)
+
+    candidate_uri = TSD["candidate_gefluegelnews_polen"]
+    relevance = TSD["relevance_gefluegelnews_polen"]
+    assert (candidate_uri, TS.hasRelevanceAssessment, relevance) in graph
+    assert (relevance, TS.hasRelevanceLevel, TSS["relevance-high"]) in graph

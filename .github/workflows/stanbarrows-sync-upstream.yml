@@ -8,9 +8,11 @@
 # After 60 days without repo commits, GitHub disables scheduled workflows until
 # re-enabled or a new commit is pushed.
 #
-# Uses GITHUB_TOKEN (contents: write) to push merged changes back to this repo.
-# If push is blocked by fork policy, set MY_GITHUB_TOKEN (StanBarrows PAT with
-# Contents: Read and write on this repository) — same secret as stanbarrows-push-laravel.
+# Required secret (fork Settings → Secrets and variables → Actions):
+#   MY_GITHUB_TOKEN — same secret as stanbarrows-push-laravel. Classic PAT (repo
+#   scope) or fine-grained PAT for StanBarrows with Contents: Read and write AND
+#   Workflows: Read and write on GovTech-Hackathon-2026-Tierseuchen-Screener.
+#   Workflows permission is required when upstream changes .github/workflows/*.
 #
 # Upstream: https://github.com/BLV-OSAV-USAV/GovTech-Hackathon-2026-Tierseuchen-Screener
 
@@ -24,6 +26,7 @@ on:
 
 permissions:
   contents: write
+  workflows: write
 
 env:
   UPSTREAM_OWNER: BLV-OSAV-USAV
@@ -53,8 +56,22 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          if [ -n "${MY_GITHUB_TOKEN:-}" ]; then
-            git remote set-url origin "https://x-access-token:${MY_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if [ -z "${MY_GITHUB_TOKEN:-}" ]; then
+            echo "::error::Actions secret MY_GITHUB_TOKEN is not set on this fork. Add a StanBarrows PAT with Contents + Workflows read/write on ${GITHUB_REPOSITORY}."
+            exit 1
+          fi
+
+          git remote set-url origin "https://x-access-token:${MY_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          REPO_JSON="$(curl -sf -H "Authorization: Bearer ${MY_GITHUB_TOKEN}" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}")" || {
+            echo "::error::MY_GITHUB_TOKEN cannot read ${GITHUB_REPOSITORY}. Check PAT scope (public_repo or repo) and expiration."
+            exit 1
+          }
+
+          if [ "$(printf '%s' "$REPO_JSON" | jq -r .permissions.push)" != "true" ]; then
+            echo "::error::MY_GITHUB_TOKEN has no push access to ${GITHUB_REPOSITORY}. Enable public_repo (classic) or Contents: Read and write (fine-grained)."
+            exit 1
           fi
 
           UPSTREAM="https://github.com/${UPSTREAM_OWNER}/${UPSTREAM_REPO}.git"

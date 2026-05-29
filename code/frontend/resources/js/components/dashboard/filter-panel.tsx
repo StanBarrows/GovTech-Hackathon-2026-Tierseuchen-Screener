@@ -13,15 +13,7 @@ import {
     CommandItem,
     CommandList,
 } from '@/components/ui/command';
-import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
 // "YYYY-MM-DDTHH:mm" <-> Date
@@ -53,62 +45,85 @@ const DATE_FMT = new Intl.DateTimeFormat('de-CH', {
     year: 'numeric',
 });
 
-function DateTimePicker({
-    value,
-    onChange,
+function DateRangePicker({
+    from,
+    to,
+    onFromChange,
+    onToChange,
 }: {
-    value: string;
-    onChange: (v: string) => void;
+    from: string;
+    to: string;
+    onFromChange: (v: string) => void;
+    onToChange: (v: string) => void;
 }) {
-    const date = parseDateTimeLocal(value);
-    const time = getTimePart(value);
+    const fromDate = parseDateTimeLocal(from);
+    const toDate = parseDateTimeLocal(to);
+    const fromTime = getTimePart(from);
+    const toTime = getTimePart(to);
+
+    const label = (() => {
+        if (fromDate && toDate) {
+            return `${DATE_FMT.format(fromDate)} – ${DATE_FMT.format(toDate)}`;
+        }
+
+        if (fromDate) {
+            return `${DATE_FMT.format(fromDate)} – …`;
+        }
+
+        if (toDate) {
+            return `… – ${DATE_FMT.format(toDate)}`;
+        }
+
+        return 'Zeitraum wählen';
+    })();
 
     return (
-        <div className="flex gap-2">
-            <Popover>
-                <PopoverTrigger asChild>
-                    <Button
-                        variant="outline"
-                        className={cn(
-                            'flex-1 justify-start px-2 font-normal',
-                            !date && 'text-muted-foreground',
-                        )}
-                    >
-                        <CalendarIcon className="mr-1.5 size-3.5" />
-                        {date ? DATE_FMT.format(date) : 'Datum wählen'}
-                    </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={(d) => {
-                            if (d) {
-onChange(formatDateTimeLocal(d, time));
-}
-                        }}
-                        autoFocus
-                    />
-                </PopoverContent>
-            </Popover>
-            <Input
-                type="time"
-                step="60"
-                value={time}
-                onChange={(e) => {
-                    if (date) {
-onChange(formatDateTimeLocal(date, e.target.value));
-}
-                }}
-                className="w-[6.5rem] shrink-0 bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-            />
-        </div>
+        <Popover>
+            <PopoverTrigger asChild>
+                <Button
+                    variant="outline"
+                    className={cn(
+                        'w-full justify-start px-2 font-normal',
+                        !fromDate && !toDate && 'text-muted-foreground',
+                    )}
+                >
+                    <CalendarIcon className="mr-1.5 size-3.5" />
+                    {label}
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                    mode="range"
+                    numberOfMonths={2}
+                    defaultMonth={fromDate ?? toDate}
+                    selected={{ from: fromDate, to: toDate }}
+                    onSelect={(range) => {
+                        if (range?.from) {
+                            onFromChange(formatDateTimeLocal(range.from, fromTime));
+                        } else {
+                            onFromChange('');
+                        }
+
+                        if (range?.to) {
+                            onToChange(formatDateTimeLocal(range.to, toTime || '23:59'));
+                        } else {
+                            onToChange('');
+                        }
+                    }}
+                    autoFocus
+                />
+            </PopoverContent>
+        </Popover>
     );
 }
 
 type Population = 'wild' | 'poultry' | 'captive';
 
 type Props = {
+    disease: string[];
+    onToggleDisease: (v: string) => void;
+    onResetDisease: () => void;
+    diseaseOptions: string[];
     population: Population[];
     onTogglePopulation: (p: Population) => void;
     onResetPopulation: () => void;
@@ -117,6 +132,8 @@ type Props = {
     dateTo: string;
     onDateFromChange: (v: string) => void;
     onDateToChange: (v: string) => void;
+    onResetDate: () => void;
+    dateChanged: boolean;
     species: string[];
     onToggleSpecies: (v: string) => void;
     onResetSpecies: () => void;
@@ -136,6 +153,10 @@ const POP_LABELS: Record<Population, string> = {
 const POP_FALLBACK: Population[] = ['wild', 'poultry', 'captive'];
 
 export default function FilterPanel({
+    disease,
+    onToggleDisease,
+    onResetDisease,
+    diseaseOptions,
     population,
     onTogglePopulation,
     onResetPopulation,
@@ -144,6 +165,8 @@ export default function FilterPanel({
     dateTo,
     onDateFromChange,
     onDateToChange,
+    onResetDate,
+    dateChanged,
     species,
     onToggleSpecies,
     onResetSpecies,
@@ -153,6 +176,7 @@ export default function FilterPanel({
     onResetSubtype,
     subtypeOptions,
 }: Props) {
+    const [diseaseOpen, setDiseaseOpen] = useState(false);
     const [speciesOpen, setSpeciesOpen] = useState(false);
     const [subtypeOpen, setSubtypeOpen] = useState(false);
     const popOptions = populationOptions.length > 0 ? populationOptions : POP_FALLBACK;
@@ -164,15 +188,76 @@ export default function FilterPanel({
             </div>
 
             <div className="space-y-1.5">
-                <label className="text-xs font-medium">Tierseuche</label>
-                <Select value="HPAI" disabled>
-                    <SelectTrigger className="w-full">
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="HPAI">HPAI · aviäre Influenza</SelectItem>
-                    </SelectContent>
-                </Select>
+                <div className="flex items-baseline justify-between">
+                    <label className="text-xs font-medium">Tierseuche</label>
+                    {disease.length > 0 && (
+                        <button
+                            type="button"
+                            onClick={onResetDisease}
+                            className="text-[11px] text-primary hover:underline"
+                        >
+                            Zurücksetzen
+                        </button>
+                    )}
+                </div>
+                <Popover open={diseaseOpen} onOpenChange={setDiseaseOpen}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={diseaseOpen}
+                            className="w-full justify-between px-2 font-normal"
+                        >
+                            <span className="flex flex-1 flex-wrap gap-1 text-left">
+                                {disease.length === 0 ? (
+                                    <span className="text-muted-foreground">
+                                        Alle Tierseuchen
+                                    </span>
+                                ) : (
+                                    disease.map((d) => (
+                                        <Badge
+                                            key={d}
+                                            variant="secondary"
+                                            className="px-1.5 py-0 text-[10px]"
+                                        >
+                                            {d}
+                                        </Badge>
+                                    ))
+                                )}
+                            </span>
+                            <ChevronsUpDownIcon className="ml-1 size-3.5 shrink-0 opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
+                        <Command>
+                            <CommandInput placeholder="Tierseuche suchen…" />
+                            <CommandList>
+                                <CommandEmpty>Keine Treffer.</CommandEmpty>
+                                <CommandGroup>
+                                    {diseaseOptions.map((d) => {
+                                        const active = disease.includes(d);
+
+                                        return (
+                                            <CommandItem
+                                                key={d}
+                                                value={d}
+                                                onSelect={() => onToggleDisease(d)}
+                                            >
+                                                <CheckIcon
+                                                    className={cn(
+                                                        'size-4',
+                                                        active ? 'opacity-100' : 'opacity-0',
+                                                    )}
+                                                />
+                                                {d}
+                                            </CommandItem>
+                                        );
+                                    })}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
             </div>
 
             <div className="space-y-1.5">
@@ -251,11 +336,22 @@ export default function FilterPanel({
             <div className="space-y-1.5">
                 <div className="flex items-baseline justify-between">
                     <label className="text-xs font-medium">Zeitraum</label>
+                    {dateChanged && (
+                        <button
+                            type="button"
+                            onClick={onResetDate}
+                            className="text-[11px] text-primary hover:underline"
+                        >
+                            Zurücksetzen
+                        </button>
+                    )}
                 </div>
-                <div className="space-y-2">
-                    <DateTimePicker value={dateFrom} onChange={onDateFromChange} />
-                    <DateTimePicker value={dateTo} onChange={onDateToChange} />
-                </div>
+                <DateRangePicker
+                    from={dateFrom}
+                    to={dateTo}
+                    onFromChange={onDateFromChange}
+                    onToChange={onDateToChange}
+                />
             </div>
 
             <div className="space-y-1.5">
