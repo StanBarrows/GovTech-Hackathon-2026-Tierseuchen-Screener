@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
@@ -111,6 +112,7 @@ def enrich_source(
         if progress_every is not None
         else config.interpreter.progress_every
     )
+    resolved_workers = config.interpreter.workers
     pending_records = []
     reused_records: dict[str, dict[str, Any]] = {}
     fingerprints: dict[str, str] = {}
@@ -154,6 +156,7 @@ def enrich_source(
                 pending_records,
                 extractor=resolved_extractor,
                 progress_every=resolved_progress_every,
+                workers=resolved_workers,
             )
         }
 
@@ -224,25 +227,43 @@ def enrich_records(
     *,
     extractor: Extractor,
     progress_every: int | None = None,
+    workers: int = 1,
 ) -> list[dict[str, Any]]:
-    enriched = []
     total = len(records)
-    for index, record in enumerate(records, start=1):
-        try:
-            labels = extractor(record)
-            if not isinstance(labels, dict):
-                raise TypeError("extractor must return a JSON object")
-            enriched.append(merge_semantic_fields(record, labels))
-        except Exception as exc:
-            enriched.append(
-                {
-                    **record,
-                    "_error": f"extraction: {type(exc).__name__}: {exc}",
-                }
-            )
-        if _should_log_progress(index, total, progress_every):
-            LOGGER.info("Enriched %s/%s records", index, total)
+    if total == 0:
+        return []
+    resolved_workers = max(1, min(workers, total))
+    enriched = []
+    if resolved_workers == 1:
+        for index, record in enumerate(records, start=1):
+            enriched.append(_enrich_record(record, extractor=extractor))
+            if _should_log_progress(index, total, progress_every):
+                LOGGER.info("Enriched %s/%s records", index, total)
+        return enriched
+
+    with ThreadPoolExecutor(max_workers=resolved_workers) as executor:
+        results = executor.map(
+            lambda record: _enrich_record(record, extractor=extractor),
+            records,
+        )
+        for index, enriched_record in enumerate(results, start=1):
+            enriched.append(enriched_record)
+            if _should_log_progress(index, total, progress_every):
+                LOGGER.info("Enriched %s/%s records", index, total)
     return enriched
+
+
+def _enrich_record(record: dict[str, Any], *, extractor: Extractor) -> dict[str, Any]:
+    try:
+        labels = extractor(record)
+        if not isinstance(labels, dict):
+            raise TypeError("extractor must return a JSON object")
+        return merge_semantic_fields(record, labels)
+    except Exception as exc:
+        return {
+            **record,
+            "_error": f"extraction: {type(exc).__name__}: {exc}",
+        }
 
 
 def _should_log_progress(index: int, total: int, progress_every: int | None) -> bool:

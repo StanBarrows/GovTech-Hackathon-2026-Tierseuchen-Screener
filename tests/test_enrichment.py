@@ -1,6 +1,7 @@
 import importlib.util
 import json
 import logging
+import threading
 from dataclasses import fields, replace
 from types import SimpleNamespace
 
@@ -158,6 +159,28 @@ def test_enrich_records_preserves_record_error_and_continues():
     assert enriched[0]["report_id"] == "gefluegelnews:polen"
     assert enriched[0]["_error"] == "extraction: ValueError: bad model json"
     assert enriched[1]["disease_name"] == "Avian influenza"
+
+
+def test_enrich_records_runs_extractor_calls_in_parallel_and_preserves_order():
+    first = _candidate_record()
+    second = {**_candidate_record(), "report_id": "gefluegelnews:second"}
+    second_started = threading.Event()
+
+    def fake_extract(record):
+        if record["report_id"] == "gefluegelnews:polen":
+            if not second_started.wait(timeout=1.0):
+                raise TimeoutError("second extraction did not start in parallel")
+            return {"disease_name": "First"}
+        second_started.set()
+        return {"disease_name": "Second"}
+
+    enriched = enrich_records([first, second], extractor=fake_extract, workers=2)
+
+    assert [record["report_id"] for record in enriched] == [
+        "gefluegelnews:polen",
+        "gefluegelnews:second",
+    ]
+    assert [record["disease_name"] for record in enriched] == ["First", "Second"]
 
 
 def test_enrich_source_writes_enriched_jsonl_with_fake_extractor(tmp_path):

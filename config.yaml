@@ -24,6 +24,7 @@ interpreter:
   api_key_env: OPENROUTER_API_KEY
   timeout_seconds: 120.0
   progress_every: 10
+  workers: 20
   prompts:
     gefluegelnews: code/backend/interpreter/SystemPromptGN.md
     padi_web: code/backend/interpreter/SystemPromptPADI.md
