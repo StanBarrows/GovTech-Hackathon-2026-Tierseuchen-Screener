@@ -38,7 +38,7 @@ sources:
     raw_subdir: raw_html
     timeout_seconds: 20.0
     delay_seconds: 0.5
-    limit:
+    limit: 300
   padi_web:
     base_url: https://padi-web.cirad.fr
     articles_api_path: /en/articles/api/

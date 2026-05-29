@@ -4,6 +4,7 @@ from govtech_tierseuchen import cli
 from govtech_tierseuchen.cli import build_parser, main
 from govtech_tierseuchen.config import load_config
 from govtech_tierseuchen.enrichment import enrich_source
+from govtech_tierseuchen.gefluegelnews import cache_html
 from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
 from govtech_tierseuchen.models import FetchedArticle, NewsArticle
 
@@ -174,6 +175,115 @@ def test_fetch_skips_current_cached_article_on_second_run(monkeypatch, tmp_path)
     assert calls == [source_link]
     assert rows[0]["content_hash"] == "hash-current"
     assert (tmp_path / "pipeline_state.sqlite").exists()
+
+
+def test_fetch_reuses_parsed_article_cache_when_manifest_lacks_fetch_metadata(
+    monkeypatch, tmp_path, capsys
+):
+    source_link = "https://www.gefluegelnews.de/article/current"
+    raw_path = tmp_path / "gefluegelnews" / "raw_html" / "current.html"
+    raw_path.parent.mkdir(parents=True)
+    raw_path.write_text("<html>current</html>", encoding="utf-8")
+    write_jsonl(
+        tmp_path / "gefluegelnews" / "manifest.jsonl",
+        [
+            {
+                "source_link": source_link,
+                "last_modified": "2026-05-29T00:00:04+00:00",
+            }
+        ],
+    )
+    write_jsonl(
+        tmp_path / "gefluegelnews" / "articles.jsonl",
+        [
+            {
+                "source_link": source_link,
+                "retrieved_at": "2026-05-28T12:00:00+00:00",
+                "raw_html_path": str(raw_path),
+                "content_hash": "hash-current",
+                "canonical_url": source_link,
+            }
+        ],
+    )
+
+    def fail_fetch_and_cache_article(*args, **kwargs):
+        raise AssertionError("cached parsed article should avoid refetch")
+
+    monkeypatch.setattr(
+        "govtech_tierseuchen.gefluegelnews.fetch_and_cache_article",
+        fail_fetch_and_cache_article,
+    )
+
+    assert (
+        main(
+            [
+                "fetch",
+                "gefluegelnews",
+                "--data-dir",
+                str(tmp_path),
+                "--delay-seconds",
+                "0",
+            ]
+        )
+        == 0
+    )
+
+    captured = capsys.readouterr()
+    rows = read_jsonl(tmp_path / "gefluegelnews" / "manifest.jsonl")
+    assert rows[0]["raw_html_path"] == str(raw_path)
+    assert rows[0]["content_hash"] == "hash-current"
+    assert rows[0]["fetched_at"] == "2026-05-28T12:00:00+00:00"
+    assert "skipped 1 current" in captured.out
+
+
+def test_fetch_reuses_raw_cache_when_manifest_lacks_fetch_metadata(
+    monkeypatch, tmp_path, capsys
+):
+    source_link = "https://www.gefluegelnews.de/article/current"
+    cached = cache_html(
+        base_dir=tmp_path,
+        source_link=source_link,
+        html="<html>current</html>",
+        status_code=200,
+        fetched_at=datetime(2026, 5, 28, 12, 0, tzinfo=timezone.utc),
+    )
+    write_jsonl(
+        tmp_path / "gefluegelnews" / "manifest.jsonl",
+        [
+            {
+                "source_link": source_link,
+                "last_modified": "2026-05-29T00:00:04+00:00",
+            }
+        ],
+    )
+
+    def fail_fetch_and_cache_article(*args, **kwargs):
+        raise AssertionError("raw cache should avoid refetch")
+
+    monkeypatch.setattr(
+        "govtech_tierseuchen.gefluegelnews.fetch_and_cache_article",
+        fail_fetch_and_cache_article,
+    )
+
+    assert (
+        main(
+            [
+                "fetch",
+                "gefluegelnews",
+                "--data-dir",
+                str(tmp_path),
+                "--delay-seconds",
+                "0",
+            ]
+        )
+        == 0
+    )
+
+    captured = capsys.readouterr()
+    rows = read_jsonl(tmp_path / "gefluegelnews" / "manifest.jsonl")
+    assert rows[0]["raw_html_path"] == cached.raw_html_path
+    assert rows[0]["content_hash"] == cached.content_hash
+    assert "skipped 1 current" in captured.out
 
 
 def test_cli_force_reprocesses_current_fetch(monkeypatch, tmp_path):

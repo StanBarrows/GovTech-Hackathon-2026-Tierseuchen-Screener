@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('source_id')->nullable()->constrained();
-
+            $table->string('source');
             $table->string('title');
-            $table->text('summary')->nullable();
+            $table->string('url')->nullable();
+            $table->string('teaser')->nullable();
+            $table->longText('body')->nullable();
             $table->date('report_date');
 
             $table->string('admin_level_1')->nullable()->index();
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->string('admin_level_3')->nullable();
 
             $table->decimal('relevance_score', 5, 2)->nullable();
+            $table->string('relevance_score_string')->nullable();
             $table->decimal('distance_km', 8, 2)->nullable();
 
             $table->timestamps();

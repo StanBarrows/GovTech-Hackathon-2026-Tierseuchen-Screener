@@ -106,7 +106,7 @@ return;
                     'heatmap-weight': [
                         'interpolate', ['linear'], ['get', 'relevance'],
                         0, 0,
-                        10, 1,
+                        1, 1,
                     ],
                     'heatmap-intensity': [
                         'interpolate', ['linear'], ['zoom'],

@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Report;
-use App\Models\Source;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,14 +18,17 @@ class ReportFactory extends Factory
     public function definition(): array
     {
         return [
-            'source_id' => Source::query()->inRandomOrder()->value('id') ?? Source::factory(),
+            'source' => fake()->randomElement(['gefluegelnews', 'padi_web']),
             'title' => fake()->sentence(6),
-            'summary' => fake()->optional()->paragraph(),
+            'url' => fake()->optional()->url(),
+            'teaser' => fake()->optional()->sentence(),
+            'body' => fake()->optional()->paragraphs(3, true),
             'report_date' => fake()->dateTimeBetween('-1 year')->format('Y-m-d'),
             'admin_level_1' => fake()->randomElement(['BE', 'ZH', 'TG', 'VD', 'GE', 'SG']),
             'admin_level_2' => fake()->optional()->city(),
             'admin_level_3' => null,
             'relevance_score' => fake()->optional()->randomFloat(2, 0, 100),
+            'relevance_score_string' => fake()->optional()->randomElement(['high', 'medium', 'low']),
             'distance_km' => fake()->optional()->randomFloat(2, 0, 300),
         ];
     }

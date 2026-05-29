@@ -28,10 +28,13 @@ class EventsSeeder extends Seeder
     private const BERN_LNG = 7.4442526092578625;
 
     /**
-     * Scoring tunables. relevance_score = W_PROXIMITY*proximity + W_DENSITY*density
-     * + W_SEVERITY*severity, each term in [0, 1] → score in roughly [0, 5.2]. The
-     * dashboard bins this into Hoch (>= 3) / Mittel (>= 1) / Tief, and the stored
-     * priority enum uses the same thresholds.
+     * Scoring tunables. relevance_score = min(1, proximity + W_DENSITY*density +
+     * W_SEVERITY*severity), clamped to [0, 1]. Proximity to Bern is the base signal
+     * (an event right next to Bern starts near 1.0; a far-off flyway branch in
+     * France, Italy or the Balkans starts near 0), and local density + outbreak
+     * severity are smaller bonuses that can only nudge a nearby event upward — they
+     * can never lift a distant one. The dashboard bins the score into Rot (>= 0.8) /
+     * Orange (>= 0.5) / Grün, and the stored priority enum uses the same thresholds.
      */
     private const PROXIMITY_RADIUS_KM = 120.0;   // proximity decay scale
 
@@ -39,21 +42,26 @@ class EventsSeeder extends Seeder
 
     private const DENSITY_FULL = 150;            // neighbour count that saturates the density term
 
-    private const SEVERITY_REF = 5000;           // case count that saturates the severity term
+    private const SEVERITY_REF = 500;            // case count that saturates the severity term
 
-    private const W_PROXIMITY = 3.0;
+    private const W_DENSITY = 0.15;              // max bonus from a dense cluster
 
-    private const W_DENSITY = 1.5;
+    private const W_SEVERITY = 0.15;             // max bonus from a severe outbreak
 
-    private const W_SEVERITY = 0.7;
+    private const PRIORITY_HIGH = 0.8;
+
+    private const PRIORITY_MEDIUM = 0.5;
 
     /**
-     * Seed ~10k HPAI (Geflügelpest) outbreak events forming a spatiotemporal
-     * migration flow from northern Europe down to Switzerland over three months.
+     * Seed ~10k HPAI (Geflügelpest) outbreak events spreading along several European
+     * bird-migration flyways over three months. One stream funnels down through
+     * Germany into Switzerland (the operationally relevant branch); the others fan
+     * out west into France/Iberia, east into the Black Sea flyway and south into
+     * Italy — mirroring how the virus actually disperses with migrating birds.
      *
-     * Latitude is correlated with time: early March events sit in the north,
-     * late May events arrive on the Swiss plateau — mimicking a bird flyway
-     * carrying the virus southward.
+     * Time is correlated with progress along each stream (early March at the
+     * northern start, late May at the destination). Relevance is always measured as
+     * proximity to Bern, so the off-axis branches register as low-priority noise.
      */
     public function run(): void
     {
@@ -80,17 +88,73 @@ class EventsSeeder extends Seeder
         $subtypes = ['H5N1', 'H5N1', 'H5N1', 'H5N1', 'H5N1', 'H5N5'];
         $sources = ['BLV', 'Kantonstierarzt', 'Labor', 'Tierarzt', 'Bürger-Meldung'];
 
-        // Migration corridor: north (t=0, early) -> Switzerland (t=1, late).
-        $corridor = [
-            ['t' => 0.00, 'lat' => 55.30, 'lng' => 8.60, 'admin1' => 'Dänemark', 'admin2' => 'Syddanmark (Wattenmeer)'],
-            ['t' => 0.12, 'lat' => 54.30, 'lng' => 9.00, 'admin1' => 'Schleswig-Holstein', 'admin2' => 'Nordfriesland'],
-            ['t' => 0.25, 'lat' => 53.20, 'lng' => 9.00, 'admin1' => 'Niedersachsen', 'admin2' => 'Bremen/Hamburg'],
-            ['t' => 0.40, 'lat' => 52.00, 'lng' => 9.30, 'admin1' => 'Nordrhein-Westfalen', 'admin2' => 'Ostwestfalen'],
-            ['t' => 0.55, 'lat' => 50.50, 'lng' => 8.70, 'admin1' => 'Hessen', 'admin2' => 'Mittelhessen'],
-            ['t' => 0.70, 'lat' => 49.00, 'lng' => 9.00, 'admin1' => 'Baden-Württemberg', 'admin2' => 'Heilbronn-Franken'],
-            ['t' => 0.85, 'lat' => 47.70, 'lng' => 9.20, 'admin1' => 'Baden-Württemberg', 'admin2' => 'Bodensee'],
-            ['t' => 1.00, 'lat' => 46.95, 'lng' => 7.60, 'admin1' => 'Schweiz', 'admin2' => 'Schweizer Mittelland'],
+        // Bird-migration flyways. Each stream is a polyline of waypoints (t in [0, 1],
+        // early -> late) carrying the virus from a northern start to a destination.
+        // 'weight' sets how many events follow the stream; only the Swiss-bound stream
+        // snaps onto the lake hotspots below. The non-Swiss streams scatter HPAI across
+        // Europe so the map shows a realistic multi-directional spread — but, being far
+        // from Bern, they score as low relevance.
+        $streams = [
+            // Central flyway: Wattenmeer -> Germany -> Swiss plateau (the relevant one).
+            [
+                'weight' => 5,
+                'snapToSwiss' => true,
+                'path' => [
+                    ['t' => 0.00, 'lat' => 55.30, 'lng' => 8.60, 'admin1' => 'Dänemark', 'admin2' => 'Syddanmark (Wattenmeer)'],
+                    ['t' => 0.12, 'lat' => 54.30, 'lng' => 9.00, 'admin1' => 'Schleswig-Holstein', 'admin2' => 'Nordfriesland'],
+                    ['t' => 0.25, 'lat' => 53.20, 'lng' => 9.00, 'admin1' => 'Niedersachsen', 'admin2' => 'Bremen/Hamburg'],
+                    ['t' => 0.40, 'lat' => 52.00, 'lng' => 9.30, 'admin1' => 'Nordrhein-Westfalen', 'admin2' => 'Ostwestfalen'],
+                    ['t' => 0.55, 'lat' => 50.50, 'lng' => 8.70, 'admin1' => 'Hessen', 'admin2' => 'Mittelhessen'],
+                    ['t' => 0.70, 'lat' => 49.00, 'lng' => 9.00, 'admin1' => 'Baden-Württemberg', 'admin2' => 'Heilbronn-Franken'],
+                    ['t' => 0.85, 'lat' => 47.70, 'lng' => 9.20, 'admin1' => 'Baden-Württemberg', 'admin2' => 'Bodensee'],
+                    ['t' => 1.00, 'lat' => 46.95, 'lng' => 7.60, 'admin1' => 'Schweiz', 'admin2' => 'Schweizer Mittelland'],
+                ],
+            ],
+            // East-Atlantic flyway: Netherlands -> France -> Iberia.
+            [
+                'weight' => 3,
+                'snapToSwiss' => false,
+                'path' => [
+                    ['t' => 0.00, 'lat' => 53.20, 'lng' => 6.50, 'admin1' => 'Niederlande', 'admin2' => 'Friesland'],
+                    ['t' => 0.30, 'lat' => 51.00, 'lng' => 3.20, 'admin1' => 'Belgien', 'admin2' => 'Flandern'],
+                    ['t' => 0.55, 'lat' => 48.80, 'lng' => 2.30, 'admin1' => 'Frankreich', 'admin2' => 'Île-de-France'],
+                    ['t' => 0.78, 'lat' => 45.00, 'lng' => 0.50, 'admin1' => 'Frankreich', 'admin2' => 'Nouvelle-Aquitaine'],
+                    ['t' => 1.00, 'lat' => 41.60, 'lng' => 1.60, 'admin1' => 'Spanien', 'admin2' => 'Katalonien'],
+                ],
+            ],
+            // Black-Sea / Mediterranean flyway: Poland -> Austria -> Balkans.
+            [
+                'weight' => 3,
+                'snapToSwiss' => false,
+                'path' => [
+                    ['t' => 0.00, 'lat' => 54.20, 'lng' => 18.60, 'admin1' => 'Polen', 'admin2' => 'Pommern'],
+                    ['t' => 0.30, 'lat' => 50.10, 'lng' => 14.40, 'admin1' => 'Tschechien', 'admin2' => 'Prag'],
+                    ['t' => 0.55, 'lat' => 48.20, 'lng' => 16.40, 'admin1' => 'Österreich', 'admin2' => 'Wien/Niederösterreich'],
+                    ['t' => 0.78, 'lat' => 47.50, 'lng' => 19.05, 'admin1' => 'Ungarn', 'admin2' => 'Budapest'],
+                    ['t' => 1.00, 'lat' => 44.80, 'lng' => 20.45, 'admin1' => 'Serbien', 'admin2' => 'Belgrad'],
+                ],
+            ],
+            // Alpine-southbound flyway: North Germany -> Bavaria -> Po valley.
+            [
+                'weight' => 2,
+                'snapToSwiss' => false,
+                'path' => [
+                    ['t' => 0.00, 'lat' => 52.50, 'lng' => 13.40, 'admin1' => 'Deutschland', 'admin2' => 'Brandenburg'],
+                    ['t' => 0.35, 'lat' => 49.45, 'lng' => 11.07, 'admin1' => 'Bayern', 'admin2' => 'Mittelfranken'],
+                    ['t' => 0.60, 'lat' => 47.27, 'lng' => 11.40, 'admin1' => 'Österreich', 'admin2' => 'Tirol'],
+                    ['t' => 0.82, 'lat' => 45.46, 'lng' => 9.19, 'admin1' => 'Italien', 'admin2' => 'Lombardei'],
+                    ['t' => 1.00, 'lat' => 44.50, 'lng' => 11.34, 'admin1' => 'Italien', 'admin2' => 'Emilia-Romagna'],
+                ],
+            ],
         ];
+
+        // Expand the stream weights into a flat pick-list (repetition encodes probability).
+        $streamPicker = [];
+        foreach ($streams as $index => $stream) {
+            for ($w = 0; $w < $stream['weight']; $w++) {
+                $streamPicker[] = $index;
+            }
+        }
 
         // Swiss lake hotspots (lat <= ~47.7): cluster Swiss events on real cantons.
         $swissHotspots = [
@@ -117,21 +181,24 @@ class EventsSeeder extends Seeder
         $histogram = [];
 
         for ($i = 1; $i <= self::COUNT; $i++) {
-            // Skew slightly toward Switzerland so density builds up in the south.
+            // Pick a flyway, then a position along it. Skew toward the destination so
+            // density builds up at the southern end of each stream.
+            $stream = $streams[$streamPicker[array_rand($streamPicker)]];
+            $path = $stream['path'];
             $t = (mt_rand(0, mt_getrandmax()) / mt_getrandmax()) ** 0.7;
 
-            // Time follows the corridor parameter, with a few days of jitter.
+            // Time follows progress along the stream, with a few days of jitter.
             $offset = (int) round($t * $span + $this->gauss() * 3 * 86400);
             $occurredTs = max(0, min($span, $offset));
             $occurredAt = $start->copy()->addSeconds($occurredTs)->format('Y-m-d H:i:s');
 
-            [$lat, $lng] = $this->interpolate($corridor, $t);
+            [$lat, $lng] = $this->interpolate($path, $t);
             $lat += $this->gauss() * 0.35;
             $lng += $this->gauss() * 0.50;
 
             $population = $populations[array_rand($populations)];
 
-            if ($lat <= 47.7) {
+            if ($stream['snapToSwiss'] && $lat <= 47.7) {
                 // Swiss band: snap onto a lake hotspot for realistic clustering.
                 $hotspot = $swissHotspots[array_rand($swissHotspots)];
                 $lat = $hotspot['lat'] + $this->gauss() * $hotspot['spread'];
@@ -139,7 +206,7 @@ class EventsSeeder extends Seeder
                 $admin1 = $hotspot['canton'];
                 $admin2 = $hotspot['name'];
             } else {
-                $waypoint = $this->nearestWaypoint($corridor, $t);
+                $waypoint = $this->nearestWaypoint($path, $t);
                 $admin1 = $waypoint['admin1'];
                 $admin2 = $waypoint['admin2'];
             }
@@ -203,13 +270,13 @@ class EventsSeeder extends Seeder
             // don't collapse to the extremes.
             $severity = min(1.0, log10($row['cases'] + 1) / log10(self::SEVERITY_REF));
 
-            $score = self::W_PROXIMITY * $proximity
+            $score = min(1.0, $proximity
                 + self::W_DENSITY * $density
-                + self::W_SEVERITY * $severity;
+                + self::W_SEVERITY * $severity);
 
             $priority = match (true) {
-                $score >= 3.0 => EventPriority::High,
-                $score >= 1.0 => EventPriority::Medium,
+                $score >= self::PRIORITY_HIGH => EventPriority::High,
+                $score >= self::PRIORITY_MEDIUM => EventPriority::Medium,
                 default => EventPriority::Low,
             };
 
@@ -241,22 +308,22 @@ class EventsSeeder extends Seeder
     {
         switch ($population) {
             case 'Nutzgeflügel':
-                // Commercial poultry flock; a fraction of the flock falls ill.
-                $susceptible = mt_rand(200, 12000);
-                $cases = max(1, (int) round($susceptible * (mt_rand(2, 15) / 100)));
+                // Commercial poultry flock; a small fraction of the flock falls ill.
+                $susceptible = mt_rand(100, 4000);
+                $cases = max(1, (int) round($susceptible * (mt_rand(1, 8) / 100)));
                 $deaths = mt_rand((int) round($cases * 0.3), $cases);
                 break;
 
             case 'Gehaltene Vögel':
                 // Captive / backyard holding; small numbers.
-                $susceptible = mt_rand(3, 150);
-                $cases = max(1, (int) round($susceptible * (mt_rand(5, 40) / 100)));
+                $susceptible = mt_rand(3, 80);
+                $cases = max(1, (int) round($susceptible * (mt_rand(5, 30) / 100)));
                 $deaths = mt_rand(0, $cases);
                 break;
 
             default:
                 // Wild birds, usually found dead in small numbers (high mortality).
-                $susceptible = mt_rand(1, 20);
+                $susceptible = mt_rand(1, 12);
                 $cases = mt_rand(1, $susceptible);
                 $deaths = mt_rand((int) ceil($cases * 0.6), $cases);
                 break;

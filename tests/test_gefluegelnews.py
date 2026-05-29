@@ -389,10 +389,24 @@ def test_cli_parser_leaves_request_defaults_for_selected_source_resolution():
     assert args.limit is None
 
 
+def test_limit_zero_overrides_source_default_to_unbounded():
+    config = load_config()
+
+    _, _, limit = cli._resolve_source_options(
+        timeout_seconds=None,
+        delay_seconds=None,
+        limit=0,
+        source_config=config.sources["gefluegelnews"],
+    )
+
+    assert limit is None
+
+
 def test_config_exposes_source_url_validation_and_confidence_thresholds():
     config = load_config()
 
     assert config.sources["gefluegelnews"].article_path_prefix == "/article/"
+    assert config.sources["gefluegelnews"].limit == 300
     assert config.sources["padi_web"].articles_api_path == "/en/articles/api/"
     assert config.disease_reports.confidence_thresholds == {
         "high": 4,

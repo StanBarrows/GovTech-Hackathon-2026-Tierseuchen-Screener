@@ -99,6 +99,10 @@ Select sources with repeatable `--source` options:
 uv run ts-screener run-all --source gefluegelnews --source padi_web
 ```
 
+The Gefluegelnews source is capped by default in `config.yaml` so normal
+`run-all` runs do not backfill the full historical sitemap. Use `--limit 0` for
+an explicit full backfill, or pass a larger `--limit <n>`.
+
 Individual stages remain available:
 
 ```bash

@@ -270,7 +270,7 @@ export default function CaseList({ cases, centerLat, centerLng, radiusKm, releva
             const distance = resolveDistanceKm(c, center, radiusKm, relevanceContext);
             const r = resolveRelevance(c, center, radiusKm, relevanceContext);
             const priority: 'high' | 'medium' | 'low' =
-                r >= 3 ? 'high' : r >= 1 ? 'medium' : 'low';
+                r >= 0.8 ? 'high' : r >= 0.5 ? 'medium' : 'low';
 
             return {
                 raw: c,

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -100,7 +101,12 @@ def _add_common_options(subparser: argparse.ArgumentParser) -> None:
     subparser.add_argument("--data-dir", default=None)
     subparser.add_argument("--timeout-seconds", type=float, default=None)
     subparser.add_argument("--delay-seconds", type=float, default=None)
-    subparser.add_argument("--limit", type=int, default=None)
+    subparser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Maximum records to process; use 0 to disable a source default limit.",
+    )
     subparser.add_argument(
         "--force",
         action="store_true",
@@ -199,7 +205,10 @@ def _resolve_source_options(
     resolved_delay_seconds = (
         delay_seconds if delay_seconds is not None else source_config.delay_seconds
     )
-    resolved_limit = limit if limit is not None else source_config.limit
+    if limit == 0:
+        resolved_limit = None
+    else:
+        resolved_limit = limit if limit is not None else source_config.limit
     return resolved_timeout_seconds, resolved_delay_seconds, resolved_limit
 
 
@@ -307,11 +316,89 @@ def _extract_fingerprint(row: dict[str, Any], config: AppConfig) -> str:
     )
 
 
-def _cached_raw_artifact_exists(row: dict[str, Any], data_dir: Path) -> bool:
+def _cached_raw_artifact_is_safe(
+    row: dict[str, Any], data_dir: Path, source: str, config: AppConfig
+) -> bool:
     raw_path_value = row.get("raw_html_path")
     if not raw_path_value or not row.get("content_hash"):
         return False
-    return _resolve_raw_artifact_path(Path(raw_path_value), data_dir).exists()
+    raw_path = _resolve_raw_artifact_path(Path(raw_path_value), data_dir)
+    return _is_relative_to(raw_path, config.source_dir(data_dir, source)) and (
+        raw_path.exists()
+    )
+
+
+def _fetch_metadata_from_existing_articles(
+    article_rows: list[dict[str, Any]],
+    data_dir: Path,
+    source: str,
+    config: AppConfig,
+) -> dict[str, dict[str, Any]]:
+    metadata_by_link = {}
+    for article in article_rows:
+        source_link = _record_source_link(article)
+        if not source_link or not _cached_raw_artifact_is_safe(
+            article, data_dir, source, config
+        ):
+            continue
+        metadata = {
+            "raw_html_path": article["raw_html_path"],
+            "content_hash": article["content_hash"],
+        }
+        if article.get("retrieved_at"):
+            metadata["fetched_at"] = article["retrieved_at"]
+        if article.get("canonical_url"):
+            metadata["canonical_url"] = article["canonical_url"]
+        if article.get("status_code") is not None:
+            metadata["status_code"] = article["status_code"]
+        metadata_by_link[source_link] = metadata
+    return metadata_by_link
+
+
+def _merge_cached_fetch_metadata(
+    row: dict[str, Any], metadata: dict[str, Any] | None
+) -> dict[str, Any]:
+    if not metadata:
+        return row
+    merged = dict(row)
+    for key, value in metadata.items():
+        if not merged.get(key):
+            merged[key] = value
+    return merged
+
+
+def _raw_artifact_path_for_source(
+    source: str, data_dir: Path, source_link: str
+) -> Path:
+    if source == "gefluegelnews":
+        from govtech_tierseuchen.gefluegelnews import raw_html_path
+
+        return raw_html_path(data_dir, source_link)
+    if source == "padi_web":
+        from govtech_tierseuchen.padi_web import raw_json_path
+
+        return raw_json_path(data_dir, source_link)
+    raise ValueError(f"Unsupported source: {source}")
+
+
+def _fetch_metadata_from_raw_cache(
+    row: dict[str, Any], data_dir: Path, source: str, config: AppConfig
+) -> dict[str, Any] | None:
+    source_link = _record_source_link(row)
+    if not source_link:
+        return None
+    raw_path = _raw_artifact_path_for_source(source, data_dir, source_link)
+    raw_path_row = {"raw_html_path": str(raw_path), "content_hash": "cached"}
+    if not _cached_raw_artifact_is_safe(raw_path_row, data_dir, source, config):
+        return None
+    try:
+        content_hash = hashlib.sha256(raw_path.read_bytes()).hexdigest()
+    except OSError:
+        return None
+    return {
+        "raw_html_path": str(raw_path),
+        "content_hash": content_hash,
+    }
 
 
 def _fetcher_for_source(source: str) -> Callable[..., Any]:
@@ -618,6 +705,12 @@ def _fetch(
     fetch_and_cache_article = _fetcher_for_source(source)
     manifest_path = config.output_path(data_dir, source, "manifest")
     rows = read_jsonl(manifest_path)
+    cached_fetch_metadata = _fetch_metadata_from_existing_articles(
+        read_jsonl(config.output_path(data_dir, source, "articles")),
+        data_dir,
+        source,
+        config,
+    )
     selected_rows = rows if limit is None else rows[:limit]
     untouched_rows = [] if limit is None else rows[limit:]
     fetched_rows = []
@@ -638,22 +731,17 @@ def _fetch(
         )
         for row in selected_rows:
             record_key = _record_source_link(row)
-            fingerprint = _fetch_fingerprint(row)
-            stored_fingerprint = (
-                state.fingerprint_for(
-                    source=source, stage="fetch", record_key=record_key
-                )
-                if record_key
-                else None
+            row = _merge_cached_fetch_metadata(
+                row, cached_fetch_metadata.get(record_key)
             )
+            row = _merge_cached_fetch_metadata(
+                row, _fetch_metadata_from_raw_cache(row, data_dir, source, config)
+            )
+            fingerprint = _fetch_fingerprint(row)
             if (
                 record_key
                 and not force
-                and _cached_raw_artifact_exists(row, data_dir)
-                and (
-                    stored_fingerprint == fingerprint
-                    or (stored_fingerprint is None and row.get("content_hash"))
-                )
+                and _cached_raw_artifact_is_safe(row, data_dir, source, config)
             ):
                 fetched_rows.append(row)
                 state_updates.append((record_key, fingerprint))
