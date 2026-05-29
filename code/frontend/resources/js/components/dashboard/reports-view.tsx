@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -16,88 +17,74 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import type { Report } from '@/types/report';
 
-type ReportRow = {
-    region: string;
-    cases: number;
-    species: string;
-    trend: string;
+type Props = {
+    reports: Report[];
 };
 
-type Report = {
-    id: string;
-    title: string;
-    date: string;
-    rows: ReportRow[];
-};
+function relevanceVariant(label?: string | null) {
+    switch (label?.toLowerCase()) {
+        case 'high':
+            return 'destructive' as const;
+        case 'medium':
+            return 'secondary' as const;
+        default:
+            return 'outline' as const;
+    }
+}
 
-const PLACEHOLDER_REPORTS: Report[] = [
-    {
-        id: 'R-001',
-        title: 'Wochenbericht HPAI',
-        date: '2026-05-26',
-        rows: [
-            { region: 'Zürich', cases: 12, species: 'Wildvögel', trend: '↑' },
-            { region: 'Bern', cases: 7, species: 'Geflügel', trend: '→' },
-            { region: 'Genf', cases: 3, species: 'Wildvögel', trend: '↓' },
-            { region: 'Tessin', cases: 5, species: 'Geflügel', trend: '↑' },
-        ],
-    },
-    {
-        id: 'R-002',
-        title: 'Lagebericht ASP Grenzregion',
-        date: '2026-05-19',
-        rows: [
-            { region: 'Basel-Stadt', cases: 0, species: 'Wildschwein', trend: '→' },
-            { region: 'Schaffhausen', cases: 2, species: 'Wildschwein', trend: '↑' },
-            { region: 'Thurgau', cases: 1, species: 'Wildschwein', trend: '→' },
-        ],
-    },
-    {
-        id: 'R-003',
-        title: 'Monatsbericht Mai',
-        date: '2026-05-01',
-        rows: [
-            { region: 'Zürich', cases: 42, species: 'Diverse', trend: '↑' },
-            { region: 'Bern', cases: 31, species: 'Diverse', trend: '→' },
-            { region: 'Waadt', cases: 18, species: 'Diverse', trend: '↓' },
-            { region: 'Wallis', cases: 9, species: 'Diverse', trend: '→' },
-            { region: 'St. Gallen', cases: 14, species: 'Diverse', trend: '↑' },
-        ],
-    },
-    {
-        id: 'R-004',
-        title: 'Sonderbericht Geflügel',
-        date: '2026-04-22',
-        rows: [
-            { region: 'Luzern', cases: 4, species: 'Hühner', trend: '↑' },
-            { region: 'Aargau', cases: 6, species: 'Enten', trend: '↑' },
-            { region: 'Solothurn', cases: 2, species: 'Hühner', trend: '→' },
-        ],
-    },
-];
+function formatRegion(report: Report): string {
+    return [report.admin1, report.admin2].filter(Boolean).join(', ') || '–';
+}
 
-export default function ReportsView() {
+export default function ReportsView({ reports }: Props) {
     const [activeReport, setActiveReport] = useState<Report | null>(null);
+
+    if (reports.length === 0) {
+        return (
+            <div className="flex min-h-[40vh] items-center justify-center rounded-md border bg-muted/30 p-4 text-sm text-muted-foreground">
+                Keine Berichte im gewählten Zeitraum.
+            </div>
+        );
+    }
 
     return (
         <>
-            <div className="rounded-md border">
+            <div className="max-h-[calc(100vh-12rem)] overflow-auto rounded-md border">
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>ID</TableHead>
+                            <TableHead className="w-[1%] whitespace-nowrap">Datum</TableHead>
+                            <TableHead>Quelle</TableHead>
                             <TableHead>Titel</TableHead>
-                            <TableHead>Datum</TableHead>
+                            <TableHead>Region</TableHead>
+                            <TableHead>Relevanz</TableHead>
                             <TableHead className="w-[1%] text-right">Aktion</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {PLACEHOLDER_REPORTS.map((r) => (
+                        {reports.map((r) => (
                             <TableRow key={r.id}>
-                                <TableCell className="font-mono text-xs">{r.id}</TableCell>
-                                <TableCell>{r.title}</TableCell>
-                                <TableCell>{r.date}</TableCell>
+                                <TableCell className="whitespace-nowrap tabular-nums">
+                                    {r.reportDate ?? '–'}
+                                </TableCell>
+                                <TableCell className="text-muted-foreground">
+                                    {r.source ?? '–'}
+                                </TableCell>
+                                <TableCell className="max-w-md truncate" title={r.title}>
+                                    {r.title}
+                                </TableCell>
+                                <TableCell>{formatRegion(r)}</TableCell>
+                                <TableCell>
+                                    {r.relevanceLabel ? (
+                                        <Badge variant={relevanceVariant(r.relevanceLabel)}>
+                                            {r.relevanceLabel}
+                                        </Badge>
+                                    ) : (
+                                        '–'
+                                    )}
+                                </TableCell>
                                 <TableCell className="text-right">
                                     <Button
                                         size="sm"
@@ -116,49 +103,46 @@ export default function ReportsView() {
             <Dialog
                 open={activeReport !== null}
                 onOpenChange={(open) => {
-                    if (!open) setActiveReport(null);
+                    if (!open) {
+setActiveReport(null);
+}
                 }}
             >
                 <DialogContent className="sm:max-w-4xl">
                     {activeReport && (
                         <>
                             <DialogHeader>
-                                <DialogTitle className="flex items-center gap-2">
-                                    <span className="font-mono text-xs text-muted-foreground">
-                                        {activeReport.id}
-                                    </span>
-                                    <span>{activeReport.title}</span>
-                                </DialogTitle>
+                                <DialogTitle>{activeReport.title}</DialogTitle>
                                 <DialogDescription>
-                                    Berichtsdatum: {activeReport.date}
+                                    Berichtsdatum: {activeReport.reportDate ?? '–'}
+                                    {activeReport.source ? ` · Quelle: ${activeReport.source}` : ''}
+                                    {formatRegion(activeReport) !== '–'
+                                        ? ` · Region: ${formatRegion(activeReport)}`
+                                        : ''}
                                 </DialogDescription>
                             </DialogHeader>
 
-                            <div className="mt-2 max-h-[70vh] overflow-auto rounded-md border">
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead>Region</TableHead>
-                                            <TableHead className="text-right">Fälle</TableHead>
-                                            <TableHead>Spezies</TableHead>
-                                            <TableHead className="text-center">Trend</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        {activeReport.rows.map((row, idx) => (
-                                            <TableRow key={idx}>
-                                                <TableCell>{row.region}</TableCell>
-                                                <TableCell className="text-right tabular-nums">
-                                                    {row.cases}
-                                                </TableCell>
-                                                <TableCell>{row.species}</TableCell>
-                                                <TableCell className="text-center">
-                                                    {row.trend}
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
+                            <div className="mt-2 max-h-[70vh] space-y-4 overflow-auto">
+                                {activeReport.teaser && (
+                                    <p className="text-sm font-medium text-foreground">
+                                        {activeReport.teaser}
+                                    </p>
+                                )}
+                                {activeReport.body && (
+                                    <p className="text-sm whitespace-pre-wrap text-muted-foreground">
+                                        {activeReport.body}
+                                    </p>
+                                )}
+                                {activeReport.url && (
+                                    <a
+                                        href={activeReport.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
+                                    >
+                                        Quelle öffnen ↗
+                                    </a>
+                                )}
                             </div>
                         </>
                     )}

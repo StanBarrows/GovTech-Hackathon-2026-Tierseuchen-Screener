@@ -2,6 +2,8 @@ import { Link } from '@inertiajs/react';
 import { CalendarIcon, CheckIcon, ChevronsUpDownIcon, Crosshair } from 'lucide-react';
 import { useState } from 'react';
 
+import { DISEASE_LABELS  } from '@/components/map/disease-colors';
+import type {DiseaseCode} from '@/components/map/disease-colors';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -15,6 +17,11 @@ import {
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+
+// Disease options are disease *codes* (HPAI, MKS, …); show the German label.
+function diseaseLabel(code: string): string {
+    return DISEASE_LABELS[code as DiseaseCode] ?? code;
+}
 
 // "YYYY-MM-DDTHH:mm" <-> Date
 function parseDateTimeLocal(value: string): Date | undefined {
@@ -220,7 +227,7 @@ export default function FilterPanel({
                                             variant="secondary"
                                             className="px-1.5 py-0 text-[10px]"
                                         >
-                                            {d}
+                                            {diseaseLabel(d)}
                                         </Badge>
                                     ))
                                 )}
@@ -240,7 +247,7 @@ export default function FilterPanel({
                                         return (
                                             <CommandItem
                                                 key={d}
-                                                value={d}
+                                                value={diseaseLabel(d)}
                                                 onSelect={() => onToggleDisease(d)}
                                             >
                                                 <CheckIcon
@@ -249,7 +256,7 @@ export default function FilterPanel({
                                                         active ? 'opacity-100' : 'opacity-0',
                                                     )}
                                                 />
-                                                {d}
+                                                {diseaseLabel(d)}
                                             </CommandItem>
                                         );
                                     })}

@@ -17,14 +17,13 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DashboardLayout from '@/layouts/dashboard-layout';
 import type { Case, Population, RelevanceContext } from '@/types/case';
+import type { Report } from '@/types/report';
 
 type Props = {
     cases?: Case[];
+    reports?: Report[];
     relevanceContext?: RelevanceContext | null;
     error?: string | null;
-    diseaseOptions?: string[];
-    speciesOptions?: string[];
-    subtypeOptions?: string[];
 };
 
 type BodyProps = Omit<Props, 'cases' | 'error'> & {
@@ -62,12 +61,18 @@ function CasesLoadingFallback() {
     );
 }
 
+function ReportsLoadingFallback() {
+    return (
+        <div className="flex min-h-[40vh] items-center justify-center rounded-md border bg-muted/30 p-4 text-sm text-muted-foreground">
+            Berichte werden geladen…
+        </div>
+    );
+}
+
 function DashboardMapBody({
     cases,
+    reports,
     relevanceContext,
-    diseaseOptions: diseaseOptionsProp,
-    speciesOptions: speciesOptionsProp,
-    subtypeOptions: subtypeOptionsProp,
 }: BodyProps) {
     const [view, setView] = useState<'map' | 'list' | 'stats' | 'reports'>(() => {
         if (typeof window === 'undefined') {
@@ -165,6 +170,34 @@ function DashboardMapBody({
         });
     }, [cases, population, disease, dateFrom, effectiveTo, subtype, species]);
 
+    // Reports only carry a report_date — the date range is the only applicable
+    // filter. Compare on the date portion (Y-m-d) so a report on the exact
+    // boundary day is not dropped by the time suffix on dateFrom/dateTo.
+    const filteredReports = useMemo(() => {
+        const fromDay = dateFrom.slice(0, 10);
+        const toDay = dateTo.slice(0, 10);
+
+        return (reports ?? []).filter((r) => {
+            if (!r.reportDate) {
+                return true;
+            }
+
+            return r.reportDate >= fromDay && r.reportDate <= toDay;
+        });
+    }, [reports, dateFrom, dateTo]);
+
+    const derivedDiseaseOptions = useMemo(() => {
+        const set = new Set<string>();
+
+        for (const c of cases) {
+            if (c.disease) {
+                set.add(c.disease);
+            }
+        }
+
+        return Array.from(set).sort((a, b) => a.localeCompare(b, 'de-CH'));
+    }, [cases]);
+
     const derivedSpeciesOptions = useMemo(() => {
         const set = new Set<string>();
 
@@ -193,15 +226,13 @@ function DashboardMapBody({
         return Array.from(set).sort((a, b) => a.localeCompare(b, 'de-CH'));
     }, [cases]);
 
-    const diseaseOptions = diseaseOptionsProp ?? [];
-    const speciesOptions =
-        speciesOptionsProp && speciesOptionsProp.length > 0
-            ? speciesOptionsProp
-            : derivedSpeciesOptions;
-    const subtypeOptions =
-        subtypeOptionsProp && subtypeOptionsProp.length > 0
-            ? subtypeOptionsProp
-            : derivedSubtypeOptions;
+    // Options are derived from the loaded cases so they always use the same key
+    // the filter predicate compares (e.g. the disease *code* c.disease, not the
+    // lookup-table label). Backend *Options props are intentionally unused — they
+    // carried a different representation and could never match (see plan).
+    const diseaseOptions = derivedDiseaseOptions;
+    const speciesOptions = derivedSpeciesOptions;
+    const subtypeOptions = derivedSubtypeOptions;
 
     const populationOptions = useMemo(() => {
         const set = new Set<Population>();
@@ -317,7 +348,9 @@ function DashboardMapBody({
                         />
                     </TabsContent>
                     <TabsContent value="reports" className="overflow-hidden">
-                        <ReportsView />
+                        <Deferred data="reports" fallback={<ReportsLoadingFallback />}>
+                            <ReportsView reports={filteredReports} />
+                        </Deferred>
                     </TabsContent>
                 </Tabs>
                 <PlayBar
@@ -351,11 +384,9 @@ function DashboardMapBody({
 
 export default function DashboardMap({
     cases,
+    reports,
     relevanceContext,
     error,
-    diseaseOptions,
-    speciesOptions,
-    subtypeOptions,
 }: Props) {
     return (
         <DashboardLayout>
@@ -373,10 +404,8 @@ export default function DashboardMap({
             <Deferred data="cases" fallback={<CasesLoadingFallback />}>
                 <DashboardMapBody
                     cases={cases!}
+                    reports={reports}
                     relevanceContext={relevanceContext}
-                    diseaseOptions={diseaseOptions}
-                    speciesOptions={speciesOptions}
-                    subtypeOptions={subtypeOptions}
                 />
             </Deferred>
         </DashboardLayout>
