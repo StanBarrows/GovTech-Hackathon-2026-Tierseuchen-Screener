@@ -22,8 +22,8 @@ type Props = {
 const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
 const CH_ZOOM = 7;
-const EUROPE_CENTER: [number, number] = [12, 50];
-const EUROPE_ZOOM = 3.4;
+const EUROPE_CENTER: [number, number] = [10, 49];
+const EUROPE_ZOOM = 4.5;
 
 const MAP_STYLE = 'mapbox://styles/mapbox/dark-v11';
 
