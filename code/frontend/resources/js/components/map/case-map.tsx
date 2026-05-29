@@ -22,8 +22,8 @@ type Props = {
 const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
 const CH_ZOOM = 7;
-const EUROPE_CENTER: [number, number] = [12, 50];
-const EUROPE_ZOOM = 3.4;
+const EUROPE_CENTER: [number, number] = [10, 49];
+const EUROPE_ZOOM = 4.5;
 
 const MAP_STYLE = 'mapbox://styles/mapbox/dark-v11';
 
@@ -91,6 +91,9 @@ return;
         mapRef.current = map;
 
         map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-left');
+
+        const ro = new ResizeObserver(() => map.resize());
+        ro.observe(containerRef.current);
 
         map.on('load', () => {
             map.addSource('cases', {
@@ -192,6 +195,7 @@ return;
         });
 
         return () => {
+            ro.disconnect();
             map.remove();
             mapRef.current = null;
         };
@@ -245,5 +249,5 @@ return;
         );
     }
 
-    return <div ref={containerRef} className="h-full w-full overflow-hidden rounded-md" />;
+    return <div ref={containerRef} className="h-[500px] w-full overflow-hidden rounded-md md:h-full" />;
 }
