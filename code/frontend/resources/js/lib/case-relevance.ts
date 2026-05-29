@@ -23,22 +23,20 @@ export function contextMatches(
     );
 }
 
-// The server computes distance and a relevance_score relative to the operational
-// origin (Bern), so we prefer those values whenever present. The client-side
-// recompute below is only a fallback for cases the server hasn't scored — there is
-// no interactive re-centering in the UI, so the request-time context always holds.
+// Server-provided values are preferred when the user hasn't moved the center
+// or radius from the request-time defaults; otherwise we recompute client-side.
 export function resolveDistanceKm(
     c: Case,
     center: Geo,
     radiusKm: number,
     ctx?: RelevanceContext | null,
 ): number {
-    if (c.distanceKm != null) {
-        return c.distanceKm;
-    }
-
     if (c.latitude == null || c.longitude == null) {
         return 0;
+    }
+
+    if (contextMatches(center.lat, center.lng, radiusKm, ctx) && c.distanceKm != null) {
+        return c.distanceKm;
     }
 
     return haversineKm({ lat: c.latitude, lng: c.longitude }, center);
@@ -50,7 +48,7 @@ export function resolveRelevance(
     radiusKm: number,
     ctx?: RelevanceContext | null,
 ): number {
-    if (c.relevanceIndex != null) {
+    if (contextMatches(center.lat, center.lng, radiusKm, ctx) && c.relevanceIndex != null) {
         return c.relevanceIndex;
     }
 

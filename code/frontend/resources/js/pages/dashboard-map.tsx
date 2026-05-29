@@ -30,8 +30,10 @@ type BodyProps = Omit<Props, 'cases' | 'error'> & {
     cases: Case[];
 };
 
-const SWITZERLAND_CENTER: [number, number] = [46.8182, 8.2275];
-const SWITZERLAND_RADIUS_KM = 200;
+// Operational origin (BLV, Bern) — must match the server's relevanceContext so the
+// precomputed, Bern-relative relevance_score is used as-is (see resolveRelevance).
+const ORIGIN_CENTER: [number, number] = [46.946461621956566, 7.4442526092578625];
+const ORIGIN_RADIUS_KM = 120;
 
 function formatLocal(d: Date, time: string): string {
     const pad = (n: number) => String(n).padStart(2, '0');
@@ -105,7 +107,7 @@ function DashboardMapBody({
         );
     };
     const center = 'Switzerland';
-    const radiusKm = SWITZERLAND_RADIUS_KM;
+    const radiusKm = ORIGIN_RADIUS_KM;
 
     const [playCursor, setPlayCursor] = useState(defaultRange.to);
     const [playing, setPlaying] = useState(false);
@@ -212,7 +214,7 @@ function DashboardMapBody({
         return Array.from(set).sort();
     }, [cases]);
 
-    const [centerLat, centerLng] = SWITZERLAND_CENTER;
+    const [centerLat, centerLng] = ORIGIN_CENTER;
 
     return (
         <div className="flex flex-col gap-4 p-4 md:flex-row md:h-[calc(100vh-3.5rem)]">

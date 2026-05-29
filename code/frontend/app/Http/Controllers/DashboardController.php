@@ -17,7 +17,9 @@ class DashboardController extends Controller
 
     private const DEFAULT_CENTER_LNG = 7.4442526092578625;
 
-    private const DEFAULT_RADIUS_KM = 50.0;
+    // Matches EventsSeeder::PROXIMITY_RADIUS_KM (the relevance decay scale) and the
+    // frontend ORIGIN_RADIUS_KM, so the precomputed relevance_score is used directly.
+    private const DEFAULT_RADIUS_KM = 120.0;
 
     public function map(): Response
     {
