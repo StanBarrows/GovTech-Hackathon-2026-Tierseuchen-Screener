@@ -11,8 +11,6 @@ import ReportsView from '@/components/dashboard/reports-view';
 import StatsView from '@/components/dashboard/stats-view';
 import CaseMap from '@/components/map/case-map';
 import ClientOnly from '@/components/map/client-only';
-import type {DiseaseCode} from '@/components/map/disease-colors';
-import Legend from '@/components/map/legend';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import DashboardLayout from '@/layouts/dashboard-layout';
@@ -117,7 +115,7 @@ function DashboardMapBody({
 
     const [playCursor, setPlayCursor] = useState(defaultRange.to);
     const [playing, setPlaying] = useState(false);
-    const [speed, setSpeed] = useState(1);
+    const [speed, setSpeed] = useState(4);
 
     useEffect(() => {
         if (!playing) {
@@ -283,7 +281,7 @@ function DashboardMapBody({
                     onValueChange={(v) => setView(v as 'map' | 'list' | 'stats' | 'reports')}
                     className="flex min-h-0 flex-1 flex-col gap-3"
                 >
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 py-1 md:py-0">
                         <TabsList>
                             <TabsTrigger value="map">
                                 <MapIcon />
@@ -322,11 +320,6 @@ function DashboardMapBody({
                                     relevanceContext={relevanceContext}
                                 />
                             </ClientOnly>
-                            <Legend
-                                diseases={['HPAI' as DiseaseCode]}
-                                center={center}
-                                radiusKm={radiusKm}
-                            />
                         </div>
                     </TabsContent>
                     <TabsContent value="list" className="overflow-hidden">

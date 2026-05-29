@@ -102,51 +102,55 @@ cancelAnimationFrame(rafRef.current);
     };
 
     return (
-        <Card className="flex flex-row items-center gap-3 px-4 py-3">
-            <Button
-                type="button"
-                size="icon"
-                variant={playing ? 'default' : 'outline'}
-                onClick={onTogglePlay}
-                aria-label={playing ? 'Pause' : 'Abspielen'}
-            >
-                {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
-            </Button>
-            <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                onClick={onReset}
-                aria-label="Auf Anfang zurücksetzen"
-                title="Auf Anfang zurücksetzen"
-            >
-                <RotateCcw className="size-4" />
-            </Button>
-            <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                onClick={onSkipToEnd}
-                aria-label="Zum Ende springen (alle Daten anzeigen)"
-                title="Zum Ende springen (alle Daten)"
-            >
-                <FastForward className="size-4" />
-            </Button>
-
-            <div className="flex items-center gap-1">
-                {SPEEDS.map((s) => (
+        <Card className="flex flex-col items-stretch gap-3 px-4 py-3 sm:flex-row sm:items-center">
+            <div className="flex flex-row items-center justify-between gap-3 sm:justify-start">
+                <div className="flex items-center gap-3">
                     <Button
-                        key={s}
                         type="button"
-                        size="xs"
-                        variant={speed === s ? 'default' : 'outline'}
-                        onClick={() => onSpeedChange(s)}
-                        aria-label={`Geschwindigkeit ${s}×`}
-                        title={`Geschwindigkeit ${s}×`}
+                        size="icon"
+                        variant={playing ? 'default' : 'outline'}
+                        onClick={onTogglePlay}
+                        aria-label={playing ? 'Pause' : 'Abspielen'}
                     >
-                        {s}×
+                        {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
                     </Button>
-                ))}
+                    <Button
+                        type="button"
+                        size="icon"
+                        variant="outline"
+                        onClick={onReset}
+                        aria-label="Auf Anfang zurücksetzen"
+                        title="Auf Anfang zurücksetzen"
+                    >
+                        <RotateCcw className="size-4" />
+                    </Button>
+                    <Button
+                        type="button"
+                        size="icon"
+                        variant="outline"
+                        onClick={onSkipToEnd}
+                        aria-label="Zum Ende springen (alle Daten anzeigen)"
+                        title="Zum Ende springen (alle Daten)"
+                    >
+                        <FastForward className="size-4" />
+                    </Button>
+                </div>
+
+                <div className="flex items-center gap-1">
+                    {SPEEDS.map((s) => (
+                        <Button
+                            key={s}
+                            type="button"
+                            size="xs"
+                            variant={speed === s ? 'default' : 'outline'}
+                            onClick={() => onSpeedChange(s)}
+                            aria-label={`Geschwindigkeit ${s}×`}
+                            title={`Geschwindigkeit ${s}×`}
+                        >
+                            {s}×
+                        </Button>
+                    ))}
+                </div>
             </div>
 
             <div className="flex flex-1 flex-col gap-1">
