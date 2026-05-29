@@ -275,7 +275,7 @@ function DashboardMapBody({
                         </TabsList>
                     </div>
                     <TabsContent value="map" className="flex min-h-0 flex-col">
-                        <div className="relative min-h-[60vh] flex-1 overflow-hidden rounded-md border md:min-h-0">
+                        <div className="relative h-[500px] flex-1 overflow-hidden rounded-md border md:h-auto md:min-h-0">
                             <ClientOnly
                                 fallback={
                                     <div className="flex h-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">

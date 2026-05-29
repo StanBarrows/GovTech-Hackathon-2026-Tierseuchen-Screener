@@ -92,6 +92,9 @@ return;
 
         map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-left');
 
+        const ro = new ResizeObserver(() => map.resize());
+        ro.observe(containerRef.current);
+
         map.on('load', () => {
             map.addSource('cases', {
                 type: 'geojson',
@@ -192,6 +195,7 @@ return;
         });
 
         return () => {
+            ro.disconnect();
             map.remove();
             mapRef.current = null;
         };
@@ -245,5 +249,5 @@ return;
         );
     }
 
-    return <div ref={containerRef} className="h-full w-full overflow-hidden rounded-md" />;
+    return <div ref={containerRef} className="h-[500px] w-full overflow-hidden rounded-md md:h-full" />;
 }
