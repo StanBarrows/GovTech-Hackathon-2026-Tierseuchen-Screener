@@ -10,6 +10,7 @@ from urllib import request
 
 from govtech_tierseuchen.config import AppConfig, resolve_config_path
 from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
+from govtech_tierseuchen.state import PipelineState, stable_fingerprint
 
 Extractor = Callable[[dict[str, Any]], dict[str, Any]]
 LOGGER = logging.getLogger(__name__)
@@ -84,26 +85,88 @@ def enrich_source(
     prompt_path: Path | None = None,
     output_path: Path | None = None,
     progress_every: int | None = None,
+    force: bool = False,
 ) -> EnrichmentResult:
     input_path = config.output_path(data_dir, source, "disease_reports")
     resolved_output_path = output_path or config.output_path(
         data_dir, source, "enriched_disease_reports"
     )
-    resolved_extractor = extractor or build_live_extractor(
-        source=source,
-        config=config,
-        prompt_path=prompt_path,
-    )
     records = read_jsonl(input_path)
+    if not records and extractor is None:
+        build_live_extractor(source=source, config=config, prompt_path=prompt_path)
+    existing_records = {
+        _record_key(record): record
+        for record in read_jsonl(resolved_output_path)
+        if _record_key(record)
+    }
+    prompt_hash = _prompt_fingerprint(
+        source=source, config=config, prompt_path=prompt_path
+    )
+    state = PipelineState.from_data_dir(data_dir)
     resolved_progress_every = (
         progress_every
         if progress_every is not None
         else config.interpreter.progress_every
     )
-    enriched = enrich_records(
-        records,
-        extractor=resolved_extractor,
-        progress_every=resolved_progress_every,
+    pending_records = []
+    reused_records: dict[str, dict[str, Any]] = {}
+    fingerprints: dict[str, str] = {}
+    for record in records:
+        record_key = _record_key(record)
+        fingerprint = _enrich_fingerprint(record, config, prompt_hash)
+        fingerprints[record_key] = fingerprint
+        existing = existing_records.get(record_key)
+        stored_fingerprint = (
+            state.fingerprint_for(source=source, stage="enrich", record_key=record_key)
+            if record_key
+            else None
+        )
+        if (
+            record_key
+            and existing is not None
+            and not existing.get("_error")
+            and not force
+            and (
+                stored_fingerprint == fingerprint
+                or (
+                    stored_fingerprint is None
+                    and existing.get("content_hash") == record.get("content_hash")
+                )
+            )
+        ):
+            reused_records[record_key] = existing
+        else:
+            pending_records.append(record)
+
+    pending_enriched: dict[str, dict[str, Any]] = {}
+    if pending_records:
+        resolved_extractor = extractor or build_live_extractor(
+            source=source,
+            config=config,
+            prompt_path=prompt_path,
+        )
+        pending_enriched = {
+            _record_key(record): record
+            for record in enrich_records(
+                pending_records,
+                extractor=resolved_extractor,
+                progress_every=resolved_progress_every,
+            )
+        }
+
+    enriched = []
+    state_updates = []
+    for record in records:
+        record_key = _record_key(record)
+        enriched_record = reused_records.get(record_key) or pending_enriched[record_key]
+        enriched.append(enriched_record)
+        if record_key and not enriched_record.get("_error"):
+            state_updates.append((record_key, fingerprints[record_key]))
+
+    state.mark_many(
+        source=source,
+        stage="enrich",
+        records=state_updates,
     )
     write_jsonl(resolved_output_path, enriched)
     return EnrichmentResult(
@@ -111,6 +174,45 @@ def enrich_source(
         output_path=resolved_output_path,
         record_count=len(enriched),
         error_count=sum(1 for record in enriched if record.get("_error")),
+    )
+
+
+def _record_key(record: dict[str, Any]) -> str:
+    return str(record.get("report_id") or "")
+
+
+def _prompt_fingerprint(
+    *, source: str, config: AppConfig, prompt_path: Path | None
+) -> str:
+    resolved_prompt_path = prompt_path or resolve_config_path(
+        config.interpreter.prompts[source], config
+    )
+    if not resolved_prompt_path.exists():
+        return stable_fingerprint(
+            {
+                "model": config.interpreter.model,
+                "prompt_path": str(resolved_prompt_path),
+                "prompt_missing": True,
+            }
+        )
+    return stable_fingerprint(
+        {
+            "model": config.interpreter.model,
+            "prompt_path": str(resolved_prompt_path),
+            "prompt": resolved_prompt_path.read_text(encoding="utf-8"),
+        }
+    )
+
+
+def _enrich_fingerprint(
+    record: dict[str, Any], config: AppConfig, prompt_fingerprint: str
+) -> str:
+    return stable_fingerprint(
+        {
+            "record": record,
+            "model": config.interpreter.model,
+            "prompt": prompt_fingerprint,
+        }
     )
 
 

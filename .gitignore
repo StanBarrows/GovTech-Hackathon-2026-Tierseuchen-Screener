@@ -43,3 +43,4 @@ data/unstructured/*/disease_reports.jsonl
 data/unstructured/*/manifest.jsonl
 data/unstructured/*/parse_errors.jsonl
 data/unstructured/gefluegelnews/manifest.jsonl
+data/unstructured/pipeline_state.sqlite*

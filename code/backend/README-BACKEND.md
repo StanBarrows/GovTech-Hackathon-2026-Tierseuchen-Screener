@@ -43,6 +43,11 @@ Run the whole configured pipeline:
 uv run ts-screener run-all
 ```
 
+By default, stages reuse records whose upstream inputs have not changed. The
+pipeline stores this small incremental state database at
+`data/unstructured/pipeline_state.sqlite`; JSONL outputs remain complete and are
+merged with any newly processed records.
+
 Limit it to selected sources:
 
 ```bash
@@ -70,6 +75,7 @@ Useful options:
 
 - `--data-dir <path>` overrides `scraper.data_dir`.
 - `--limit <n>` bounds discovery, fetching, parsing, or `run-all`.
+- `--force` reprocesses records even when the incremental state is current.
 - `--timeout-seconds <n>` and `--delay-seconds <n>` override source defaults.
 - `--rdf-output <path>` and `--csv-output <path>` override final export paths.
 - `enrich --output <path> --prompt <path> --progress-every <n>` overrides
