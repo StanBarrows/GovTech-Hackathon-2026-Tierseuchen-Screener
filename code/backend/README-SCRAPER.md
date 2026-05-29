@@ -68,6 +68,22 @@ Generated files live under `data/unstructured/<source>/`:
 - `disease_articles.jsonl`: disease-relevant articles with evidence
 - `disease_reports.jsonl`: candidate `DiseaseReport` records
 
+### Artifact Flow
+
+`articles.jsonl` is the parsed article layer: `ts parse` reads fetched metadata
+and cached source content, then writes normalized article records with fields
+such as title, publication date, metadata, and Markdown `fulltext`.
+
+`disease_articles.jsonl` is the relevance-inspection layer: `ts filter-disease`
+reads `articles.jsonl`, keeps only articles that match disease terms, and stores
+each article together with matched terms, score, and evidence snippets.
+
+`disease_reports.jsonl` is the structured candidate layer: `ts extract-reports`
+reads `articles.jsonl`, re-runs the same relevance filter, and turns relevant
+articles into candidate `DiseaseReport` records for RDF export. It does not
+currently read `disease_articles.jsonl`; that file is an inspectable side
+artifact for checking why articles were considered relevant.
+
 PADI-web additionally caches API detail payloads under `raw_json/`. These local
 scraper artifacts are ignored by git.
 
