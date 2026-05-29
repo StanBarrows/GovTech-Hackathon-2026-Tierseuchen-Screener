@@ -32,9 +32,6 @@ export default function Imprint({ seo }: Props) {
             prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
         );
     };
-    const [center, setCenter] = useState('Bern');
-    const [radiusKm, setRadiusKm] = useState(50);
-
     const togglePopulation = (p: Population) => {
         setPopulation((prev) =>
             prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p],
@@ -63,10 +60,6 @@ export default function Imprint({ seo }: Props) {
                     onResetSubtype={() => setSubtype([])}
                     subtypeOptions={[]}
                     populationOptions={[]}
-                    center={center}
-                    onCenterChange={setCenter}
-                    radiusKm={radiusKm}
-                    onRadiusChange={setRadiusKm}
                 />
                 <div className="flex flex-1 flex-col overflow-hidden">
                     <div className="relative flex-1 overflow-y-auto rounded-md border bg-card p-8">

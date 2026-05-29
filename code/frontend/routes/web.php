@@ -111,17 +111,21 @@ Route::get('/dashboard/map', function () {
         );
 
         $cases[] = [
-            'id' => $i,
+            'iri' => 'synthetic:'.$i,
             'disease' => 'HPAI',
+            'diseaseLabel' => 'HPAI',
             'population' => $pop,
-            'location' => $hotspot['name'],
-            'canton' => $cantonByName[$hotspot['name']] ?? '',
+            'admin1' => $cantonByName[$hotspot['name']] ?? '',
+            'admin2' => $hotspot['name'],
+            'countryLabel' => 'Schweiz',
             'species' => $species,
+            'speciesLabel' => $species,
             'subtype' => $subtype,
+            'subtypeLabel' => $subtype,
             'weight' => $weight,
-            'lat' => round($hotspot['lat'] + $gauss() * $hotspot['spread'], 4),
-            'lng' => round($hotspot['lng'] + $gauss() * $hotspot['spread'], 4),
-            'reportedAt' => date('Y-m-d\TH:i', $start + mt_rand(0, $span)),
+            'latitude' => round($hotspot['lat'] + $gauss() * $hotspot['spread'], 4),
+            'longitude' => round($hotspot['lng'] + $gauss() * $hotspot['spread'], 4),
+            'confirmationDate' => date('Y-m-d\TH:i', $start + mt_rand(0, $span)),
             'source' => $sources[array_rand($sources)],
         ];
     }
