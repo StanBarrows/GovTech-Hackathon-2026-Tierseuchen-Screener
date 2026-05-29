@@ -139,11 +139,12 @@ def test_export_disease_reports_skips_incomplete_situations(tmp_path):
     assert not list(graph.objects(candidate, TS.candidateDescribesSituation))
 
 
-def test_cli_export_rdf_writes_to_lindas_style_source_directory(tmp_path):
+def test_cli_export_final_writes_combined_rdf_and_no_qa_ttl(tmp_path):
     data_dir = tmp_path / "data" / "unstructured"
-    rdf_dir = tmp_path / "lindas" / "data" / "rdf"
+    rdf_output = tmp_path / "lindas" / "data" / "rdf" / "tierseuchen-screener.ttl"
+    csv_output = tmp_path / "lindas" / "data" / "csv" / "disease_reports.csv"
     write_jsonl(
-        data_dir / "gefluegelnews" / "disease_reports.jsonl",
+        data_dir / "gefluegelnews" / "disease_reports.enriched.jsonl",
         [
             {
                 "report_id": "gefluegelnews:polen",
@@ -170,15 +171,19 @@ def test_cli_export_rdf_writes_to_lindas_style_source_directory(tmp_path):
 
     exit_code = main(
         [
-            "export-rdf",
+            "export-final",
+            "--source",
             "gefluegelnews",
             "--data-dir",
             str(data_dir),
-            "--rdf-dir",
-            str(rdf_dir),
+            "--rdf-output",
+            str(rdf_output),
+            "--csv-output",
+            str(csv_output),
         ]
     )
 
     assert exit_code == 0
-    output_path = rdf_dir / "gefluegelnews" / "gefluegelnews.qa.ttl"
-    assert output_path.exists()
+    assert rdf_output.exists()
+    assert csv_output.exists()
+    assert not (rdf_output.parent / "gefluegelnews" / "gefluegelnews.qa.ttl").exists()

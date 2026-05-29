@@ -9,7 +9,7 @@ Refactor the interpreter layer so it enriches `disease_reports.jsonl` by filling
 - Do not change RDF/Turtle vocabulary, predicates, classes, or export shape.
 - Do not add new output fields like `llm_disease_name`, `Disease`, `consequence.politisch`, etc. unless they are internal-only and removed before writing output.
 - The interpreter output JSONL must remain compatible with the existing `DiseaseReport` / RDF export flow.
-- Preserve all existing `ts extract-reports` candidate/provenance fields: IDs, source metadata, fulltext, evidence snippets, `rule_*` fields, extraction status/confidence.
+- Preserve all existing `ts-screener extract-reports` candidate/provenance fields: IDs, source metadata, fulltext, evidence snippets, `rule_*` fields, extraction status/confidence.
 - Only populate existing semantic fields already present on `DiseaseReport`.
 
 ## Interpreter Should Populate

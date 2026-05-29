@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from pathlib import Path
 import time
+import tomllib
 
 from govtech_tierseuchen import cli
 from govtech_tierseuchen.cli import build_parser, main, resolve_data_dir
@@ -180,7 +181,31 @@ def test_cli_parser_accepts_pipeline_stage_and_source():
     assert args.command == "discover"
     assert args.source == "gefluegelnews"
     assert args.data_dir == "data/unstructured"
-    assert parser.prog == "ts"
+    assert parser.prog == "ts-screener"
+
+
+def test_package_exposes_ts_screener_console_script_only():
+    pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+
+    assert pyproject["project"]["scripts"] == {
+        "ts-screener": "govtech_tierseuchen.cli:main"
+    }
+
+
+def test_cli_parser_accepts_enrich_and_export_final_commands():
+    parser = build_parser()
+    enrich_args = parser.parse_args(
+        ["enrich", "gefluegelnews", "--data-dir", "data/unstructured"]
+    )
+    export_args = parser.parse_args(
+        ["export-final", "--source", "gefluegelnews", "--source", "padi_web"]
+    )
+
+    assert enrich_args.command == "enrich"
+    assert enrich_args.source == "gefluegelnews"
+    assert enrich_args.data_dir == "data/unstructured"
+    assert export_args.command == "export-final"
+    assert export_args.sources == ["gefluegelnews", "padi_web"]
 
 
 def test_cli_parser_accepts_fetch_limit():
@@ -219,7 +244,13 @@ def test_run_all_executes_all_pipeline_steps_for_selected_sources(
     monkeypatch.setattr(cli, "_parse", record("parse"))
     monkeypatch.setattr(cli, "_filter_disease", record("filter-disease"))
     monkeypatch.setattr(cli, "_extract_reports", record("extract-reports"))
-    monkeypatch.setattr(cli, "_export_rdf", record("export-rdf", source_index=2))
+    monkeypatch.setattr(cli, "_enrich", record("enrich"))
+
+    def fake_export_final(*args):
+        calls.append(("export-final", tuple(args[2])))
+        return 0
+
+    monkeypatch.setattr(cli, "_export_final", fake_export_final)
 
     exit_code = main(
         [
@@ -241,10 +272,11 @@ def test_run_all_executes_all_pipeline_steps_for_selected_sources(
         ("parse", "padi_web"),
         ("filter-disease", "padi_web"),
         ("extract-reports", "padi_web"),
-        ("export-rdf", "padi_web"),
+        ("enrich", "padi_web"),
+        ("export-final", ("padi_web",)),
     ]
-    assert "Running 6 pipeline steps for padi_web" in captured.out
-    assert "Completed 6 pipeline steps for 1 source" in captured.out
+    assert "Running 7 pipeline steps for padi_web" in captured.out
+    assert "Completed 7 pipeline steps for 1 source" in captured.out
 
 
 def test_run_all_runs_discover_and_fetch_in_parallel_for_multiple_sources(
@@ -267,7 +299,8 @@ def test_run_all_runs_discover_and_fetch_in_parallel_for_multiple_sources(
     monkeypatch.setattr(cli, "_parse", lambda *args: 0)
     monkeypatch.setattr(cli, "_filter_disease", lambda *args: 0)
     monkeypatch.setattr(cli, "_extract_reports", lambda *args: 0)
-    monkeypatch.setattr(cli, "_export_rdf", lambda *args: 0)
+    monkeypatch.setattr(cli, "_enrich", lambda *args: 0)
+    monkeypatch.setattr(cli, "_export_final", lambda *args: 0)
 
     exit_code = main(
         [

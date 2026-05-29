@@ -27,26 +27,43 @@ from govtech_tierseuchen.config import (
 from govtech_tierseuchen.models import ParseError
 
 LOGGER = logging.getLogger(__name__)
-PIPELINE_STAGES = (
+SOURCE_PIPELINE_STAGES = (
     "discover",
     "fetch",
     "parse",
     "filter-disease",
     "extract-reports",
-    "export-rdf",
+    "enrich",
 )
+RUN_ALL_STEP_COUNT = len(SOURCE_PIPELINE_STAGES) + 1
 
 
 def build_parser(config: AppConfig | None = None) -> argparse.ArgumentParser:
     config = config or load_config()
-    parser = argparse.ArgumentParser(prog="ts")
+    parser = argparse.ArgumentParser(prog="ts-screener")
     subparsers = parser.add_subparsers(dest="command", required=True)
     for command in config.scraper.commands:
         subparser = subparsers.add_parser(command)
         subparser.add_argument("source", choices=sorted(config.sources))
         _add_common_options(subparser)
-        if command == "export-rdf":
-            subparser.add_argument("--rdf-dir", default=None)
+    enrich_parser = subparsers.add_parser("enrich")
+    enrich_parser.add_argument("source", choices=sorted(config.sources))
+    enrich_parser.add_argument("--data-dir", default=None)
+    enrich_parser.add_argument("--output", default=None)
+    enrich_parser.add_argument("--prompt", default=None)
+    enrich_parser.add_argument("--progress-every", type=int, default=None)
+    export_parser = subparsers.add_parser("export-final")
+    export_parser.add_argument(
+        "--source",
+        dest="sources",
+        action="append",
+        choices=sorted(config.sources),
+        default=[],
+        help="Source to export. Repeat to export multiple sources. Defaults to all sources.",
+    )
+    export_parser.add_argument("--data-dir", default=None)
+    export_parser.add_argument("--rdf-output", default=None)
+    export_parser.add_argument("--csv-output", default=None)
     run_all_parser = subparsers.add_parser("run-all")
     run_all_parser.add_argument(
         "--source",
@@ -57,7 +74,8 @@ def build_parser(config: AppConfig | None = None) -> argparse.ArgumentParser:
         help="Source to run. Repeat to run multiple sources. Defaults to all sources.",
     )
     _add_common_options(run_all_parser)
-    run_all_parser.add_argument("--rdf-dir", default=None)
+    run_all_parser.add_argument("--rdf-output", default=None)
+    run_all_parser.add_argument("--csv-output", default=None)
     return parser
 
 
@@ -77,10 +95,12 @@ def main(argv: list[str] | None = None) -> int:
     data_dir = resolve_data_dir(args.data_dir, config)
     if args.command == "run-all":
         sources = args.sources or sorted(config.sources)
-        rdf_dir = resolve_rdf_dir(args.rdf_dir, config)
+        rdf_output_path = resolve_final_rdf_path(args.rdf_output, config)
+        csv_output_path = resolve_final_csv_path(args.csv_output, config)
         return _run_all(
             data_dir=data_dir,
-            rdf_dir=rdf_dir,
+            rdf_output_path=rdf_output_path,
+            csv_output_path=csv_output_path,
             sources=sources,
             timeout_seconds=args.timeout_seconds,
             delay_seconds=args.delay_seconds,
@@ -88,12 +108,22 @@ def main(argv: list[str] | None = None) -> int:
             console=console,
             config=config,
         )
+    if args.command == "export-final":
+        sources = args.sources or sorted(config.sources)
+        return _export_final(
+            data_dir,
+            resolve_final_rdf_path(args.rdf_output, config),
+            sources,
+            resolve_final_csv_path(args.csv_output, config),
+            console,
+            config,
+        )
 
     source_config = config.sources[args.source]
     timeout_seconds, delay_seconds, limit = _resolve_source_options(
-        args.timeout_seconds,
-        args.delay_seconds,
-        args.limit,
+        getattr(args, "timeout_seconds", None),
+        getattr(args, "delay_seconds", None),
+        getattr(args, "limit", None),
         source_config,
     )
     if args.command == "discover":
@@ -114,9 +144,18 @@ def main(argv: list[str] | None = None) -> int:
         return _filter_disease(data_dir, args.source, console, config)
     if args.command == "extract-reports":
         return _extract_reports(data_dir, args.source, console, config)
-    if args.command == "export-rdf":
-        rdf_dir = resolve_rdf_dir(args.rdf_dir, config)
-        return _export_rdf(data_dir, rdf_dir, args.source, console, config)
+    if args.command == "enrich":
+        output_path = Path(args.output) if args.output else None
+        prompt_path = Path(args.prompt) if args.prompt else None
+        return _enrich(
+            data_dir,
+            args.source,
+            console,
+            config,
+            output_path=output_path,
+            prompt_path=prompt_path,
+            progress_every=args.progress_every,
+        )
     parser.error(f"Unknown command {args.command}")
     return 2
 
@@ -143,8 +182,12 @@ def resolve_data_dir(value: str | None, config: AppConfig) -> Path:
     return resolve_config_path(value or config.scraper.data_dir, config)
 
 
-def resolve_rdf_dir(value: str | None, config: AppConfig) -> Path:
-    return resolve_config_path(value or config.scraper.rdf_output_dir, config)
+def resolve_final_rdf_path(value: str | None, config: AppConfig) -> Path:
+    return resolve_config_path(value or config.scraper.final_rdf_output, config)
+
+
+def resolve_final_csv_path(value: str | None, config: AppConfig) -> Path:
+    return resolve_config_path(value or config.scraper.final_csv_output, config)
 
 
 def _configure_logging(console: Console, config: AppConfig) -> None:
@@ -262,7 +305,8 @@ def _discover(
 
 def _run_all(
     data_dir: Path,
-    rdf_dir: Path,
+    rdf_output_path: Path,
+    csv_output_path: Path,
     sources: list[str],
     timeout_seconds: float | None,
     delay_seconds: float | None,
@@ -281,7 +325,7 @@ def _run_all(
     }
     for source in sources:
         console.print(
-            f"[bold]Running {len(PIPELINE_STAGES)} pipeline steps for {source}[/bold]"
+            f"[bold]Running {RUN_ALL_STEP_COUNT} pipeline steps for {source}[/bold]"
         )
 
     if len(sources) > 1:
@@ -295,10 +339,10 @@ def _run_all(
         if exit_code != 0:
             return exit_code
         start_index = 3
-        stages = PIPELINE_STAGES[2:]
+        stages = SOURCE_PIPELINE_STAGES[2:]
     else:
         start_index = 1
-        stages = PIPELINE_STAGES
+        stages = SOURCE_PIPELINE_STAGES
 
     for source in sources:
         resolved_timeout_seconds, resolved_delay_seconds, resolved_limit = (
@@ -306,7 +350,7 @@ def _run_all(
         )
         for index, stage in enumerate(stages, start=start_index):
             console.print(
-                f"[cyan]{source}: step {index}/{len(PIPELINE_STAGES)} {stage}[/cyan]"
+                f"[cyan]{source}: step {index}/{RUN_ALL_STEP_COUNT} {stage}[/cyan]"
             )
             if stage == "discover":
                 exit_code = _discover(
@@ -333,8 +377,8 @@ def _run_all(
                 exit_code = _filter_disease(data_dir, source, console, config)
             elif stage == "extract-reports":
                 exit_code = _extract_reports(data_dir, source, console, config)
-            elif stage == "export-rdf":
-                exit_code = _export_rdf(data_dir, rdf_dir, source, console, config)
+            elif stage == "enrich":
+                exit_code = _enrich(data_dir, source, console, config)
             else:
                 raise ValueError(f"Unsupported pipeline stage: {stage}")
             if exit_code != 0:
@@ -342,9 +386,23 @@ def _run_all(
                     f"[red]Stopped at {stage} for {source} with exit code {exit_code}[/red]"
                 )
                 return exit_code
+    console.print(
+        f"[cyan]final: step {RUN_ALL_STEP_COUNT}/{RUN_ALL_STEP_COUNT} export-final[/cyan]"
+    )
+    exit_code = _export_final(
+        data_dir,
+        rdf_output_path,
+        sources,
+        csv_output_path,
+        console,
+        config,
+    )
+    if exit_code != 0:
+        console.print(f"[red]Stopped at export-final with exit code {exit_code}[/red]")
+        return exit_code
     source_label = "source" if len(sources) == 1 else "sources"
     console.print(
-        f"[green]Completed {len(PIPELINE_STAGES)} pipeline steps for {len(sources)} {source_label}[/green]"
+        f"[green]Completed {RUN_ALL_STEP_COUNT} pipeline steps for {len(sources)} {source_label}[/green]"
     )
     return 0
 
@@ -365,7 +423,7 @@ def _run_parallel_ingest_stages(
                     source_options[source]
                 )
                 console.print(
-                    f"[cyan]{source}: step {PIPELINE_STAGES.index(stage) + 1}/{len(PIPELINE_STAGES)} {stage}[/cyan]"
+                    f"[cyan]{source}: step {SOURCE_PIPELINE_STAGES.index(stage) + 1}/{RUN_ALL_STEP_COUNT} {stage}[/cyan]"
                 )
                 if stage == "discover":
                     future = executor.submit(
@@ -605,27 +663,75 @@ def _extract_reports(
     return 0
 
 
-def _export_rdf(
+def _enrich(
     data_dir: Path,
-    rdf_dir: Path,
     source: str,
     console: Console,
     config: AppConfig,
+    *,
+    output_path: Path | None = None,
+    prompt_path: Path | None = None,
+    progress_every: int | None = None,
 ) -> int:
+    from govtech_tierseuchen.enrichment import enrich_source
+
+    try:
+        result = enrich_source(
+            data_dir=data_dir,
+            source=source,
+            config=config,
+            output_path=output_path,
+            prompt_path=prompt_path,
+            progress_every=progress_every,
+        )
+    except (FileNotFoundError, OSError, RuntimeError) as exc:
+        console.print(f"[red]Enrichment failed for {source}: {exc}[/red]")
+        return 1
+    console.print(
+        "[green]Enriched "
+        f"{result.record_count} DiseaseReport records for {source} "
+        f"to {result.output_path}[/green]"
+    )
+    if result.error_count:
+        console.print(
+            f"[yellow]{result.error_count} enrichment errors recorded[/yellow]"
+        )
+    return 0
+
+
+def _export_final(
+    data_dir: Path,
+    rdf_output_path: Path,
+    sources: list[str],
+    csv_output_path: Path,
+    console: Console,
+    config: AppConfig,
+) -> int:
+    from govtech_tierseuchen.csv_export import export_records_to_csv
     from govtech_tierseuchen.jsonl import read_jsonl
     from govtech_tierseuchen.rdf_export import (
         disease_report_from_dict,
         export_disease_reports_to_rdf,
     )
 
-    rows = read_jsonl(config.output_path(data_dir, source, "disease_reports"))
+    rows = []
+    for source in sources:
+        rows.extend(
+            read_jsonl(config.output_path(data_dir, source, "enriched_disease_reports"))
+        )
+    if not rows:
+        console.print(
+            "[red]No enriched DiseaseReport records found for final export[/red]"
+        )
+        return 1
     reports = [disease_report_from_dict(row) for row in rows]
-    output_path = rdf_dir / config.sources[source].output_dir / f"{source}.qa.ttl"
-    result = export_disease_reports_to_rdf(reports, output_path)
+    rdf_result = export_disease_reports_to_rdf(reports, rdf_output_path)
+    csv_result = export_records_to_csv(rows, csv_output_path)
     console.print(
-        "[green]Exported "
-        f"{result.report_count} DiseaseReport records as {result.triple_count} RDF triples "
-        f"to {result.output_path}[/green]"
+        "[green]Exported final outputs for "
+        f"{rdf_result.report_count} DiseaseReport records: "
+        f"{rdf_result.triple_count} RDF triples to {rdf_result.output_path}, "
+        f"{csv_result.record_count} CSV rows to {csv_result.output_path}[/green]"
     )
     return 0
 
