@@ -267,6 +267,35 @@ def test_extract_report_rules_leaves_country_resolution_to_enrichment():
     assert report.rule_disease_type == "H5N1"
 
 
+def test_extract_report_rules_uses_padi_article_id_for_report_id():
+    article = NewsArticle(
+        source_id="padi_web",
+        source_name="PADI-web",
+        source_link="https://publisher.example/shared-slug",
+        canonical_url="https://publisher.example/shared-slug",
+        title="HPAI in Poland",
+        description=None,
+        keywords=["HPAI"],
+        publication_date=date(2026, 5, 26),
+        retrieved_at=datetime(2026, 5, 28, 12, 0, tzinfo=timezone.utc),
+        category="Avian Influenza",
+        author="publisher.example",
+        image_url=None,
+        image_credit=None,
+        source_attribution="PADI-web article AAA111 from publisher.example",
+        partner_content=None,
+        fulltext="HPAI outbreak in Poland.",
+        raw_html_path="data/unstructured/padi_web/raw_json/AAA111.json",
+        content_hash="abc123",
+    )
+    relevance = assess_disease_relevance(article)
+
+    report = extract_report_rules(article, relevance)
+
+    assert report.report_id == "padi_web:AAA111"
+    assert report.source_document_id == "source_document:padi_web:AAA111"
+
+
 def test_news_article_from_dict_restores_dates():
     article = news_article_from_dict(
         {

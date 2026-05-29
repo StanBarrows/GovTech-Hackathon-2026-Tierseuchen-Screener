@@ -51,6 +51,18 @@ names.
   Balkans — not only EU); false if the report explicitly places it only
   outside Europe; null if no geographic indication.
 
+## Location details
+- administrative_division_level_1 (string): first-level administrative area
+  for the outbreak location, such as region, state, province, or canton.
+  Examples: "Sicily", "Nordrhein-Westfalen", "Hessen". null if not stated.
+- administrative_division_level_2 (string): second-level administrative area
+  for the outbreak location, such as district, county, arrondissement, or
+  Kreis. Examples: "Messina", "Ennepe-Ruhr-Kreis",
+  "Hersfeld-Rotenburg". null if not stated.
+- administrative_division_level_3 (string): third-level administrative area
+  for the outbreak location, often municipality or locality. Examples:
+  "Messina", "Witten", "Heringen (Werra)". null if not stated.
+
 ## Assessments (each has a level + a one-sentence rationale)
 - relevance_level (string): how relevant the report is for veterinary /
   public-health monitoring. One of: "low" | "medium" | "high".
@@ -105,7 +117,7 @@ significant revenue losses across the western region. Authorities recommended
 enhanced biosecurity measures including wild-bird-proof feed storage.
 """
 Output:
-{"disease_name": "Avian influenza", "disease_type": "viral", "country_or_territory": "Norway", "is_in_europe": true, "relevance_level": "high", "relevance_rationale": "Highly pathogenic H5N1 outbreak on a commercial poultry farm in Europe.", "severity_level": "high", "severity_rationale": "Entire flock of 24,500 birds died or was culled.", "reach_level": "national", "reach_rationale": "Nationwide poultry transport ban issued, though detection is localized to Rogaland.", "has_consequences": true, "consequences": "10km surveillance zone and 14-day nationwide poultry transport ban imposed; farmer associations warned of significant regional revenue losses.", "control_measures": ["10km surveillance zone around the affected farm", "nationwide poultry transport ban for 14 days", "culling of remaining 22,680 chickens"], "prevention_measures": [{"text": "enhanced biosecurity measures including wild-bird-proof feed storage", "prevention_type": "biosecurity", "raw_evidence": "Authorities recommended enhanced biosecurity measures including wild-bird-proof feed storage."}], "species": "chickens", "cases": null, "dead": 1820, "killed": 22680, "slaughtered": null, "vaccinated": null, "confirmation_date": "2024-03-12", "result_date": null, "status": "confirmed"}
+{"disease_name": "Avian influenza", "disease_type": "viral", "country_or_territory": "Norway", "is_in_europe": true, "administrative_division_level_1": "Rogaland", "administrative_division_level_2": null, "administrative_division_level_3": null, "relevance_level": "high", "relevance_rationale": "Highly pathogenic H5N1 outbreak on a commercial poultry farm in Europe.", "severity_level": "high", "severity_rationale": "Entire flock of 24,500 birds died or was culled.", "reach_level": "national", "reach_rationale": "Nationwide poultry transport ban issued, though detection is localized to Rogaland.", "has_consequences": true, "consequences": "10km surveillance zone and 14-day nationwide poultry transport ban imposed; farmer associations warned of significant regional revenue losses.", "control_measures": ["10km surveillance zone around the affected farm", "nationwide poultry transport ban for 14 days", "culling of remaining 22,680 chickens"], "prevention_measures": [{"text": "enhanced biosecurity measures including wild-bird-proof feed storage", "prevention_type": "biosecurity", "raw_evidence": "Authorities recommended enhanced biosecurity measures including wild-bird-proof feed storage."}], "species": "chickens", "cases": null, "dead": 1820, "killed": 22680, "slaughtered": null, "vaccinated": null, "confirmation_date": "2024-03-12", "result_date": null, "status": "confirmed"}
 
 # Output contract
 - Output a SINGLE valid JSON object and nothing else.

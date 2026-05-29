@@ -21,9 +21,9 @@ type Props = {
 
 const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
-const CH_CENTER: [number, number] = [8.23, 46.82];
 const CH_ZOOM = 7;
-const INITIAL_ZOOM = 4;
+const EUROPE_CENTER: [number, number] = [12, 50];
+const EUROPE_ZOOM = 3.4;
 
 const MAP_STYLE = 'mapbox://styles/mapbox/dark-v11';
 
@@ -64,6 +64,7 @@ function colorMatchExpression(): mapboxgl.ExpressionSpecification {
 export default function CaseMap({ cases, centerLat, centerLng, radiusKm, relevanceContext }: Props) {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
+    const didInitRef = useRef(true);
 
     const center = centerLat != null && centerLng != null ? { lat: centerLat, lng: centerLng } : null;
     const data = useMemo(
@@ -83,8 +84,8 @@ return;
         const map = new mapboxgl.Map({
             container: containerRef.current,
             style: MAP_STYLE,
-            center: CH_CENTER,
-            zoom: INITIAL_ZOOM,
+            center: EUROPE_CENTER,
+            zoom: EUROPE_ZOOM,
             attributionControl: true,
         });
         mapRef.current = map;
@@ -221,6 +222,12 @@ map.once('load', apply);
         if (!map || centerLat == null || centerLng == null) {
 return;
 }
+
+        if (didInitRef.current) {
+            didInitRef.current = false;
+
+            return;
+        }
 
         map.flyTo({ center: [centerLng, centerLat], zoom: CH_ZOOM, duration: 800 });
     }, [centerLat, centerLng]);

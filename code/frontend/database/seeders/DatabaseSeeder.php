@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             PopulationSeeder::class,
             SourceSeeder::class,
             EventsSeeder::class,
+            ReportsSeeder::class,
         ]);
     }
 }

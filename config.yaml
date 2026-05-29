@@ -19,14 +19,15 @@ scraper:
     enriched_disease_reports: disease_reports.enriched.jsonl
 
 interpreter:
-  model: qwen2.5:32b-instruct-q4_K_M
+  model: "google/gemini-3.1-flash-lite"
   base_url_env: TS_SCREENER_LLM_BASE_URL
-  api_key_env: TS_SCREENER_LLM_API_KEY
+  api_key_env: OPENROUTER_API_KEY
   timeout_seconds: 120.0
   progress_every: 10
+  workers: 20
   prompts:
     gefluegelnews: code/backend/interpreter/SystemPromptGN.md
-    padi_web: code/backend/interpreter/SystemPromptGN.md
+    padi_web: code/backend/interpreter/SystemPromptPADI.md
 
 sources:
   gefluegelnews:
@@ -37,7 +38,7 @@ sources:
     output_dir: gefluegelnews
     raw_subdir: raw_html
     timeout_seconds: 20.0
-    delay_seconds: 0.5
+    delay_seconds: 0.2
     limit: 300
   padi_web:
     base_url: https://padi-web.cirad.fr
@@ -46,7 +47,7 @@ sources:
     output_dir: padi_web
     raw_subdir: raw_json
     timeout_seconds: 20.0
-    delay_seconds: 0.5
+    delay_seconds: 0.2
     limit:
     article_serializer: sentences
     discovery:

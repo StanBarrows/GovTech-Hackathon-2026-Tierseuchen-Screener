@@ -3,10 +3,13 @@ from __future__ import annotations
 import json
 import logging
 import os
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
-from urllib import request
+
+from dotenv import load_dotenv
+from openai import OpenAI
 
 from govtech_tierseuchen.config import AppConfig, resolve_config_path
 from govtech_tierseuchen.jsonl import read_jsonl, write_jsonl
@@ -14,6 +17,7 @@ from govtech_tierseuchen.state import PipelineState, stable_fingerprint
 
 Extractor = Callable[[dict[str, Any]], dict[str, Any]]
 LOGGER = logging.getLogger(__name__)
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
 SEMANTIC_FIELDS = {
     "situation_key",
@@ -108,6 +112,7 @@ def enrich_source(
         if progress_every is not None
         else config.interpreter.progress_every
     )
+    resolved_workers = config.interpreter.workers
     pending_records = []
     reused_records: dict[str, dict[str, Any]] = {}
     fingerprints: dict[str, str] = {}
@@ -151,6 +156,7 @@ def enrich_source(
                 pending_records,
                 extractor=resolved_extractor,
                 progress_every=resolved_progress_every,
+                workers=resolved_workers,
             )
         }
 
@@ -221,25 +227,43 @@ def enrich_records(
     *,
     extractor: Extractor,
     progress_every: int | None = None,
+    workers: int = 1,
 ) -> list[dict[str, Any]]:
-    enriched = []
     total = len(records)
-    for index, record in enumerate(records, start=1):
-        try:
-            labels = extractor(record)
-            if not isinstance(labels, dict):
-                raise TypeError("extractor must return a JSON object")
-            enriched.append(merge_semantic_fields(record, labels))
-        except Exception as exc:
-            enriched.append(
-                {
-                    **record,
-                    "_error": f"extraction: {type(exc).__name__}: {exc}",
-                }
-            )
-        if _should_log_progress(index, total, progress_every):
-            LOGGER.info("Enriched %s/%s records", index, total)
+    if total == 0:
+        return []
+    resolved_workers = max(1, min(workers, total))
+    enriched = []
+    if resolved_workers == 1:
+        for index, record in enumerate(records, start=1):
+            enriched.append(_enrich_record(record, extractor=extractor))
+            if _should_log_progress(index, total, progress_every):
+                LOGGER.info("Enriched %s/%s records", index, total)
+        return enriched
+
+    with ThreadPoolExecutor(max_workers=resolved_workers) as executor:
+        results = executor.map(
+            lambda record: _enrich_record(record, extractor=extractor),
+            records,
+        )
+        for index, enriched_record in enumerate(results, start=1):
+            enriched.append(enriched_record)
+            if _should_log_progress(index, total, progress_every):
+                LOGGER.info("Enriched %s/%s records", index, total)
     return enriched
+
+
+def _enrich_record(record: dict[str, Any], *, extractor: Extractor) -> dict[str, Any]:
+    try:
+        labels = extractor(record)
+        if not isinstance(labels, dict):
+            raise TypeError("extractor must return a JSON object")
+        return merge_semantic_fields(record, labels)
+    except Exception as exc:
+        return {
+            **record,
+            "_error": f"extraction: {type(exc).__name__}: {exc}",
+        }
 
 
 def _should_log_progress(index: int, total: int, progress_every: int | None) -> bool:
@@ -268,17 +292,21 @@ def build_live_extractor(
         config.interpreter.prompts[source], config
     )
     system_prompt = resolved_prompt_path.read_text(encoding="utf-8")
-    base_url = _required_env(config.interpreter.base_url_env)
+    _load_backend_env(config)
     api_key = _required_env(config.interpreter.api_key_env)
+    base_url = _optional_env(config.interpreter.base_url_env) or OPENROUTER_BASE_URL
+    client = OpenAI(
+        api_key=api_key,
+        base_url=base_url,
+        timeout=config.interpreter.timeout_seconds,
+    )
 
     def extract(record: dict[str, Any]) -> dict[str, Any]:
         return extract_with_openai_compatible_chat(
             record=record,
             system_prompt=system_prompt,
-            base_url=base_url,
-            api_key=api_key,
+            client=client,
             model=config.interpreter.model,
-            timeout_seconds=config.interpreter.timeout_seconds,
         )
 
     return extract
@@ -288,33 +316,20 @@ def extract_with_openai_compatible_chat(
     *,
     record: dict[str, Any],
     system_prompt: str,
-    base_url: str,
-    api_key: str,
+    client: OpenAI,
     model: str,
-    timeout_seconds: float,
 ) -> dict[str, Any]:
-    payload = {
-        "model": model,
-        "messages": [
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": build_extraction_prompt(record)},
         ],
-        "temperature": 0,
-    }
-    body = json.dumps(payload).encode("utf-8")
-    chat_request = request.Request(
-        f"{base_url.rstrip('/')}/chat/completions",
-        data=body,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "GovTech-Tierseuchen-Screener/0.1",
-        },
-        method="POST",
+        temperature=0,
     )
-    with request.urlopen(chat_request, timeout=timeout_seconds) as response:
-        response_payload = json.loads(response.read().decode("utf-8"))
-    content = response_payload["choices"][0]["message"]["content"]
+    content = response.choices[0].message.content
+    if not isinstance(content, str):
+        raise TypeError("model response content must be a string")
     return parse_model_json(content)
 
 
@@ -352,3 +367,12 @@ def _required_env(name: str) -> str:
     if not value:
         raise RuntimeError(f"Missing required environment variable: {name}")
     return value
+
+
+def _optional_env(name: str) -> str | None:
+    value = os.environ.get(name)
+    return value or None
+
+
+def _load_backend_env(config: AppConfig) -> None:
+    load_dotenv(config.project_root / "code/backend/.env", override=False)

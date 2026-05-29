@@ -8,6 +8,7 @@ __pycache__/
 # Envs excluded
 venv/
 .env/
+.env
 secrets/
 
 # Temp files

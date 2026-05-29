@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 from urllib.parse import urlparse
 
 from govtech_tierseuchen.config import load_config
@@ -20,7 +21,7 @@ def extract_report_rules(
     article: NewsArticle, relevance: DiseaseRelevance
 ) -> DiseaseReport:
     text = f"{article.title}\n{article.description or ''}\n{article.fulltext}"
-    report_id = f"{article.source_id}:{urlparse(article.source_link).path.rstrip('/').split('/')[-1]}"
+    report_id = _report_id(article)
     return DiseaseReport(
         report_id=report_id,
         source_id=article.source_id,
@@ -49,6 +50,15 @@ def extract_report_rules(
             snippet.text for snippet in relevance.evidence_snippets
         ),
     )
+
+
+def _report_id(article: NewsArticle) -> str:
+    if article.source_id == "padi_web":
+        article_id = Path(article.raw_html_path).stem
+        if article_id:
+            return f"{article.source_id}:{article_id}"
+    slug = urlparse(article.source_link).path.rstrip("/").split("/")[-1]
+    return f"{article.source_id}:{slug}"
 
 
 def _first_regex(text: str, pattern: str) -> str | None:

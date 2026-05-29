@@ -147,6 +147,7 @@ def test_cli_export_final_writes_combined_rdf_and_no_qa_ttl(tmp_path):
     data_dir = tmp_path / "data" / "unstructured"
     rdf_output = tmp_path / "lindas" / "data" / "rdf" / "tierseuchen-screener.ttl"
     csv_output = tmp_path / "lindas" / "data" / "csv" / "disease_reports.csv"
+    frontend_csv_output = csv_output.with_name("disease_reports_mock_data_.csv")
     write_jsonl(
         data_dir / "gefluegelnews" / "disease_reports.enriched.jsonl",
         [
@@ -190,6 +191,7 @@ def test_cli_export_final_writes_combined_rdf_and_no_qa_ttl(tmp_path):
     assert exit_code == 0
     assert rdf_output.exists()
     assert csv_output.exists()
+    assert frontend_csv_output.exists()
     assert not (rdf_output.parent / "gefluegelnews" / "gefluegelnews.qa.ttl").exists()
 
 

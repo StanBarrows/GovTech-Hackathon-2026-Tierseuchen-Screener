@@ -1,15 +1,33 @@
 """Auto-generated from SystemPromptGN.md — do not edit by hand."""
+
 from dataclasses import dataclass, asdict
 
 
 @dataclass
 class ExtractionSchema:
     disease_name: str | None = None  # primary disease named in the report
-    disease_type: str | None = None  # broader category the disease belongs to as stated or
-    country_or_territory: str | None = None  # country or territory where the outbreak is
-    is_in_europe: bool | None = None  # true if the report places the disease in at least
+    disease_type: str | None = (
+        None  # broader category the disease belongs to as stated or
+    )
+    country_or_territory: str | None = (
+        None  # country or territory where the outbreak is
+    )
+    is_in_europe: bool | None = (
+        None  # true if the report places the disease in at least
+    )
+    administrative_division_level_1: str | None = (
+        None  # first-level administrative area
+    )
+    administrative_division_level_2: str | None = (
+        None  # second-level administrative area
+    )
+    administrative_division_level_3: str | None = (
+        None  # third-level administrative area
+    )
     relevance_level: str | None = None  # how relevant the report is for veterinary /
-    relevance_rationale: str | None = None  # one-sentence justification grounded in the text
+    relevance_rationale: str | None = (
+        None  # one-sentence justification grounded in the text
+    )
     severity_level: str | None = None  # severity of the outbreak
     severity_rationale: str | None = None  # one-sentence justification
     reach_level: str | None = None  # geographic reach

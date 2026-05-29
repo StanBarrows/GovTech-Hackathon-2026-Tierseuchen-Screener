@@ -174,7 +174,7 @@ def test_parse_article_payload_normalizes_detail_json_to_news_article(tmp_path):
     payload = {
         "id": "4PYSCRQ6ZV",
         "title": "Meeting the ongoing challenge of avian influenza in the UK",
-        "text": "Short list text",
+        "text": "Full translated article text with more detail.",
         "sentences": [
             {"computed_text": "The UK has suffered its third worst outbreak of HPAI."},
             {"computed_text": "More than 3.8 million birds have been culled or died."},
@@ -221,15 +221,80 @@ def test_parse_article_payload_normalizes_detail_json_to_news_article(tmp_path):
     ]
     assert article.fulltext == (
         "# Meeting the ongoing challenge of avian influenza in the UK\n\n"
-        "The UK has suffered its third worst outbreak of HPAI.\n\n"
-        "More than 3.8 million birds have been culled or died."
+        "Full translated article text with more detail."
     )
     assert article.raw_html_path == str(raw_path)
+
+
+def test_parse_article_payload_falls_back_to_text_title_and_body(tmp_path):
+    raw_path = tmp_path / "padi_web" / "raw_json" / "AAA111.json"
+    payload = {
+        "id": "AAA111",
+        "title": "",
+        "source_title": "",
+        "text": (
+            "Fayoum Veterinary Authority: Immunization of 3012 cattle against various diseases\n\n"
+            "The Department of Preventive Medicine continued to immunize livestock."
+        ),
+        "sentences": [{"computed_text": "Fragmented title"}],
+        "url": "https://publisher.example/fayoum",
+        "source": "publisher.example",
+        "published_at": "2026-05-28T08:42:19",
+    }
+
+    article = parse_article_payload(
+        payload=payload,
+        source_link="https://padi-web.cirad.fr/en/articles/api/AAA111/",
+        raw_json_path=raw_path,
+        content_hash="abc123",
+        retrieved_at=datetime(2026, 5, 28, 17, 0, tzinfo=timezone.utc),
+    )
+
+    assert (
+        article.title
+        == "Fayoum Veterinary Authority: Immunization of 3012 cattle against various diseases"
+    )
+    assert "The Department of Preventive Medicine" in article.fulltext
+
+
+def test_parse_article_payload_prefers_description_headline_before_body_line(tmp_path):
+    raw_path = tmp_path / "padi_web" / "raw_json" / "AAA111.json"
+    payload = {
+        "id": "AAA111",
+        "title": "",
+        "source_title": "",
+        "description": (
+            '<a href="https://publisher.example/article">Se reúne el Comité '
+            "binacional para la erradicación de enfermedades bovinas</a>"
+            '&nbsp;&nbsp;<font color="#6f6f6f">publisher.example</font>'
+        ),
+        "text": "Carlos Andrade, May 27, 2026\n\nXalapa, Ver.- Body text.",
+        "url": "https://publisher.example/article",
+        "source": "publisher.example",
+        "published_at": "2026-05-28T08:42:19",
+    }
+
+    article = parse_article_payload(
+        payload=payload,
+        source_link="https://padi-web.cirad.fr/en/articles/api/AAA111/",
+        raw_json_path=raw_path,
+        content_hash="abc123",
+        retrieved_at=datetime(2026, 5, 28, 17, 0, tzinfo=timezone.utc),
+    )
+
+    assert (
+        article.title
+        == "Se reúne el Comité binacional para la erradicación de enfermedades bovinas"
+    )
+    assert article.description.endswith("publisher.example")
 
 
 def test_config_and_cli_parser_accept_padi_web_source():
     config = load_config()
     assert config.sources["padi_web"].output_dir == "padi_web"
+    assert config.interpreter.prompts["padi_web"] == (
+        "code/backend/interpreter/SystemPromptPADI.md"
+    )
 
     parser = build_parser(config)
     args = parser.parse_args(
@@ -423,7 +488,7 @@ def test_padi_articles_flow_through_filter_extract_and_final_export(tmp_path):
                 "source_attribution": "PADI-web article AAA111 from publisher.example",
                 "partner_content": None,
                 "fulltext": "# HPAI outbreak in Poland\n\nHPAI outbreak in Poland led to restriction zones.",
-                "raw_html_path": "raw.json",
+                "raw_html_path": "data/unstructured/padi_web/raw_json/AAA111.json",
                 "content_hash": "abc123",
             }
         ],
@@ -459,6 +524,7 @@ def test_padi_articles_flow_through_filter_extract_and_final_export(tmp_path):
     reports = read_jsonl(tmp_path / "padi_web" / "disease_reports.jsonl")
     assert len(disease_articles) == 1
     assert reports[0]["source_id"] == "padi_web"
+    assert reports[0]["report_id"] == "padi_web:AAA111"
     assert reports[0]["source_link"] == "https://publisher.example/article"
     assert rdf_output.exists()
     assert csv_output.exists()

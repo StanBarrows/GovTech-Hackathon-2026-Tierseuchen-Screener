@@ -48,7 +48,7 @@ export default function Imprint({ seo }: Props) {
     return (
         <DashboardLayout>
             <PageHead seo={seo} />
-            <LagebildHeader title="TS-Scanner" subtitle="Impressum" />
+            <LagebildHeader title="Tierseuchen Scanner - GovTech2026" />
             <div className="flex gap-4 p-4" style={{ height: 'calc(100vh - 3.5rem)' }}>
                 <FilterPanel
                     disease={disease}
@@ -62,6 +62,11 @@ export default function Imprint({ seo }: Props) {
                     dateTo={dateTo}
                     onDateFromChange={setDateFrom}
                     onDateToChange={setDateTo}
+                    onResetDate={() => {
+                        setDateFrom('');
+                        setDateTo('');
+                    }}
+                    dateChanged={false}
                     species={species}
                     onToggleSpecies={toggleSpecies}
                     onResetSpecies={() => setSpecies([])}
@@ -75,7 +80,7 @@ export default function Imprint({ seo }: Props) {
                 <div className="flex flex-1 flex-col overflow-hidden">
                     <div className="relative flex-1 overflow-y-auto rounded-md border bg-card p-8">
                         <Link
-                            href="/dashboard/map"
+                            href="/"
                             aria-label="Schliessen"
                             className="absolute right-4 top-4 inline-flex size-8 items-center justify-center rounded-md border bg-background text-muted-foreground hover:bg-muted hover:text-foreground"
                         >

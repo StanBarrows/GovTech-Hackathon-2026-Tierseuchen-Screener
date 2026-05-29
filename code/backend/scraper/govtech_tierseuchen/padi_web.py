@@ -5,6 +5,7 @@ import json
 import logging
 import time
 from datetime import UTC, date, datetime, timedelta
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
@@ -197,7 +198,7 @@ def parse_article_payload(
     content_hash: str,
     retrieved_at: datetime,
 ) -> NewsArticle:
-    title = str(payload.get("title") or payload.get("source_title") or "").strip()
+    title = _article_title(payload)
     if not title:
         raise ValueError(f"Could not parse PADI article title from {source_link}")
     canonical_url = str(payload.get("url") or payload.get("external_id") or source_link)
@@ -286,7 +287,27 @@ def _parse_padi_date(value: str | None) -> date | None:
     return parsed.date() if parsed else None
 
 
+def _article_title(payload: dict[str, Any]) -> str:
+    for value in (payload.get("title"), payload.get("source_title")):
+        title = str(value or "").strip()
+        if title:
+            return title
+    title = _first_anchor_text(payload.get("description"))
+    if title:
+        return title
+    for line in str(
+        payload.get("text") or payload.get("source_text") or ""
+    ).splitlines():
+        title = line.strip()
+        if title:
+            return title
+    return ""
+
+
 def _to_markdown(title: str, payload: dict[str, Any]) -> str:
+    text = str(payload.get("text") or "").strip()
+    if text:
+        return "\n\n".join([f"# {title}", text])
     sentence_texts = [
         str(sentence.get("computed_text", "")).strip()
         for sentence in payload.get("sentences", [])
@@ -299,4 +320,44 @@ def _to_markdown(title: str, payload: dict[str, Any]) -> str:
 def _clean_html_description(value: str | None) -> str | None:
     if not value:
         return None
-    return " ".join(str(value).replace("\n", " ").split())
+    text = _html_text(value)
+    return " ".join(text.replace("\n", " ").split()) or None
+
+
+class _TextExtractor(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+        self.anchor_parts: list[str] = []
+        self._in_anchor = False
+        self._captured_anchor = False
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "a" and not self._captured_anchor:
+            self._in_anchor = True
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "a" and self._in_anchor:
+            self._in_anchor = False
+            self._captured_anchor = True
+
+    def handle_data(self, data: str) -> None:
+        if not data:
+            return
+        self.parts.append(data)
+        if self._in_anchor:
+            self.anchor_parts.append(data)
+
+
+def _html_text(value: str) -> str:
+    parser = _TextExtractor()
+    parser.feed(str(value))
+    return " ".join(part.strip() for part in parser.parts if part.strip())
+
+
+def _first_anchor_text(value: str | None) -> str:
+    if not value:
+        return ""
+    parser = _TextExtractor()
+    parser.feed(str(value))
+    return " ".join(part.strip() for part in parser.anchor_parts if part.strip())

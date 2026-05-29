@@ -17,15 +17,16 @@ class DashboardController extends Controller
 
     private const DEFAULT_CENTER_LNG = 7.4442526092578625;
 
-    private const DEFAULT_RADIUS_KM = 50.0;
+    // Matches EventsSeeder::PROXIMITY_RADIUS_KM (the relevance decay scale) and the
+    // frontend ORIGIN_RADIUS_KM, so the precomputed relevance_score is used directly.
+    private const DEFAULT_RADIUS_KM = 120.0;
 
     public function map(): Response
     {
-        $events = Event::query()->get();
-        $cases = EventResource::collection($events)->resolve();
-
         return Inertia::render('dashboard-map', [
-            'cases' => $cases,
+            'cases' => Inertia::defer(fn () => EventResource::collection(
+                Event::query()->get(),
+            )->resolve()),
             'error' => null,
             'relevanceContext' => [
                 'centerLat' => self::DEFAULT_CENTER_LAT,
@@ -36,7 +37,7 @@ class DashboardController extends Controller
             'speciesOptions' => Species::query()->orderBy('name')->pluck('name'),
             'subtypeOptions' => Subtype::query()->orderBy('name')->pluck('name'),
             'totals' => [
-                'outbreakEvents' => $events->count(),
+                'outbreakEvents' => Event::query()->count(),
                 'outbreakSituations' => 0,
                 'paffReports' => 0,
                 'paffSituationStatements' => 0,

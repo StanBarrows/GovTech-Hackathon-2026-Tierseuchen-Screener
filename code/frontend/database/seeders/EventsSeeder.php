@@ -28,13 +28,15 @@ class EventsSeeder extends Seeder
     private const BERN_LNG = 7.4442526092578625;
 
     /**
-     * Scoring tunables. relevance_score = min(1, proximity + W_DENSITY*density +
-     * W_SEVERITY*severity), clamped to [0, 1]. Proximity to Bern is the base signal
-     * (an event right next to Bern starts near 1.0; a far-off flyway branch in
-     * France, Italy or the Balkans starts near 0), and local density + outbreak
-     * severity are smaller bonuses that can only nudge a nearby event upward — they
-     * can never lift a distant one. The dashboard bins the score into Rot (>= 0.8) /
-     * Orange (>= 0.5) / Grün, and the stored priority enum uses the same thresholds.
+     * Scoring tunables. relevance_score = min(1, proximity * (1 + W_DENSITY*density
+     * + W_SEVERITY*severity)), clamped to [0, 1]. Proximity to Bern is the base
+     * signal (an event right next to Bern starts near 1.0; a far-off flyway branch
+     * in France, Italy or the Balkans starts near 0). Local density and outbreak
+     * severity are *multiplicative* bonuses: they amplify an event that is already
+     * near Bern but, because the whole bonus is scaled by proximity, they can never
+     * lift a distant one out of the green band. The dashboard bins the score into
+     * Rot (>= 0.8) / Orange (>= 0.5) / Grün, and the priority enum uses the same
+     * thresholds.
      */
     private const PROXIMITY_RADIUS_KM = 120.0;   // proximity decay scale
 
@@ -59,9 +61,10 @@ class EventsSeeder extends Seeder
      * out west into France/Iberia, east into the Black Sea flyway and south into
      * Italy — mirroring how the virus actually disperses with migrating birds.
      *
-     * Time is correlated with progress along each stream (early March at the
-     * northern start, late May at the destination). Relevance is always measured as
-     * proximity to Bern, so the off-axis branches register as low-priority noise.
+     * Time is correlated with progress along each stream (earliest at the
+     * northern start, latest at the destination), spread over a rolling three-month
+     * window ending at seed time. Relevance is always measured as proximity to Bern,
+     * so the off-axis branches register as low-priority noise.
      */
     public function run(): void
     {
@@ -86,7 +89,6 @@ class EventsSeeder extends Seeder
             ['Gehaltene Vögel'],
         );
         $subtypes = ['H5N1', 'H5N1', 'H5N1', 'H5N1', 'H5N1', 'H5N5'];
-        $sources = ['BLV', 'Kantonstierarzt', 'Labor', 'Tierarzt', 'Bürger-Meldung'];
 
         // Bird-migration flyways. Each stream is a polyline of waypoints (t in [0, 1],
         // early -> late) carrying the virus from a northern start to a destination.
@@ -170,11 +172,11 @@ class EventsSeeder extends Seeder
             ['name' => 'Basel', 'lat' => 47.5596, 'lng' => 7.5886, 'spread' => 0.18, 'canton' => 'BS'],
         ];
 
-        $start = Carbon::parse('2026-03-01 00:00');
-        $end = Carbon::parse('2026-05-28 23:59');
+        $end = Carbon::now();
+        $start = $end->copy()->subMonths(3);
         $span = $end->getTimestamp() - $start->getTimestamp();
 
-        $now = Carbon::now()->format('Y-m-d H:i:s');
+        $now = $end->format('Y-m-d H:i:s');
 
         // Pass 1 — generate rows and tally a coarse density histogram keyed by grid cell.
         $rows = [];
@@ -193,8 +195,8 @@ class EventsSeeder extends Seeder
             $occurredAt = $start->copy()->addSeconds($occurredTs)->format('Y-m-d H:i:s');
 
             [$lat, $lng] = $this->interpolate($path, $t);
-            $lat += $this->gauss() * 0.35;
-            $lng += $this->gauss() * 0.50;
+            $lat += $this->gauss() * 0.50;
+            $lng += $this->gauss() * 0.70;
 
             $population = $populations[array_rand($populations)];
 
@@ -223,7 +225,7 @@ class EventsSeeder extends Seeder
                 'subtype' => $subtypes[array_rand($subtypes)],
                 'species' => $species[array_rand($species)],
                 'population' => $population,
-                'source' => $sources[array_rand($sources)],
+                'source' => 'ADIS',
                 'external_id' => 'HPAI-2026-'.str_pad((string) $i, 6, '0', STR_PAD_LEFT),
                 'occurred_at' => $occurredAt,
                 'admin_level_1' => $admin1,
@@ -270,9 +272,12 @@ class EventsSeeder extends Seeder
             // don't collapse to the extremes.
             $severity = min(1.0, log10($row['cases'] + 1) / log10(self::SEVERITY_REF));
 
-            $score = min(1.0, $proximity
+            // Importance (local density + outbreak severity) only amplifies events
+            // that are already near Bern; scaling the whole bonus by proximity keeps
+            // a distant-but-dense/severe cluster low instead of lifting it to orange.
+            $score = min(1.0, $proximity * (1.0
                 + self::W_DENSITY * $density
-                + self::W_SEVERITY * $severity);
+                + self::W_SEVERITY * $severity));
 
             $priority = match (true) {
                 $score >= self::PRIORITY_HIGH => EventPriority::High,

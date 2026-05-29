@@ -43,17 +43,29 @@ def ensure_concept(g, scheme, concept_uri, label, cls=None):
 
 def main():
     root = Path("/home/Dave/.openclaw/workspace-govtech")
-    csv_path = root / "GovTech-Hackathon-2026-Tierseuchen-Screener/data/structured/adis/adis-outbreaks-20260519.csv"
+    csv_path = (
+        root
+        / "GovTech-Hackathon-2026-Tierseuchen-Screener/data/structured/adis/adis-outbreaks-20260519.csv"
+    )
 
     out_dir = root / "data/rdf/adis"
     out_dir.mkdir(parents=True, exist_ok=True)
     rep_dir = root / "reports/conversion"
     rep_dir.mkdir(parents=True, exist_ok=True)
 
-    g_events = Graph(); g_events.bind("ts", TS); g_events.bind("tsd", TSD)
-    g_situations = Graph(); g_situations.bind("ts", TS); g_situations.bind("tsd", TSD)
-    g_skos = Graph(); g_skos.bind("ts", TS); g_skos.bind("tss", TSS); g_skos.bind("skos", SKOS)
-    g_rows = Graph(); g_rows.bind("ts", TS); g_rows.bind("tsd", TSD)
+    g_events = Graph()
+    g_events.bind("ts", TS)
+    g_events.bind("tsd", TSD)
+    g_situations = Graph()
+    g_situations.bind("ts", TS)
+    g_situations.bind("tsd", TSD)
+    g_skos = Graph()
+    g_skos.bind("ts", TS)
+    g_skos.bind("tss", TSS)
+    g_skos.bind("skos", SKOS)
+    g_rows = Graph()
+    g_rows.bind("ts", TS)
+    g_rows.bind("tsd", TSD)
 
     counts = defaultdict(int)
 
@@ -70,7 +82,9 @@ def main():
             g_events.add((evt, RDF.type, TS.OutbreakEvent))
             g_events.add((evt, TS.referenceId, Literal(ref)))
             if row.get("National reference") and row.get("National reference") != "NaN":
-                g_events.add((evt, TS.nationalReferenceId, Literal(row["National reference"])))
+                g_events.add(
+                    (evt, TS.nationalReferenceId, Literal(row["National reference"]))
+                )
 
             # raw fields
             raw_map = {
@@ -85,9 +99,13 @@ def main():
             if row.get(raw_map["country"]):
                 g_events.add((evt, TS.countryLabel, Literal(row[raw_map["country"]])))
             if row.get(raw_map["status"]):
-                g_events.add((evt, TS.rawEventStatusLabel, Literal(row[raw_map["status"]])))
+                g_events.add(
+                    (evt, TS.rawEventStatusLabel, Literal(row[raw_map["status"]]))
+                )
             if row.get(raw_map["pertinence"]):
-                g_events.add((evt, TS.rawPertinenceLabel, Literal(row[raw_map["pertinence"]])))
+                g_events.add(
+                    (evt, TS.rawPertinenceLabel, Literal(row[raw_map["pertinence"]]))
+                )
 
             # dates + fallback
             c = parse_date(row.get("Confirmation date"))
@@ -99,13 +117,18 @@ def main():
             else:
                 counts["missing_confirmation"] += 1
                 if s:
-                    month = s[:7]; counts["fallback"] += 1
+                    month = s[:7]
+                    counts["fallback"] += 1
                 elif sub:
-                    month = sub[:7]; counts["fallback"] += 1
+                    month = sub[:7]
+                    counts["fallback"] += 1
                 else:
-                    month = "unknown"; counts["fallback"] += 1
+                    month = "unknown"
+                    counts["fallback"] += 1
             if s:
-                g_events.add((evt, TS.suspicionStartDate, Literal(s, datatype=XSD.date)))
+                g_events.add(
+                    (evt, TS.suspicionStartDate, Literal(s, datatype=XSD.date))
+                )
             if sub:
                 g_events.add((evt, TS.submissionDate, Literal(sub, datatype=XSD.date)))
 
@@ -114,14 +137,18 @@ def main():
             disease_slug = slug(disease_label)
             disease_c = TSS[disease_slug]
             g_events.add((evt, TS.hasDisease, disease_c))
-            ensure_concept(g_skos, TSS["diseases"], disease_c, disease_label, TS.Disease)
+            ensure_concept(
+                g_skos, TSS["diseases"], disease_c, disease_label, TS.Disease
+            )
 
             # subtype
             subtype = (row.get("Disease type") or "").strip()
             if subtype and subtype != "NaN":
                 st_c = TSS[slug(subtype)]
                 g_events.add((evt, TS.hasDiseaseSubtype, st_c))
-                ensure_concept(g_skos, TSS["disease_subtypes"], st_c, subtype, TS.DiseaseSubtype)
+                ensure_concept(
+                    g_skos, TSS["disease_subtypes"], st_c, subtype, TS.DiseaseSubtype
+                )
 
             # country concept
             country = (row.get("Country/Territory") or "unknown").strip()
@@ -130,14 +157,23 @@ def main():
             ensure_concept(g_skos, TSS["countries"], country_c, country)
 
             # location
-            loc_key = slug(f"{row.get('Location','')}-{row.get('Administrative division level 1','')}-{row.get('Administrative division level 2','')}-{row.get('Administrative division level 3','')}")
+            loc_key = slug(
+                f"{row.get('Location', '')}-{row.get('Administrative division level 1', '')}-{row.get('Administrative division level 2', '')}-{row.get('Administrative division level 3', '')}"
+            )
             loc = TSD[f"loc_{loc_key}"]
             g_events.add((evt, TS.occursAt, loc))
             g_events.add((loc, RDF.type, TS.Location))
-            for p,col in [(TS.locationLabel,"Location"),(TS.adminLevel1Label,"Administrative division level 1"),(TS.adminLevel2Label,"Administrative division level 2"),(TS.adminLevel3Label,"Administrative division level 3")]:
-                v=row.get(col)
-                if v and v!="NaN": g_events.add((loc,p,Literal(v)))
-            lat=parse_decimal(row.get("Latitude")); lon=parse_decimal(row.get("Longitude"))
+            for p, col in [
+                (TS.locationLabel, "Location"),
+                (TS.adminLevel1Label, "Administrative division level 1"),
+                (TS.adminLevel2Label, "Administrative division level 2"),
+                (TS.adminLevel3Label, "Administrative division level 3"),
+            ]:
+                v = row.get(col)
+                if v and v != "NaN":
+                    g_events.add((loc, p, Literal(v)))
+            lat = parse_decimal(row.get("Latitude"))
+            lon = parse_decimal(row.get("Longitude"))
             if lat and lon:
                 g_events.add((loc, TS.latitude, Literal(lat, datatype=XSD.decimal)))
                 g_events.add((loc, TS.longitude, Literal(lon, datatype=XSD.decimal)))
@@ -145,63 +181,82 @@ def main():
                 counts["missing_coords"] += 1
 
             # species/status/result/pertinence/unit skos
-            species=(row.get("Species 1") or "").strip()
-            if species and species!="NaN":
-                sc=TSS[f"species-{slug(species)}"]
+            species = (row.get("Species 1") or "").strip()
+            if species and species != "NaN":
+                sc = TSS[f"species-{slug(species)}"]
                 g_events.add((evt, TS.hasSpecies, sc))
                 ensure_concept(g_skos, TSS["species"], sc, species, TS.Species)
-            status=(row.get("Status Continuing/Resolved") or "").strip()
-            if status and status!="NaN":
-                st=TSS[f"status-{slug(status)}"]
+            status = (row.get("Status Continuing/Resolved") or "").strip()
+            if status and status != "NaN":
+                st = TSS[f"status-{slug(status)}"]
                 g_events.add((evt, TS.hasEventStatus, st))
                 ensure_concept(g_skos, TSS["event-status"], st, status)
-            result=(row.get("Result type 1") or "").strip()
-            if result and result!="NaN":
-                rs=TSS[f"result-{slug(result)}"]
+            result = (row.get("Result type 1") or "").strip()
+            if result and result != "NaN":
+                rs = TSS[f"result-{slug(result)}"]
                 ensure_concept(g_skos, TSS["result-status"], rs, result)
-            pert=(row.get("Pertinence") or "").strip()
-            if pert and pert!="NaN":
-                pc=TSS[f"pertinence-{slug(pert)}"]
+            pert = (row.get("Pertinence") or "").strip()
+            if pert and pert != "NaN":
+                pc = TSS[f"pertinence-{slug(pert)}"]
                 g_events.add((evt, TS.hasPertinence, pc))
                 ensure_concept(g_skos, TSS["pertinence-values"], pc, pert)
-            mu=(row.get("Measuring unit 1") or "").strip()
-            if mu and mu!="NaN":
-                m=TSD[f"meas_{slug(ref)}"]
-                g_events.add((evt, TS.hasMeasurement, m)); g_events.add((m, RDF.type, TS.Measurement))
-                mc=TSS[f"unit-{slug(mu)}"]
-                g_events.add((m, TS.hasMeasuringUnit, mc)); g_events.add((m, TS.rawMeasuringUnitLabel, Literal(mu)))
+            mu = (row.get("Measuring unit 1") or "").strip()
+            if mu and mu != "NaN":
+                m = TSD[f"meas_{slug(ref)}"]
+                g_events.add((evt, TS.hasMeasurement, m))
+                g_events.add((m, RDF.type, TS.Measurement))
+                mc = TSS[f"unit-{slug(mu)}"]
+                g_events.add((m, TS.hasMeasuringUnit, mc))
+                g_events.add((m, TS.rawMeasuringUnitLabel, Literal(mu)))
                 ensure_concept(g_skos, TSS["measuring-units"], mc, mu)
 
-            for col,prop in [("Susceptible 1",TS.susceptibleCount),("Cases 1",TS.casesCount),("Dead 1",TS.deadCount),("Killed 1",TS.killedCount),("Slaughtered 1",TS.slaughteredCount),("Vaccinated 1",TS.vaccinatedCount)]:
-                v=(row.get(col) or "").strip()
-                if v and v not in ("NaN","N/A") and 'm' in locals():
-                    try: g_events.add((m,prop,Literal(int(float(v)))))
-                    except: pass
+            for col, prop in [
+                ("Susceptible 1", TS.susceptibleCount),
+                ("Cases 1", TS.casesCount),
+                ("Dead 1", TS.deadCount),
+                ("Killed 1", TS.killedCount),
+                ("Slaughtered 1", TS.slaughteredCount),
+                ("Vaccinated 1", TS.vaccinatedCount),
+            ]:
+                v = (row.get(col) or "").strip()
+                if v and v not in ("NaN", "N/A") and "m" in locals():
+                    try:
+                        g_events.add((m, prop, Literal(int(float(v)))))
+                    except:
+                        pass
 
             # source row
-            row_hash = hashlib.sha1((ref + str(counts['rows'])).encode()).hexdigest()[:12]
-            srow=TSD[f"source_row_{row_hash}"]
-            g_rows.add((srow,RDF.type,TS.SourceRow))
-            g_rows.add((srow,TS.referenceId,Literal(ref)))
-            g_events.add((evt,TS.hasSourceRow,srow))
+            row_hash = hashlib.sha1((ref + str(counts["rows"])).encode()).hexdigest()[
+                :12
+            ]
+            srow = TSD[f"source_row_{row_hash}"]
+            g_rows.add((srow, RDF.type, TS.SourceRow))
+            g_rows.add((srow, TS.referenceId, Literal(ref)))
+            g_events.add((evt, TS.hasSourceRow, srow))
 
             # situation
-            sk=f"{disease_slug}|{country_slug}|{month}"
-            suri=TSD[f"situation_{slug(sk)}"]
-            g_situations.add((suri,RDF.type,TS.OutbreakSituation))
-            g_situations.add((suri,TS.hasSituationKey,Literal(sk)))
-            g_situations.add((suri,TS.situationDisease,disease_c))
-            g_situations.add((suri,TS.situationCountry,TSD[f"country_{country_slug}"]))
+            sk = f"{disease_slug}|{country_slug}|{month}"
+            suri = TSD[f"situation_{slug(sk)}"]
+            g_situations.add((suri, RDF.type, TS.OutbreakSituation))
+            g_situations.add((suri, TS.hasSituationKey, Literal(sk)))
+            g_situations.add((suri, TS.situationDisease, disease_c))
+            g_situations.add(
+                (suri, TS.situationCountry, TSD[f"country_{country_slug}"])
+            )
             if month != "unknown":
-                g_situations.add((suri,TS.situationMonth,Literal(month,datatype=XSD.gYearMonth)))
+                g_situations.add(
+                    (suri, TS.situationMonth, Literal(month, datatype=XSD.gYearMonth))
+                )
             else:
-                g_situations.add((suri,TS.situationMonth,Literal("unknown")))
-            g_events.add((evt,TS.belongsToSituation,suri))
+                g_situations.add((suri, TS.situationMonth, Literal("unknown")))
+            g_events.add((evt, TS.belongsToSituation, suri))
 
             counts["events"] += 1
 
     # counts from graphs
-    counts["situations"] = len(set(g_situations.subjects(RDF.type, TS.OutbreakSituation)))
+    counts["situations"] = len(
+        set(g_situations.subjects(RDF.type, TS.OutbreakSituation))
+    )
     counts["disease_concepts"] = len(set(g_skos.subjects(RDF.type, TS.Disease)))
     counts["species_concepts"] = len(set(g_skos.subjects(RDF.type, TS.Species)))
 
@@ -210,7 +265,7 @@ def main():
     g_skos.serialize(out_dir / "adis-skos-generated.ttl", format="turtle")
     g_rows.serialize(out_dir / "adis-source-rows.ttl", format="turtle")
 
-    summary = f"""# ADIS CSV -> RDF conversion summary\n\n- rows read: {counts['rows']}\n- events generated: {counts['events']}\n- situations generated: {counts['situations']}\n- disease concepts: {counts['disease_concepts']}\n- species concepts: {counts['species_concepts']}\n- rows with missing confirmation date: {counts['missing_confirmation']}\n- rows using fallback date: {counts['fallback']}\n- rows with missing coordinates: {counts['missing_coords']}\n- skipped rows: {counts['skipped']}\n"""
+    summary = f"""# ADIS CSV -> RDF conversion summary\n\n- rows read: {counts["rows"]}\n- events generated: {counts["events"]}\n- situations generated: {counts["situations"]}\n- disease concepts: {counts["disease_concepts"]}\n- species concepts: {counts["species_concepts"]}\n- rows with missing confirmation date: {counts["missing_confirmation"]}\n- rows using fallback date: {counts["fallback"]}\n- rows with missing coordinates: {counts["missing_coords"]}\n- skipped rows: {counts["skipped"]}\n"""
     (rep_dir / "adis-conversion-summary.md").write_text(summary, encoding="utf-8")
     print(summary)
 
