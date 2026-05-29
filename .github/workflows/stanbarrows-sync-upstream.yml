@@ -12,6 +12,7 @@
 #   MY_GITHUB_TOKEN — same secret as stanbarrows-push-laravel. Classic PAT (repo
 #   scope) or fine-grained PAT for StanBarrows with Contents: Read and write AND
 #   Workflows: Read and write on GovTech-Hackathon-2026-Tierseuchen-Screener.
+#   (PAT only — not a valid key under workflow permissions:.)
 #   Workflows permission is required when upstream changes .github/workflows/*.
 #
 # Upstream: https://github.com/BLV-OSAV-USAV/GovTech-Hackathon-2026-Tierseuchen-Screener
@@ -26,7 +27,6 @@ on:
 
 permissions:
   contents: write
-  workflows: write
 
 env:
   UPSTREAM_OWNER: BLV-OSAV-USAV
