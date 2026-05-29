@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\EventResource;
+use App\Http\Resources\ReportResource;
 use App\Models\Disease;
 use App\Models\Event;
+use App\Models\Report;
 use App\Models\Species;
 use App\Models\Subtype;
 use App\Support\SeoMeta;
@@ -27,6 +29,9 @@ class DashboardController extends Controller
             'cases' => Inertia::defer(fn () => EventResource::collection(
                 Event::query()->get(),
             )->resolve()),
+            'reports' => Inertia::defer(fn () => ReportResource::collection(
+                Report::query()->orderByDesc('report_date')->get(),
+            )->resolve()),
             'error' => null,
             'relevanceContext' => [
                 'centerLat' => self::DEFAULT_CENTER_LAT,
@@ -39,7 +44,7 @@ class DashboardController extends Controller
             'totals' => [
                 'outbreakEvents' => Event::query()->count(),
                 'outbreakSituations' => 0,
-                'paffReports' => 0,
+                'paffReports' => Report::query()->count(),
                 'paffSituationStatements' => 0,
                 'evidenceSnippets' => 0,
             ],

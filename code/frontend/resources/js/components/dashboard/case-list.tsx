@@ -18,7 +18,6 @@ import type { Case, Population, RelevanceContext } from '@/types/case';
 type Priority = 'high' | 'medium' | 'low';
 
 const PAGE_SIZE = 100;
-const SOURCE_OPTIONS = ['BLV', 'Kantonstierarzt', 'Labor', 'Tierarzt', 'Bürger-Meldung'];
 
 type Props = {
     cases: Case[];
@@ -149,6 +148,18 @@ export default function CaseList({ cases, centerLat, centerLng, radiusKm, releva
             };
         });
     }, [cases, centerLat, centerLng, radiusKm, relevanceContext]);
+
+    const sourceOptions = useMemo(() => {
+        const set = new Set<string>();
+
+        for (const r of rows) {
+            if (r.source) {
+                set.add(r.source);
+            }
+        }
+
+        return Array.from(set).sort((a, b) => a.localeCompare(b, 'de-CH'));
+    }, [rows]);
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -297,29 +308,31 @@ setPage(totalPages);
                         );
                     })}
                 </div>
-                <div className="flex items-center gap-1.5">
-                    <span className="font-medium text-muted-foreground uppercase tracking-wider">
-                        Quelle:
-                    </span>
-                    {SOURCE_OPTIONS.map((s) => {
-                        const active = sourceFilter.includes(s);
+                {sourceOptions.length > 0 && (
+                    <div className="flex items-center gap-1.5">
+                        <span className="font-medium text-muted-foreground uppercase tracking-wider">
+                            Quelle:
+                        </span>
+                        {sourceOptions.map((s) => {
+                            const active = sourceFilter.includes(s);
 
-                        return (
-                            <button
-                                key={s}
-                                type="button"
-                                onClick={() => toggleSource(s)}
-                                className={`rounded-full border px-2.5 py-0.5 transition-colors ${
-                                    active
-                                        ? 'border-foreground bg-foreground text-background'
-                                        : 'border-border hover:bg-muted'
-                                }`}
-                            >
-                                {s}
-                            </button>
-                        );
-                    })}
-                </div>
+                            return (
+                                <button
+                                    key={s}
+                                    type="button"
+                                    onClick={() => toggleSource(s)}
+                                    className={`rounded-full border px-2.5 py-0.5 transition-colors ${
+                                        active
+                                            ? 'border-foreground bg-foreground text-background'
+                                            : 'border-border hover:bg-muted'
+                                    }`}
+                                >
+                                    {s}
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
                 {(priorityFilter.length > 0 || sourceFilter.length > 0) && (
                     <button
                         type="button"
